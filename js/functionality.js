@@ -64,6 +64,7 @@ function whosActive() {
         if (activePlayers.length === 1 && activePlayers[0] === 0) {
             document.querySelector("#message").innerHTML = "YOU WON!";
             playerMoney = playerMoney + thePot;
+            document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
             document.querySelector("#playerMoney").innerHTML = playerMoney;
         }
     if (document.querySelector(".alert-info[data-status='betting']") !== null) {
@@ -73,7 +74,7 @@ function whosActive() {
         });
 
     }
-    console.log("WHO IS ACTIVE? " + activePlayers);
+
 }
 
 function clear() {
@@ -152,7 +153,7 @@ function evaluateHand(iteration) {
         let ace = 0;
 
         for (let i = 0; i < cardsArr.length; i++) {
-            console.log("JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
+
             cardIndexes.push(cardHeirarchy.indexOf(cardsArr[i].value))
             if (cardsArr[i].value === "two") {
                 two = two + 1;
@@ -354,7 +355,20 @@ function evaluateHand(iteration) {
 
 
 
+        if (gameStep === 5 && activePlayers.indexOf(iteration) !== -1 && ranFunction === false) {
 
+            document.querySelector("[data-player='" + compareCards.indexOf(winningCard) + "']").classList.remove("alert-info");
+            document.querySelector("[data-player='" + compareCards.indexOf(winningCard) + "']").classList.add("alert-success");
+
+            if (compareCards.indexOf(winningCard) === 0) {
+                document.getElementById("message").innerHTML = "You Won $" + thePot;
+                playerMoney = playerMoney + thePot;
+            }
+
+
+            console.log("resultList: " + resultList + " - compareCards: " + compareCards);
+            ranFunction = true;
+        }
 
 
 
@@ -390,6 +404,7 @@ function evaluateHand(iteration) {
                     document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $25";
                     document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "betting";
                     thePot = thePot + 25;
+                    document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
                     activePlayers.push(Number(iteration));
                     document.querySelector("[data-round='match']").classList.remove("hide");
 
@@ -428,7 +443,7 @@ function evaluateHand(iteration) {
 
 
         }
-        console.log("activepPlayers: " + activePlayers);
+
 
         if (gameStep === 2 && activePlayers.indexOf(iteration) !== -1 && ranFunction === false) {
 
@@ -440,6 +455,7 @@ function evaluateHand(iteration) {
                     document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $75";
                     document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "betting";
                     thePot = thePot + 75;
+                    document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
 
 
 
@@ -474,8 +490,7 @@ function evaluateHand(iteration) {
         if (gameStep === 3 && activePlayers.indexOf(iteration) !== -1 && ranFunction === false) {
 
 
-            console.log("JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
-            console.log("resultList: " + resultList);
+
             // activePlayers = [];
             if (iteration === 0) {
                 document.getElementById("playerHandDetails").innerHTML = "You have: " + handHeirarchy[resultList[0]] + " - " + cardHeirarchy[originalCompareCards[0]] + "s";
@@ -484,6 +499,7 @@ function evaluateHand(iteration) {
                     document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $150";
                     document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "betting";
                     thePot = thePot + 150;
+                    document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
 
 
 
@@ -520,8 +536,6 @@ function evaluateHand(iteration) {
         if (gameStep === 4 && activePlayers.indexOf(iteration) !== -1 && ranFunction === false) {
 
 
-            console.log("JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
-            console.log("resultList: " + resultList);
             // activePlayers = [];
             if (iteration === 0) {
                 document.getElementById("playerHandDetails").innerHTML = "You have: " + handHeirarchy[resultList[0]] + " - " + cardHeirarchy[originalCompareCards[0]] + "s";
@@ -530,6 +544,7 @@ function evaluateHand(iteration) {
                     document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $150";
                     document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "betting";
                     thePot = thePot + 150;
+                    document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
 
 
 
@@ -559,15 +574,11 @@ function evaluateHand(iteration) {
             ranFunction = true;
         }
 
-        if (gameStep === 5 && activePlayers.indexOf(iteration) !== -1 && ranFunction === false) {
 
-            console.log("resultList: " + resultList + " - compareCards: " + compareCards);
-            ranFunction = true;
-        }
 
 
     } else {
-        console.log("activePlayers: " + activePlayers);
+
     }
 
 
@@ -584,24 +595,28 @@ function match(checked) {
         switch (gameStep) {
             case 2:
                 thePot = thePot + 25;
+                document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
                 bet = bet + 25;
                 playerMoney = playerMoney - bet;
                 document.querySelector("button[data-round='match']").innerHTML = "Match $75";
                 console.log("communityCards.length: " + communityCards.length + " -  gameStep: " + gameStep);
                 break;
             case 3: thePot = thePot + 75;
+                document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
                 bet = bet + 75;
                 playerMoney = playerMoney - bet;
                 document.querySelector("button[data-round='match']").innerHTML = "Match $150";
                 console.log("communityCards.length: " + communityCards.length + " -  gameStep: " + gameStep);
                 break;
             case 4: thePot = thePot + 150;
+                document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
                 bet = bet + 150;
                 playerMoney = playerMoney - bet;
                 document.querySelector("button[data-round='match']").innerHTML = "Let's see who wins. Match $200!";
                 console.log("communityCards.length: " + communityCards.length + " -  gameStep: " + gameStep);
                 break;
             case 5: thePot = thePot + 200;
+                document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
                 bet = bet + 200;
                 playerMoney = playerMoney - bet;
                 console.log("communityCards.length: " + communityCards.length + " -  gameStep: " + gameStep);
@@ -623,7 +638,7 @@ function match(checked) {
 
 
         // window.location = "#";
-        console.log("gameStep: " + gameStep + " - bet: " + bet);
+
         document.getElementById("communityCardDetails").classList.remove("hide");
 
         let communityCardsHTML = "";
@@ -631,7 +646,7 @@ function match(checked) {
             let activeCards = JSON.parse(localStorage.getItem("completeCards"));
             let genNumber = generate(activeCards);
             if (usedCardsArr.indexOf(activeCards[genNumber].title) === -1) {
-                console.log("JSON.stringify(activeCards[genNumber]): " + JSON.stringify(activeCards[genNumber]));
+
                 communityCardsHTML = communityCardsHTML + `<div class='card ${activeCards[genNumber].title}' ></div>`;
                 communityCards.push({
                     suit: activeCards[genNumber].title.substring(activeCards[genNumber].title.indexOf("-") + 1, activeCards[genNumber].title.length),
@@ -671,7 +686,7 @@ function match(checked) {
                 });
                 usedCardsArr.push(cards[genNumber].title);
                 document.getElementById("communityCards").innerHTML = communityCardsHTML;
-                console.log("JSON.stringify(communityCards): " + JSON.stringify(communityCards));
+
             }
         }
 
