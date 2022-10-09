@@ -97,13 +97,14 @@ function fold() {
     [].forEach.call(document.querySelectorAll('.dealAmt'), function (e) {
         e.disabled = false;
     });
-    showAlert("alert-danger", "Folded.", 0);
+    //showAlert("alert-danger", "Folded.", 0);
     document.getElementById("betTarget").innerHTML = "Folded. You lost $" + bet + ". Place your bet.";
     clear();
     window.location = "#";
 }
 
 function evaluateHand(iteration) {
+    let originalCompareCards = [];
     countingIterations = iteration;
     bestHandIndex = 0;
     let cardsInvolved = "";
@@ -112,24 +113,22 @@ function evaluateHand(iteration) {
 
 
 
-    if (gameStep < 3 || activePlayers.indexOf(iteration) !== -1) {
-        console.log("player " + iteration + " is IN. activePlayers: " + activePlayers);
+    if (gameStep < 3 || activePlayers.indexOf(iteration) !== -1 || iteration === 0) {
 
-
-        console.log("playersHands to evaluate: " + playersHands);
 
         let cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
         if (gameStep === 2) {
 
-            console.log("JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
+
             cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2]];
-            console.log("JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
+
+
         }
-        if (gameStep === "fourthSt") {
-            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], playersHands[iteration][2], playersHands[iteration][3], playersHands[iteration][4], playersHands[iteration][5]];
+        if (gameStep === 3) {
+            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3]];
         }
-        if (gameStep === "fithSt") {
-            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], playersHands[iteration][2], playersHands[iteration][3], playersHands[iteration][4], playersHands[iteration][5], , playersHands[iteration][6]];
+        if (gameStep === 4) {
+            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3], communityCards[4]];
         }
         let highCard;
         let flush = false;
@@ -151,7 +150,7 @@ function evaluateHand(iteration) {
         let queen = 0;
         let king = 0;
         let ace = 0;
-        console.log("cardsArr.length: " + cardsArr.length + " - cardsArr: " + cardsArr)
+
         for (let i = 0; i < cardsArr.length; i++) {
             cardIndexes.push(cardHeirarchy.indexOf(cardsArr[i].value))
             if (cardsArr[i].value === "two") {
@@ -220,6 +219,8 @@ function evaluateHand(iteration) {
         cardIndexes = cardIndexes.sort(((a, b) => a - b));
         var results = [];
         let connectedTwo = false;
+        let connectedThree = false;
+        let connectedFour = false;
         for (var i = 0; i < cardIndexes.length; i++) {    /*DETERMINE A STRIGHT*/
             if (cardIndexes[i + 1] == cardIndexes[i] + 1 && cardIndexes[i + 2] == cardIndexes[i] + 2 && cardIndexes[i + 3] == cardIndexes[i] + 3 && cardIndexes[i + 4] == cardIndexes[i] + 4) {
                 results.push(i);
@@ -227,6 +228,12 @@ function evaluateHand(iteration) {
                 while (cardIndexes[i] + 1 == cardIndexes[i + 1]) {
                     if (i = 2) {/*for first round deal*/
                         connectedTwo = true;
+                    }
+                    if (i = 3) {
+                        connectedThree = true;
+                    }
+                    if (i = 3) {
+                        connectedFour = true;
                     }
                     i++;
                 }
@@ -313,7 +320,8 @@ function evaluateHand(iteration) {
 
         let winningHand = Math.max(...resultList);
         topHand = resultList.indexOf(winningHand);
-        /*we only want to count the winning cards of the wnning hand*/
+        /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
+        originalCompareCards = compareCards;
         for (let i = 0; i < resultList.length; i++) {
             if (resultList[i] !== winningHand) {
                 compareCards[i] = -1;
@@ -352,17 +360,25 @@ function evaluateHand(iteration) {
 
         let ranFunction = false;
 
+        let firstRoundSuited = false;
+        let threeSuited = false;
+        let fourSuited = false;
+        for (let i = 0; i < suitedArr.length; i++) {/*determine if the first round has match suit*/
 
+            if (Number(suitedArr[i]) > 1) {
+                firstRoundSuited = true;
+            }
+            if (Number(suitedArr[i]) > 2) {
+                threeSuited = true;
+            }
+            if (Number(suitedArr[i]) > 3) {
+                fourSuited = true;
+            }
+        }
         if (gameStep === 1 && ranFunction === false) {
 
-            let firstRoundSuited = false;
 
-            for (let i = 0; i < suitedArr.length; i++) {/*determine if the first round has match suit*/
 
-                if (Number(suitedArr[i]) > 1) {
-                    firstRoundSuited = true;
-                }
-            }
             if (iteration === 0) {
                 playerCardsInvolved = cardsInvolved;
                 playerHighCard = highCard;
@@ -407,13 +423,43 @@ function evaluateHand(iteration) {
                 ranFunction = true;
             }
 
+
         }
+        console.log("activepPlayers: " + activePlayers);
+
+        if (gameStep === 2 && activePlayers.indexOf(iteration) !== -1) {
+            console.log("JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
+            console.log("resultList: " + resultList);
+            // activePlayers = [];
+            if (iteration === 0) {
+                document.getElementById("playerHandDetails").innerHTML = "You have: " + handHeirarchy[resultList[0]] + " - " + cardHeirarchy[originalCompareCards[0]] + "s";
+            } else {
+                if (resultList[iteration] >= 1 || connectedThree === true || connectedFour === true || threeSuited === true || fourSuited === true) {
+                    document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $75";
+                    document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "betting";
+                    thePot = thePot + 75;
 
 
-        if (gameStep === 2) {
+
+                } else {
+
+                    let tempActivePlayers = [];
+                    for (let i = 0; i < activePlayers.length; i++) {
+                        if (i !== iteration) {
+                            tempActivePlayers.push(iteration);
+                        }
+                    }
+                    activePlayers = tempActivePlayers;
+                    document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "fold";
+                    document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " folded.";
+                }
+            }
 
 
 
+
+
+            ranFunction = true;
         }
 
 
@@ -483,7 +529,7 @@ function match() {
         evaluateHand(2);
         evaluateHand(3);
 
-        console.log("JSON.stringify(communityCards): " + JSON.stringify(communityCards));
+
     }
 
 
@@ -546,7 +592,7 @@ function deal() {
             });
         }
 
-        console.log("JSON.stringify(handObj): " + JSON.stringify(handObj));
+
         if (iteration === 0) {
             document.getElementById("playerCards").innerHTML = playerCardsHTML;
             player0Obj = handObj;
