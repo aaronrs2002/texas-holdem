@@ -28,6 +28,7 @@ let aiBetRound1 = false;
 let communityCards = [];
 let activePlayers = [0];
 let thePot = 0;
+let originalCompareCards;
 /*end holdem custom variables
 
 
@@ -57,6 +58,23 @@ function generate(activeCards) {
     return Math.floor(Math.random() * activeCards.length);
 }
 
+function ckForBet(rules) {
+    if (document.querySelector(".alert-info[data-status='betting']") !== null) {
+        [].forEach.call(document.querySelectorAll(".alert-info[data-status='checking']"), function (e) {
+            e.innerHTML = plyr + "Player  folded.";
+            e.dataset.status = "fold";
+        });
+    } else {
+        if (rules === true) {
+
+
+            document.querySelector("button[data-round='check']").classList.remove("hide");
+            document.querySelector("button[data-round='match']").classList.add("hide");
+        }
+
+    }
+}
+
 function whosActive() {
 
     if (activePlayers.length === 1 && activePlayers)
@@ -67,13 +85,7 @@ function whosActive() {
             document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
             document.querySelector("#playerMoney").innerHTML = playerMoney;
         }
-    if (document.querySelector(".alert-info[data-status='betting']") !== null) {
-        [].forEach.call(document.querySelectorAll(".alert-info[data-status='checking']"), function (e) {
-            e.innerHTML = plyr + "Player  folded.";
-            e.dataset.status = "fold";
-        });
-
-    }
+    ckForBet(false);
 
 }
 
@@ -105,7 +117,7 @@ function fold() {
 }
 
 function evaluateHand(iteration) {
-    let originalCompareCards = [];
+    console.log("WE ARE RUNNING evaluateHand(" + iteration + ") - gameStep: " + gameStep);
     countingIterations = iteration;
     bestHandIndex = 0;
     let cardsInvolved = "";
@@ -118,19 +130,17 @@ function evaluateHand(iteration) {
 
 
         let cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
-        if (gameStep === 2) {
-
-
-            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2]];
-
-
-        }
         if (gameStep === 3) {
-            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3]];
+            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2]];
         }
         if (gameStep === 4) {
+            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3]];
+        }
+        if (gameStep === 5) {
             cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3], communityCards[4]];
         }
+
+        console.log("JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
         let highCard;
         let flush = false;
         let straight = false;
@@ -245,8 +255,9 @@ function evaluateHand(iteration) {
         if (results.length > 0) {
             if (bestHandIndex < 4) {
                 bestHandIndex = 4;
+                straight = true;
             }
-            straight = true;
+
         }
         let valueArr = [two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace]; /*Determine matching values*/
         let pairQty = 0;
@@ -353,16 +364,28 @@ function evaluateHand(iteration) {
         }
         /*END OF HAND EVALUATION */
 
+        let ranFunction = false;
+        console.log("iteration: " + iteration);
+        if (gameStep === 5 && activePlayers.indexOf(iteration) !== -1 && ranFunction === false && iteration === 3) {
 
 
-        if (gameStep === 5 && activePlayers.indexOf(iteration) !== -1 && ranFunction === false) {
-
-            document.querySelector("[data-player='" + compareCards.indexOf(winningCard) + "']").classList.remove("alert-info");
-            document.querySelector("[data-player='" + compareCards.indexOf(winningCard) + "']").classList.add("alert-success");
 
             if (compareCards.indexOf(winningCard) === 0) {
-                document.getElementById("message").innerHTML = "You Won $" + thePot;
+                document.querySelector("[data-player='0']").classList.remove("alert-info");
+                document.querySelector("[data-player='0']").classList.add("alert-success");
+                let messageElement = document.getElementById("message");
+                messageElement.classList.add("alert-success");
+                messageElement.innerHTML = "You Won $" + thePot;
                 playerMoney = playerMoney + thePot;
+                document.getElementById("thePot").innerHTML = "";
+                document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
+
+            } else {
+
+                console.log("pplaer html id: " + playersDetails[Number(iteration)]);
+                document.getElementById(playersDetails[Number(iteration)]).innerHTML = plyr + " Player " + (Number(iteration)) + " won with " + winningHand + " - " + winningCard;
+                document.querySelector("[data-player='" + compareCards.indexOf(winningCard) + "']").classList.remove("alert-info");
+                document.querySelector("[data-player='" + compareCards.indexOf(winningCard) + "']").classList.add("alert-success");
             }
 
 
@@ -373,7 +396,7 @@ function evaluateHand(iteration) {
 
 
 
-        let ranFunction = false;
+
 
         let firstRoundSuited = false;
         let threeSuited = false;
@@ -473,15 +496,7 @@ function evaluateHand(iteration) {
                 }
             }
 
-            if (document.querySelector(".alert-info[data-status='betting']") !== null) {
-                [].forEach.call(document.querySelectorAll(".alert[data-status='checking']"), function (e) {
-                    e.dataset.status = "fold";
-                    e.innerHTML = plyr + "Player folded.";
-                })
-            } else {
-                document.querySelector("button[data-round='check']").classList.remove("hide");
-                document.querySelector("button[data-round='match']").classList.add("hide");
-            }
+            ckForBet(true);
 
 
             ranFunction = true;
@@ -516,16 +531,16 @@ function evaluateHand(iteration) {
                     document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checked.";
                 }
             }
-
-            if (document.querySelector(".alert-info[data-status='betting']") !== null) {
-                [].forEach.call(document.querySelectorAll(".alert[data-status='checking']"), function (e) {
-                    e.dataset.status = "fold";
-                    e.innerHTML = plyr + "Player folded.";
-                })
-            } else {
-                document.querySelector("button[data-round='check']").classList.remove("hide");
-                document.querySelector("button[data-round='match']").classList.add("hide");
-            }
+            ckForBet(true);
+            /*  if (document.querySelector(".alert-info[data-status='betting']") !== null) {
+                  [].forEach.call(document.querySelectorAll(".alert[data-status='checking']"), function (e) {
+                      e.dataset.status = "fold";
+                      e.innerHTML = plyr + "Player folded.";
+                  })
+              } else {
+                  document.querySelector("button[data-round='check']").classList.remove("hide");
+                  document.querySelector("button[data-round='match']").classList.add("hide");
+              }*/
 
 
 
@@ -562,14 +577,14 @@ function evaluateHand(iteration) {
                 }
             }
 
-            if (document.querySelector(".alert-info[data-status='betting']") !== null) {
+            /*if (document.querySelector(".alert-info[data-status='betting']") !== null) {
                 [].forEach.call(document.querySelectorAll(".alert[data-status='checking']"), function (e) {
                     e.dataset.status = "fold";
                     e.innerHTML = plyr + "Player folded.";
                 })
-            }
+            }*/
 
-
+            ckForBet(false);
 
             ranFunction = true;
         }
@@ -582,6 +597,8 @@ function evaluateHand(iteration) {
     }
 
 
+
+
 }
 
 
@@ -589,6 +606,10 @@ function evaluateHand(iteration) {
 
 
 function match(checked) {
+    if (checked === true) {
+        document.querySelector("[data-round='match']").classList.remove("hide");
+        document.querySelector("[data-round='check']").classList.add("hide");
+    }
     gameStep = gameStep + 1;
 
     if (checked === false) {
@@ -661,15 +682,17 @@ function match(checked) {
 
 
 
-        evaluateHand(0);
-        evaluateHand(1);
-        evaluateHand(2);
-        evaluateHand(3);
+        for (let i = 0; i < 4; i++) {
+            setTimeout(() => {
+                evaluateHand(i);
+            }, i * 200)
+        }
 
 
     }
 
     if (gameStep === 3 || gameStep === 4) {
+
         let activeCards = JSON.parse(localStorage.getItem("completeCards"));
         let genNumber = generate(activeCards);
         let maxLength = 4;
@@ -685,25 +708,33 @@ function match(checked) {
                     value: activeCards[genNumber].title.substring(0, activeCards[genNumber].title.indexOf("-"))
                 });
                 usedCardsArr.push(cards[genNumber].title);
+                console.log("JSON.stringify(communityCards): " + JSON.stringify(communityCards));
                 document.getElementById("communityCards").innerHTML = communityCardsHTML;
 
             }
         }
 
-        evaluateHand(0);
-        evaluateHand(1);
-        evaluateHand(2);
-        evaluateHand(3);
+
+
+        for (let i = 0; i < 4; i++) {
+            setTimeout(() => {
+                evaluateHand(i);
+                console.log("evaluate hand worked " + i + " time/s.")
+            }, i * 200)
+        }
+
+
     }
 
 
     if (gameStep === 5 && checked === false) {
 
 
-        evaluateHand(0);
-        evaluateHand(1);
-        evaluateHand(2);
-        evaluateHand(3);
+        for (let i = 0; i < 4; i++) {
+            setTimeout(() => {
+                evaluateHand(i);
+            }, i * 200)
+        }
     }
 
 
