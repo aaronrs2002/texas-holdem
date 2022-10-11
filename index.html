@@ -51,7 +51,7 @@
                         <div class="col-4">
                             <h3>Balance: $<span id="playerMoney"></span></h3>
                         </div>
-                        <div class="col-4">
+                        <div class="col-4 d-flex justify-content-center">
                             <h3 id="betTarget">TEXAS HOLDEM</h3>
                             <select class="form-control hide" id="howManyopponents"
                                 onClick="javascriptsetOpponentNumber()">
@@ -87,17 +87,7 @@
                 <div class="alert hide" id="status" role="alert">
                     <h5 id="message"></h5>
                 </div>
-                <div class="btn-group form-control mb-2  animated fadeInDown hide" role="group">
-                    <button type="button" class="btn btn-primary dealAmt" alt="5" onClick="play(Number(5))">$5</button>
-                    <button type="button" class="btn btn-primary dealAmt" alt="10"
-                        onClick="play(Number(10))">$10</button>
-                    <button type="button" class="btn btn-primary dealAmt" alt="25"
-                        onClick="play(Number(25))">$25</button>
-                    <button type="button" class="btn btn-primary dealAmt" alt="50"
-                        onClick="play(Number(50))">$50</button>
-                    <button type="button" class="btn btn-primary dealAmt" alt="100"
-                        onClick="play(Number(100))">$100</button>
-                </div>
+
                 <div class="d-grid gap-2">
                     <button class="btn btn-success mb-2 hide" data-round="match" onClick="javascript:match(false)">Match
                         $25</button>
