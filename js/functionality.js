@@ -7,6 +7,7 @@ const suitArr = ["diamonds", "hearts", "clubs", "spades"];
 
 
 const playersDetails = ["playerHandDetails", "playerTwoHandDetails", "playerThreeHandDetails", "playerFourHandDetails"];
+const playerIds = ["playerCards", "playerTwoCards", "playerThreeCards", "playerFourCards"];
 let usedCardsArr = [];
 let player0Obj;
 let player1Obj;
@@ -394,8 +395,8 @@ function evaluateHand(iteration) {
 
             } else {
                 if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
-                    document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $25";
-                    document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "betting";
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $25";
+                    document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                     console.log("Player " + (iteration + 1) + " is betting.");
                     thePot = thePot + 25 + bet;
                     document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
@@ -403,8 +404,8 @@ function evaluateHand(iteration) {
                     console.log("pushed player: " + iteration);
                 } else {
                     console.log("Player " + (iteration + 1) + " DOES NOT HAVE A GREAT HAND.");
-                    document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
-                    document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "checking";
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
+                    document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
 
                 }
             }
@@ -460,26 +461,26 @@ function evaluateHand(iteration) {
 
                 if (gameStep === 2) {/*the flop*/
                     if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
-                        document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
-                        document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "betting";
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
+                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                         thePot = thePot + monetaryVal;
                         document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
 
                     } else {
-                        document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
-                        document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "checking";
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
+                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
 
                     }
                 } else {
                     if (resultList[iteration] >= 1 || connectedThree === true || connectedFour > 1 || threeSuited || fourSuited || firstRoundSuited === true || valueArr[12] > 0) {
-                        document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
-                        document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "betting";
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
+                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                         thePot = thePot + monetaryVal;
                         document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
 
                     } else {
-                        document.querySelector(".alert-info[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
-                        document.querySelector(".alert-info[data-player='" + iteration + "']").dataset.status = "checking";
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
+                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
 
                     }
                 }
@@ -522,6 +523,9 @@ function evaluateHand(iteration) {
         if (gameStep === 4) {
 
 
+
+
+
             let messageElement = document.getElementById("message");
             messageElement.classList.remove("hide");
             if (compareCards.indexOf(winningCard) === 0) {
@@ -536,10 +540,6 @@ function evaluateHand(iteration) {
                 document.getElementById("thePot").innerHTML = "";
                 document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
             } else {
-                let whoWon = plyr + " Player " + compareCards.indexOf(winningCard);
-                if (compareCards.indexOf(winningCard) === 0) {
-                    whoWon = "You";
-                }
                 document.getElementById(playersDetails[compareCards.indexOf(winningCard)]).innerHTML = plyr + " Player " + compareCards.indexOf(winningCard) + " won with " + resultList[Math.max(...resultList)] + " - " + communityCards[Math.max(...communityCards)];
                 document.querySelector("[data-player='" + compareCards.indexOf(winningCard) + "']").classList.remove("alert-info");
                 document.querySelector("[data-player='" + compareCards.indexOf(winningCard) + "']").classList.add("alert-success");
@@ -547,6 +547,9 @@ function evaluateHand(iteration) {
                 playerMoney = playerMoney - bet;
                 document.getElementById("betTarget").innerHTML = "Place your bet.";
                 document.querySelector("#playerMoney").innerHTML = playerMoney;
+
+
+
             }
             console.log("resultList: " + resultList + " - compareCards: " + compareCards);
             document.getElementById("foldBt").classList.add("hide");
@@ -555,6 +558,27 @@ function evaluateHand(iteration) {
         }
     }
     console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
+    if (gameStep === 4 && iteration === 3) {
+
+        /*
+        let player0Obj;
+let player1Obj;
+let player2Obj;
+let player3Obj;*/
+        console.log("player1Obj: " + player1Obj);
+        console.log("player2Obj: " + player2Obj);
+        console.log("player3Obj: " + player3Obj);
+        for (let j = 0; j < playersHands.length; j++) {
+            let playerCardsHTML = "";
+            for (let i = 0; i < playersHands[j].length; i++) {
+                playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[j][i].value + "-" + playersHands[j][i].suit + "' ></div>";
+
+            }
+            console.log("playerCardsHTML: " + playerCardsHTML);
+            document.getElementById(playerIds[j]).innerHTML = playerCardsHTML;
+        }
+
+    }
     return false;
 }
 
@@ -563,6 +587,7 @@ function evaluateHand(iteration) {
 
 
 function match(checked) {
+    document.getElementById("communityCardDetails").classList.remove("hide");
     gameStep = gameStep + 1;
     if (checked === false) {
 
@@ -693,6 +718,10 @@ function match(checked) {
 
 function deal() {
     gameStep = 1;
+    communityCards = [];
+    document.getElementById("communityCards").innerHTML = "";
+    document.getElementById("communityCardDetails").classList.add("hide");
+
     [].forEach.call(document.querySelectorAll(".alert[data-player]"), function (e) {
         e.classList.add("alert-info");
         e.classList.remove("hide");
@@ -757,15 +786,15 @@ function deal() {
 
         }
         if (iteration === 1) {
-            document.getElementById("playerTwoCards").innerHTML = playerCardsHTML;
+            //document.getElementById("playerTwoCards").innerHTML = playerCardsHTML;
             player1Obj = handObj;
         }
         if (iteration === 2) {
-            document.getElementById("playerThreeCards").innerHTML = playerCardsHTML;
+            // document.getElementById("playerThreeCards").innerHTML = playerCardsHTML;
             player2Obj = handObj;
         }
         if (iteration === 3) {
-            document.getElementById("playerFourCards").innerHTML = playerCardsHTML;
+            //document.getElementById("playerFourCards").innerHTML = playerCardsHTML;
             player3Obj = handObj;
         }
         evaluateHand(iteration);
