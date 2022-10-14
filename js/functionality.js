@@ -25,11 +25,9 @@ const plyr = "<i class='fas fa-user'></i> ";
 const yourDetails = document.querySelector("[data-player='0']");
 const messageElement = document.getElementById("message");
 
-/*holdem custom*/
-let gameStep = 1;
+
 //let aiBetRound1 = false;
 let communityCards = [];
-
 let thePot = 0;
 let originalCompareCards;
 /*end holdem custom variables
@@ -120,7 +118,8 @@ function removeActivePlyr(plyrID) {
     return false;
 }
 
-function evaluateHand(iteration) {
+function evaluateHand(iteration, gameStep) {
+
     let monetaryVal = 35;
     if (gameStep === 3) {
         monetaryVal = 75;
@@ -143,7 +142,7 @@ function evaluateHand(iteration) {
     if (gameStep === 3) {
         cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3]];
     }
-    if (gameStep > 3) {
+    if (gameStep === 4) {
         cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3], communityCards[4]];
     }
 
@@ -170,7 +169,8 @@ function evaluateHand(iteration) {
 
     for (let i = 0; i < cardsArr.length; i++) {
 
-        cardIndexes.push(cardHeirarchy.indexOf(cardsArr[i].value))
+        console.log("cardsArr.length: " + cardsArr.length + " - gameStep: " + gameStep + " cardHeirarchy.indexOf(cardsArr[i].value): " + cardHeirarchy.indexOf(cardsArr[i].value));
+        cardIndexes.push(cardHeirarchy.indexOf(cardsArr[i].value));
         if (cardsArr[i].value === "two") {
             two = two + 1;
         }
@@ -433,8 +433,12 @@ function evaluateHand(iteration) {
             }
 
         }
+        document.getElementById("foldBt").classList.remove("hide");
+        document.querySelector("[data-round='match']").classList.remove("hide");
         return false;
-    } else {
+    }
+
+    if (gameStep === 2 || gameStep === 3) {
         if (iteration === 0) {
             playerCardsInvolved = cardsInvolved;
             playerHighCard = highCard;
@@ -458,36 +462,25 @@ function evaluateHand(iteration) {
             }
 
         }/*broke up conditionals to help the javascript process*/
-
-
         if (gameStep !== 2 && iteration !== 0) {
-
             if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
                 document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
                 document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                 thePot = thePot + monetaryVal;
                 document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
-
             } else {
                 document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
                 document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
-
             }
-
         }/*broke up conditionals to help the javascript process*/
 
-        if (iteration == 3) {
-
-
-
-
+        if (iteration === 3) {
             if (document.querySelector("[data-status='betting']") !== null) {
                 [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
                     let whichPlayer = e.getAttribute("data-player");
                     removeActivePlyr(Number(whichPlayer));
                     e.innerHTML = "Player " + (Number(whichPlayer) + 1) + " folded.";
                     e.dataset.status = "folded";
-
                 });
                 document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal;
                 document.querySelector("[data-round='match']").classList.remove("hide");
@@ -496,31 +489,20 @@ function evaluateHand(iteration) {
                 document.querySelector("[data-round='match']").classList.add("hide");
                 document.getElementById("foldBt").classList.add("hide");
                 document.querySelector("[data-round='check']").classList.remove("hide");
-
             }
-
-
             console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
-
-
         }
-        if (gameStep !== 4) {
-            return false;
-        }
-
+        document.getElementById("foldBt").classList.remove("hide");
+        document.querySelector("[data-round='match']").classList.remove("hide");
+        return false;
     }
 
-
-
-
-
-
     if (gameStep === 4) {
-
+        const winner = compareCards.indexOf(Math.max(...compareCards));
         console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
         //Math.max(...compareCards)
         messageElement.classList.remove("hide");
-        if (compareCards.indexOf(Math.max(...compareCards)) === 0) {
+        if (winner === 0) {
             yourDetails.classList.remove("alert-info");
             yourDetails.classList.add("alert-success");
             document.querySelector("#status").classList.remove("alert-info");
@@ -532,7 +514,8 @@ function evaluateHand(iteration) {
             document.querySelector("#playerMoney").innerHTML = playerMoney;
             document.getElementById("thePot").innerHTML = "";
             document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
-        } else {
+        }
+        if (winner === iteration && iteration !== 0) {
             document.getElementById(playersDetails[iteration]).innerHTML = plyr + " Player " + (iteration + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)] + "s";
             document.querySelector("[data-player='" + iteration + "']").classList.remove("alert-info");
             document.querySelector("[data-player='" + iteration + "']").classList.add("alert-success");
@@ -553,9 +536,7 @@ function evaluateHand(iteration) {
 
 
 
-            document.getElementById("foldBt").classList.add("hide");
-            document.querySelector("[data-round='match']").classList.add("hide");
-            document.querySelector("button[title='Deal']").disabled = false;
+
             for (let j = 0; j < playersHands.length; j++) {
                 let playerCardsHTML = "";
                 for (let i = 0; i < playersHands[j].length; i++) {
@@ -566,21 +547,27 @@ function evaluateHand(iteration) {
             }
             console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
 
-            return false;
-        }
 
+        }
+        document.getElementById("foldBt").classList.add("hide");
+        document.querySelector("[data-round='match']").classList.add("hide");
+        document.querySelector("button[title='Deal']").disabled = false;
+        return false;
     }
+
+
 }
 
-
+let gameIncrement = 1;
 
 function match(checked) {
-    firedEval = [];
-    if (gameStep == 4) {
-        gameStep = 1;
-    }
+
+    gameIncrement = gameIncrement + 1;
+    let gameStep = gameIncrement;
     document.getElementById("communityCardDetails").classList.remove("hide");
-    gameStep = gameStep + 1;
+    document.getElementById("foldBt").classList.add("hide");
+    document.querySelector("[data-round='match']").classList.add("hide");
+
     if (checked === false) {
 
         switch (gameStep) {
@@ -646,18 +633,19 @@ function match(checked) {
     }
 
     for (let i = 0; i < 4; i++) {
+
+        console.log("gameStep: " + gameStep);
         setTimeout(() => {
             if (activePlayers.indexOf(i) !== -1) {
-                evaluateHand(i);
+                evaluateHand(i, gameStep);
             }
-
         }, 500);
 
     }
 
 
 
-
+    return false;
 
 }
 
@@ -665,7 +653,8 @@ function match(checked) {
 
 
 function deal() {
-    gameStep = 1;
+
+
     communityCards = [];
     document.getElementById("communityCards").innerHTML = "";
     document.getElementById("communityCardDetails").classList.add("hide");
@@ -734,7 +723,7 @@ function deal() {
         if (iteration === 3) {
             player3Obj = handObj;
         }
-        evaluateHand(iteration);
+        evaluateHand(iteration, 1);
     }
     generatePlayer(0);
     generatePlayer(1);
