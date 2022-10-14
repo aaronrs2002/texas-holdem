@@ -21,6 +21,9 @@ let playerCardsInvolved = "";
 let playerHighCard = "";
 let topHand;
 const plyr = "<i class='fas fa-user'></i> ";
+const yourDetails = document.querySelector("[data-player='0']");
+const messageElement = document.getElementById("message");
+
 /*holdem custom*/
 let gameStep = 1;
 //let aiBetRound1 = false;
@@ -382,7 +385,7 @@ function evaluateHand(iteration) {
         }
 
 
-        console.log("WE ARE RUNNING evaluateHand(" + iteration + ") - gameStep: " + gameStep);
+        console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
 
         if (gameStep === 1) {
 
@@ -439,7 +442,7 @@ function evaluateHand(iteration) {
             }
             if (gameStep === 2 && iteration !== 0) {
 
-                if (resultList[iteration] >= 1 && valueArr[12] > 0) {/*the flop*/
+                if (resultList[iteration] >= 1 && valueArr[12] > 0) {
                     if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
                         document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
@@ -471,51 +474,54 @@ function evaluateHand(iteration) {
                 }
 
             }/*broke up conditionals to help the javascript process*/
+
+            if (iteration == 3) {
+
+
+
+
+                if (document.querySelector("[data-status='betting']") !== null) {
+                    [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
+                        let whichPlayer = e.getAttribute("data-player");
+                        removeActivePlyr(Number(whichPlayer));
+                        e.innerHTML = "Player " + (Number(whichPlayer) + 1) + " folded.";
+                        e.dataset.status = "folded";
+
+                    });
+                    document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal;
+                    document.querySelector("[data-round='match']").classList.remove("hide");
+                    document.querySelector("[data-round='check']").classList.add("hide");
+                } else {
+                    document.querySelector("[data-round='match']").classList.add("hide");
+                    document.getElementById("foldBt").classList.add("hide");
+                    document.querySelector("[data-round='check']").classList.remove("hide");
+
+                }
+
+
+                console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
+
+
+            }
+            if (gameStep !== 4) {
+                return false;
+            }
+
         }
     }
 
-    if (iteration == 3) {
-
-
-
-
-        if (document.querySelector("[data-status='betting']") !== null) {
-            [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
-                let whichPlayer = e.getAttribute("data-player");
-                removeActivePlyr(Number(whichPlayer));
-                e.innerHTML = "Player " + (Number(whichPlayer) + 1) + " folded.";
-                e.dataset.status = "folded";
-
-            });
-            document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal;
-            document.querySelector("[data-round='match']").classList.remove("hide");
-            document.querySelector("[data-round='check']").classList.add("hide");
-        } else {
-            document.querySelector("[data-round='match']").classList.add("hide");
-            document.getElementById("foldBt").classList.add("hide");
-            document.querySelector("[data-round='check']").classList.remove("hide");
-
-        }
-
-
-
-
-    }
 
 
 
 
     if (gameStep == 4) {
 
-
+        console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
         //Math.max(...compareCards)
-
-
-        let messageElement = document.getElementById("message");
         messageElement.classList.remove("hide");
         if (topHand == 0) {
-            document.querySelector("[data-player='0']").classList.remove("alert-info");
-            document.querySelector("[data-player='0']").classList.add("alert-success");
+            yourDetails.classList.remove("alert-info");
+            yourDetails.classList.add("alert-success");
             document.querySelector("#status").classList.remove("alert-info");
             document.querySelector("#status").classList.remove("hide");
             document.getElementById("status").classList.add("alert-success");
@@ -524,11 +530,16 @@ function evaluateHand(iteration) {
             document.getElementById("playerMoney").classList.remove("hide");
             document.getElementById("thePot").innerHTML = "";
             document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
-        } else {
-            document.getElementById(playersDetails[topHand]).innerHTML = plyr + " Player " + (topHand + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)] + "s";
-            document.querySelector("[data-player='" + topHand + "']").classList.remove("alert-info");
-            document.querySelector("[data-player='" + topHand + "']").classList.add("alert-success");
+        }
+
+        console.log("PLAYER WON - topHand: " + topHand + " - compareCards: " + compareCards + " compareCards.indexOf(Math.max(...compareCards)): " + compareCards.indexOf(Math.max(...compareCards)));
+        if (topHand !== 0 && iteration === compareCards.indexOf(Math.max(...compareCards))) {
+            document.getElementById(playersDetails[iteration]).innerHTML = plyr + " Player " + (iteration + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)] + "s";
+            document.querySelector("[data-player='" + iteration + "']").classList.remove("alert-info");
+            document.querySelector("[data-player='" + iteration + "']").classList.add("alert-success");
             messageElement.innerHTML = "You lost $" + bet;
+            yourDetails.classList.remove("alert-success"); yourDetails.classList.remove("alert-info"); yourDetails.classList.add("alert-danger");
+            messageElement.classList.remove("alert-success"); messageElement.classList.remove("alert-info"); messageElement.classList.add("alert-danger");
             playerMoney = playerMoney - bet;
             document.getElementById("betTarget").innerHTML = "Place your bet.";
             document.querySelector("#playerMoney").innerHTML = playerMoney;
@@ -552,8 +563,10 @@ function evaluateHand(iteration) {
             }
             document.getElementById(playerIds[j]).innerHTML = playerCardsHTML;
         }
+        console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
         return false;
     }
+    return false;
 
 }
 
@@ -653,6 +666,7 @@ function deal() {
     document.getElementById("communityCardDetails").classList.add("hide");
 
     [].forEach.call(document.querySelectorAll(".alert[data-player]"), function (e) {
+        e.classList.remove("alert-danger");
         e.classList.add("alert-info");
         e.classList.remove("hide");
         e.classList.remove("alert-success");
