@@ -6,6 +6,7 @@ const cardHeirarchy = ["two", "three", "four", "five", "six", "seven", "eight", 
 const suitArr = ["diamonds", "hearts", "clubs", "spades"];
 const playersDetails = ["playerHandDetails", "playerTwoHandDetails", "playerThreeHandDetails", "playerFourHandDetails"];
 const playerIds = ["playerCards", "playerTwoCards", "playerThreeCards", "playerFourCards"];
+const gameStepHierarchy = ["zeroPlaceholder", "deal", "the flop", "4th street", "sth street"];
 let usedCardsArr = [];
 let player0Obj;
 let player1Obj;
@@ -118,7 +119,7 @@ function removeActivePlyr(plyrID) {
     activePlayers = tempActivePlayer;
     return false;
 }
-const gameStepHierarchy = ["zeroPlaceholder", "deal", "the flop", "4th street", "sth street"];
+
 function evaluateHand(iteration) {
     let monetaryVal = 35;
     if (gameStep === 3) {
@@ -134,334 +135,316 @@ function evaluateHand(iteration) {
     let cardIndexes = [];
     const playersHands = [player0Obj, player1Obj, player2Obj, player3Obj];
     let cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
-    if (activePlayers.indexOf(iteration) !== -1 || gameStep === 1) {
-        // cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
-        if (gameStep === 2) {
-            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2]];
+
+    // cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
+    if (gameStep === 2) {
+        cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2]];
+    }
+    if (gameStep === 3) {
+        cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3]];
+    }
+    if (gameStep > 3) {
+        cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3], communityCards[4]];
+    }
+
+    let highCard;
+    let flush = false;
+    let straight = false;
+    let spades = 0;
+    let hearts = 0;
+    let diamonds = 0;
+    let clubs = 0;
+    let two = 0;
+    let three = 0;
+    let four = 0;
+    let five = 0;
+    let six = 0;
+    let seven = 0;
+    let eight = 0;
+    let nine = 0;
+    let ten = 0;
+    let jack = 0;
+    let queen = 0;
+    let king = 0;
+    let ace = 0;
+
+    for (let i = 0; i < cardsArr.length; i++) {
+
+        cardIndexes.push(cardHeirarchy.indexOf(cardsArr[i].value))
+        if (cardsArr[i].value === "two") {
+            two = two + 1;
         }
-        if (gameStep === 3) {
-            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3]];
+        if (cardsArr[i].value === "three") {
+            three = three + 1;
         }
-        if (gameStep > 3) {
-            cardsArr = [playersHands[iteration][0], playersHands[iteration][1], communityCards[0], communityCards[1], communityCards[2], communityCards[3], communityCards[4]];
+        if (cardsArr[i].value === "four") {
+            four = four + 1;
         }
-
-        let highCard;
-        let flush = false;
-        let straight = false;
-        let spades = 0;
-        let hearts = 0;
-        let diamonds = 0;
-        let clubs = 0;
-        let two = 0;
-        let three = 0;
-        let four = 0;
-        let five = 0;
-        let six = 0;
-        let seven = 0;
-        let eight = 0;
-        let nine = 0;
-        let ten = 0;
-        let jack = 0;
-        let queen = 0;
-        let king = 0;
-        let ace = 0;
-
-        for (let i = 0; i < cardsArr.length; i++) {
-
-            cardIndexes.push(cardHeirarchy.indexOf(cardsArr[i].value))
-            if (cardsArr[i].value === "two") {
-                two = two + 1;
-            }
-            if (cardsArr[i].value === "three") {
-                three = three + 1;
-            }
-            if (cardsArr[i].value === "four") {
-                four = four + 1;
-            }
-            if (cardsArr[i].value === "five") {
-                five = five + 1;
-            }
-            if (cardsArr[i].value === "six") {
-                six = six + 1;
-            }
-            if (cardsArr[i].value === "seven") {
-                seven = seven + 1;
-            }
-            if (cardsArr[i].value === "eight") {
-                eight = eight + 1;
-            }
-            if (cardsArr[i].value === "nine") {
-                nine = nine + 1;
-            }
-            if (cardsArr[i].value === "ten") {
-                ten = ten + 1;
-            }
-            if (cardsArr[i].value === "jack") {
-                jack = jack + 1;
-            }
-            if (cardsArr[i].value === "queen") {
-                queen = queen + 1;
-            }
-            if (cardsArr[i].value === "king") {
-                king = king + 1;
-            }
-            if (cardsArr[i].value === "ace") {
-                ace = ace + 1;
-            }
-            if (cardsArr[i].suit === "spades") {  /*determine same suits*/
-                spades = spades + 1;
-            }
-            if (cardsArr[i].suit === "hearts") {
-                hearts = hearts + 1;
-            }
-            if (cardsArr[i].suit === "diamonds") {
-                diamonds = diamonds + 1;
-            }
-            if (cardsArr[i].suit === "clubs") {
-                clubs = clubs + 1;
-            }
+        if (cardsArr[i].value === "five") {
+            five = five + 1;
         }
-
-
-
-        let suitedArr = [spades, hearts, diamonds, clubs];
-
-        if (suitedArr.indexOf(5) !== -1) {    /*DETERMINE A flush*/
-            flush = true;
-            if (bestHandIndex < 5) {
-                bestHandIndex = 5;
-            }
+        if (cardsArr[i].value === "six") {
+            six = six + 1;
         }
-        cardIndexes = cardIndexes.sort(((a, b) => a - b));
-        var results = [];
-        let connectedTwo = false;
-        let connectedThree = false;
-        let connectedFour = false;
-        for (var i = 0; i < cardIndexes.length; i++) {    /*DETERMINE A STRIGHT*/
-            if (cardIndexes[i + 1] == cardIndexes[i] + 1 && cardIndexes[i + 2] == cardIndexes[i] + 2 && cardIndexes[i + 3] == cardIndexes[i] + 3 && cardIndexes[i + 4] == cardIndexes[i] + 4) {
-                results.push(i);
-                compareCards[iteration] = i;
-                while (cardIndexes[i] + 1 == cardIndexes[i + 1]) {
-                    if (i = 2) {/*for first round deal*/
-                        connectedTwo = true;
-                    }
-                    if (i = 3) {
-                        connectedThree = true;
-                    }
-                    if (i = 3) {
-                        connectedFour = true;
-                    }
-                    i++;
+        if (cardsArr[i].value === "seven") {
+            seven = seven + 1;
+        }
+        if (cardsArr[i].value === "eight") {
+            eight = eight + 1;
+        }
+        if (cardsArr[i].value === "nine") {
+            nine = nine + 1;
+        }
+        if (cardsArr[i].value === "ten") {
+            ten = ten + 1;
+        }
+        if (cardsArr[i].value === "jack") {
+            jack = jack + 1;
+        }
+        if (cardsArr[i].value === "queen") {
+            queen = queen + 1;
+        }
+        if (cardsArr[i].value === "king") {
+            king = king + 1;
+        }
+        if (cardsArr[i].value === "ace") {
+            ace = ace + 1;
+        }
+        if (cardsArr[i].suit === "spades") {  /*determine same suits*/
+            spades = spades + 1;
+        }
+        if (cardsArr[i].suit === "hearts") {
+            hearts = hearts + 1;
+        }
+        if (cardsArr[i].suit === "diamonds") {
+            diamonds = diamonds + 1;
+        }
+        if (cardsArr[i].suit === "clubs") {
+            clubs = clubs + 1;
+        }
+    }
+
+
+
+    let suitedArr = [spades, hearts, diamonds, clubs];
+
+    if (suitedArr.indexOf(5) !== -1) {    /*DETERMINE A flush*/
+        flush = true;
+        if (bestHandIndex < 5) {
+            bestHandIndex = 5;
+        }
+    }
+    cardIndexes = cardIndexes.sort(((a, b) => a - b));
+    var results = [];
+    let connectedTwo = false;
+    let connectedThree = false;
+    let connectedFour = false;
+    for (var i = 0; i < cardIndexes.length; i++) {    /*DETERMINE A STRIGHT*/
+        if (cardIndexes[i + 1] == cardIndexes[i] + 1 && cardIndexes[i + 2] == cardIndexes[i] + 2 && cardIndexes[i + 3] == cardIndexes[i] + 3 && cardIndexes[i + 4] == cardIndexes[i] + 4) {
+            results.push(i);
+            compareCards[iteration] = i;
+            while (cardIndexes[i] + 1 == cardIndexes[i + 1]) {
+                if (i = 2) {/*for first round deal*/
+                    connectedTwo = true;
                 }
-
-            }
-        }
-        if (results.length > 0) {
-            if (bestHandIndex < 4) {
-                bestHandIndex = 4;
-                straight = true;
-            }
-
-        }
-        let valueArr = [two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace]; /*Determine matching values*/
-        let pairQty = 0;
-        let tripleQty = 0;
-        for (let i = 0; i < valueArr.length; i++) {
-            if (valueArr[i] > 0) {/*determine highest card*/
-                highCard = cardHeirarchy[i];
-                compareCards[iteration] = i;
-            }
-            if (valueArr[i] === 2) {
-                if (bestHandIndex < 1) {
-                    bestHandIndex = 1;
+                if (i = 3) {
+                    connectedThree = true;
                 }
-                pairQty = pairQty + 1;
-                cardsInvolved = cardsInvolved + " - " + cardHeirarchy[i] + "s";
-            }
-            if (valueArr[i] == 3) {
-                if (bestHandIndex < 3) {
-                    bestHandIndex = 3;
+                if (i = 3) {
+                    connectedFour = true;
                 }
-                tripleQty = tripleQty + 1;
-                cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
+                i++;
             }
-            if (valueArr[i] == 4) {
-                if (bestHandIndex < 7) {
-                    bestHandIndex = 7;
-                }
-                cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
-            }
+
+        }
+    }
+    if (results.length > 0) {
+        if (bestHandIndex < 4) {
+            bestHandIndex = 4;
+            straight = true;
         }
 
-        if (valueArr.indexOf(2) !== -1) {
-            compareCards[iteration] = valueArr.lastIndexOf(2);
+    }
+    let valueArr = [two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace]; /*Determine matching values*/
+    let pairQty = 0;
+    let tripleQty = 0;
+    for (let i = 0; i < valueArr.length; i++) {
+        if (valueArr[i] > 0) {/*determine highest card*/
+            highCard = cardHeirarchy[i];
+            compareCards[iteration] = i;
         }
-        if (valueArr.indexOf(3) !== -1) {
-            compareCards[iteration] = valueArr.lastIndexOf(3);
-        }
-        if (valueArr.indexOf(4) !== -1) {
-            compareCards[iteration] = valueArr.lastIndexOf(4);
-        }
-        if (pairQty == 2) { /*checking for 2 pair*/
-            if (bestHandIndex < 2) {
-                bestHandIndex = 2;
+        if (valueArr[i] === 2) {
+            if (bestHandIndex < 1) {
+                bestHandIndex = 1;
             }
+            pairQty = pairQty + 1;
+            cardsInvolved = cardsInvolved + " - " + cardHeirarchy[i] + "s";
         }
-        if (pairQty == 1 && tripleQty == 1) {    /*checking for full house*/
-            if (bestHandIndex < 6) {
-                bestHandIndex = 6;
+        if (valueArr[i] == 3) {
+            if (bestHandIndex < 3) {
+                bestHandIndex = 3;
             }
+            tripleQty = tripleQty + 1;
+            cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
         }
-        if (flush === true && straight === true) {/*checking for straight flush*/
-            if (bestHandIndex < 8) {
-                bestHandIndex = 8;
+        if (valueArr[i] == 4) {
+            if (bestHandIndex < 7) {
+                bestHandIndex = 7;
             }
+            cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
         }
-        if (flush === true && straight === true && valueArr[Number(valueArr.length) - 1] > 0) {  /*checking for royal flush (valueArr[Number(valueArr.length) - 1] is an ace)*/
-            if (bestHandIndex < 9) {
-                bestHandIndex = 9;
-            }
-        }
-        resultList[Number(iteration)] = bestHandIndex;
+    }
 
-        document.getElementById(playersDetails[iteration]).classList.remove("hide");
-        let HighCardMessage = "";
-        if (handHeirarchy[resultList[Number(iteration)]] === "high-card") {
-            HighCardMessage = " <small><i>(" + highCard + " is player " + (iteration + 1) + "'s highest card)</i></small>";
+    if (valueArr.indexOf(2) !== -1) {
+        compareCards[iteration] = valueArr.lastIndexOf(2);
+    }
+    if (valueArr.indexOf(3) !== -1) {
+        compareCards[iteration] = valueArr.lastIndexOf(3);
+    }
+    if (valueArr.indexOf(4) !== -1) {
+        compareCards[iteration] = valueArr.lastIndexOf(4);
+    }
+    if (pairQty == 2) { /*checking for 2 pair*/
+        if (bestHandIndex < 2) {
+            bestHandIndex = 2;
+        }
+    }
+    if (pairQty == 1 && tripleQty == 1) {    /*checking for full house*/
+        if (bestHandIndex < 6) {
+            bestHandIndex = 6;
+        }
+    }
+    if (flush === true && straight === true) {/*checking for straight flush*/
+        if (bestHandIndex < 8) {
+            bestHandIndex = 8;
+        }
+    }
+    if (flush === true && straight === true && valueArr[Number(valueArr.length) - 1] > 0) {  /*checking for royal flush (valueArr[Number(valueArr.length) - 1] is an ace)*/
+        if (bestHandIndex < 9) {
+            bestHandIndex = 9;
+        }
+    }
+    resultList[Number(iteration)] = bestHandIndex;
+
+    document.getElementById(playersDetails[iteration]).classList.remove("hide");
+    let HighCardMessage = "";
+    if (handHeirarchy[resultList[Number(iteration)]] === "high-card") {
+        HighCardMessage = " <small><i>(" + highCard + " is player " + (iteration + 1) + "'s highest card)</i></small>";
+    }
+
+    document.getElementById(playersDetails[iteration]).classList.remove("hide");
+    if (iteration === 0) {
+        resultList[0] = Number(bestHandIndex);
+    }
+
+    let winningHand = Math.max(...resultList);
+    topHand = resultList.indexOf(winningHand);
+    /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
+    originalCompareCards = compareCards;
+    for (let i = 0; i < resultList.length; i++) {
+        if (resultList[i] !== winningHand) {
+            compareCards[i] = -1;
+        }
+    }
+    let winningCard = Math.max(...compareCards);
+    /*start how many times number in array*/
+    function getOccurrence(resultList, value) {
+        var count = 0;
+        resultList.forEach((v) => (v === value && count++));
+        return count;
+    }
+    if (getOccurrence(resultList, winningHand) > 1 && iteration === 3) {
+        if (getOccurrence(compareCards, winningCard) === 1) {
+            winningCard = Math.max(...compareCards);
+            topHand = compareCards.indexOf(winningCard);
+        }
+    }
+    /*FIRST ROUND*/
+    let highCardCount = 0;
+    for (let i = 0; i < valueArr.length; i++) {
+
+        if (i > 7 && valueArr[i] > 0) {
+            highCardCount = highCardCount + 1;
         }
 
-        document.getElementById(playersDetails[iteration]).classList.remove("hide");
+    }
+    /*END OF HAND EVALUATION */
+    let firstRoundSuited = false;
+    let threeSuited = false;
+    let fourSuited = false;
+    for (let i = 0; i < suitedArr.length; i++) {/*determine if the first round has match suit*/
+
+        if (Number(suitedArr[i]) > 1) {
+            firstRoundSuited = true;
+        }
+        if (Number(suitedArr[i]) > 2) {
+            threeSuited = true;
+        }
+        if (Number(suitedArr[i]) > 3) {
+            fourSuited = true;
+        }
+    }
+
+
+    console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
+
+    if (gameStep === 1) {
+
+
         if (iteration === 0) {
-            resultList[0] = Number(bestHandIndex);
-        }
+            playerCardsInvolved = cardsInvolved;
+            playerHighCard = highCard;
+            document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
 
-        let winningHand = Math.max(...resultList);
-        topHand = resultList.indexOf(winningHand);
-        /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
-        originalCompareCards = compareCards;
-        for (let i = 0; i < resultList.length; i++) {
-            if (resultList[i] !== winningHand) {
-                compareCards[i] = -1;
-            }
-        }
-        let winningCard = Math.max(...compareCards);
-        /*start how many times number in array*/
-        function getOccurrence(resultList, value) {
-            var count = 0;
-            resultList.forEach((v) => (v === value && count++));
-            return count;
-        }
-        if (getOccurrence(resultList, winningHand) > 1 && iteration === 3) {
-            if (getOccurrence(compareCards, winningCard) === 1) {
-                winningCard = Math.max(...compareCards);
-                topHand = compareCards.indexOf(winningCard);
-            }
-        }
-        /*FIRST ROUND*/
-        let highCardCount = 0;
-        for (let i = 0; i < valueArr.length; i++) {
-
-            if (i > 7 && valueArr[i] > 0) {
-                highCardCount = highCardCount + 1;
-            }
-
-        }
-        /*END OF HAND EVALUATION */
-        let firstRoundSuited = false;
-        let threeSuited = false;
-        let fourSuited = false;
-        for (let i = 0; i < suitedArr.length; i++) {/*determine if the first round has match suit*/
-
-            if (Number(suitedArr[i]) > 1) {
-                firstRoundSuited = true;
-            }
-            if (Number(suitedArr[i]) > 2) {
-                threeSuited = true;
-            }
-            if (Number(suitedArr[i]) > 3) {
-                fourSuited = true;
-            }
-        }
-
-
-        console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
-
-        if (gameStep === 1) {
-
-
-            if (iteration === 0) {
-                playerCardsInvolved = cardsInvolved;
-                playerHighCard = highCard;
-                document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
-
-            } else {
-                if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $35";
-                    document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
-                    thePot = thePot + 35 + bet;
-                    document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
-                } else {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
-                    document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
-
-                }
-            }
-            if (iteration == 3) {
-
-                if (document.querySelector("[data-status='betting']") !== null) {
-                    [].forEach.call(document.querySelector("[data-status='betting']"), function (e) {
-                        let whichPlayer = e.getAttribute("data-player");
-
-                    });
-                    [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
-                        let whichPlayer = e.getAttribute("data-player");
-
-                        e.innerHTML = "Player " + (Number(whichPlayer) + 1) + " folded.";
-                        removeActivePlyr(Number(whichPlayer));
-                        e.dataset.status = "folded";
-                    });
-                    document.querySelector("[data-round='match']").innerHTML = "Match $35";
-                    document.querySelector("[data-round='match']").classList.remove("hide");
-                    document.querySelector("[data-round='check']").classList.add("hide");
-                } else {
-                    document.querySelector("[data-round='match']").classList.add("hide");
-                    document.getElementById("foldBt").classList.add("hide");
-                    document.querySelector("[data-round='check']").classList.remove("hide");
-
-                }
-
-            }
-            return false;
         } else {
-            if (iteration === 0) {
-                playerCardsInvolved = cardsInvolved;
-                playerHighCard = highCard;
-                document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
+            if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
+                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $35";
+                document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
+                thePot = thePot + 35 + bet;
+                document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
+            } else {
+                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
+                document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
 
             }
-            if (gameStep === 2 && iteration !== 0) {
+        }
+        if (iteration == 3) {
 
-                if (resultList[iteration] >= 1 && valueArr[12] > 0) {
-                    if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
-                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
-                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
-                        thePot = thePot + monetaryVal;
-                        document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
+            if (document.querySelector("[data-status='betting']") !== null) {
+                [].forEach.call(document.querySelector("[data-status='betting']"), function (e) {
+                    let whichPlayer = e.getAttribute("data-player");
 
-                    } else {
-                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
-                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
+                });
+                [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
+                    let whichPlayer = e.getAttribute("data-player");
 
-                    }
-                }
+                    e.innerHTML = "Player " + (Number(whichPlayer) + 1) + " folded.";
+                    removeActivePlyr(Number(whichPlayer));
+                    e.dataset.status = "folded";
+                });
+                document.querySelector("[data-round='match']").innerHTML = "Match $35";
+                document.querySelector("[data-round='match']").classList.remove("hide");
+                document.querySelector("[data-round='check']").classList.add("hide");
+            } else {
+                document.querySelector("[data-round='match']").classList.add("hide");
+                document.getElementById("foldBt").classList.add("hide");
+                document.querySelector("[data-round='check']").classList.remove("hide");
 
-            }/*broke up conditionals to help the javascript process*/
+            }
 
+        }
+        return false;
+    } else {
+        if (iteration === 0) {
+            playerCardsInvolved = cardsInvolved;
+            playerHighCard = highCard;
+            document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
 
-            if (gameStep !== 2 && iteration !== 0) {
+        }
+        if (gameStep === 2 && iteration !== 0) {
 
-                if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
+            if (resultList[iteration] >= 1 && valueArr[12] > 0) {
+                if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                     thePot = thePot + monetaryVal;
@@ -472,54 +455,72 @@ function evaluateHand(iteration) {
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
 
                 }
+            }
 
-            }/*broke up conditionals to help the javascript process*/
-
-            if (iteration == 3) {
-
+        }/*broke up conditionals to help the javascript process*/
 
 
+        if (gameStep !== 2 && iteration !== 0) {
 
-                if (document.querySelector("[data-status='betting']") !== null) {
-                    [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
-                        let whichPlayer = e.getAttribute("data-player");
-                        removeActivePlyr(Number(whichPlayer));
-                        e.innerHTML = "Player " + (Number(whichPlayer) + 1) + " folded.";
-                        e.dataset.status = "folded";
+            if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
+                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
+                document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
+                thePot = thePot + monetaryVal;
+                document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
 
-                    });
-                    document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal;
-                    document.querySelector("[data-round='match']").classList.remove("hide");
-                    document.querySelector("[data-round='check']").classList.add("hide");
-                } else {
-                    document.querySelector("[data-round='match']").classList.add("hide");
-                    document.getElementById("foldBt").classList.add("hide");
-                    document.querySelector("[data-round='check']").classList.remove("hide");
-
-                }
-
-
-                console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
-
+            } else {
+                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
+                document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
 
             }
-            if (gameStep !== 4) {
-                return false;
+
+        }/*broke up conditionals to help the javascript process*/
+
+        if (iteration == 3) {
+
+
+
+
+            if (document.querySelector("[data-status='betting']") !== null) {
+                [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
+                    let whichPlayer = e.getAttribute("data-player");
+                    removeActivePlyr(Number(whichPlayer));
+                    e.innerHTML = "Player " + (Number(whichPlayer) + 1) + " folded.";
+                    e.dataset.status = "folded";
+
+                });
+                document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal;
+                document.querySelector("[data-round='match']").classList.remove("hide");
+                document.querySelector("[data-round='check']").classList.add("hide");
+            } else {
+                document.querySelector("[data-round='match']").classList.add("hide");
+                document.getElementById("foldBt").classList.add("hide");
+                document.querySelector("[data-round='check']").classList.remove("hide");
+
             }
+
+
+            console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
+
 
         }
+        if (gameStep !== 4) {
+            return false;
+        }
+
     }
 
 
 
 
 
-    if (gameStep == 4) {
+
+    if (gameStep === 4) {
 
         console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
         //Math.max(...compareCards)
         messageElement.classList.remove("hide");
-        if (topHand == 0) {
+        if (compareCards.indexOf(Math.max(...compareCards)) === 0) {
             yourDetails.classList.remove("alert-info");
             yourDetails.classList.add("alert-success");
             document.querySelector("#status").classList.remove("alert-info");
@@ -528,12 +529,10 @@ function evaluateHand(iteration) {
             messageElement.innerHTML = "You Won $" + thePot;
             playerMoney = playerMoney + thePot;
             document.getElementById("playerMoney").classList.remove("hide");
+            document.querySelector("#playerMoney").innerHTML = playerMoney;
             document.getElementById("thePot").innerHTML = "";
             document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
-        }
-
-        console.log("PLAYER WON - topHand: " + topHand + " - compareCards: " + compareCards + " compareCards.indexOf(Math.max(...compareCards)): " + compareCards.indexOf(Math.max(...compareCards)));
-        if (topHand !== 0 && iteration === compareCards.indexOf(Math.max(...compareCards))) {
+        } else {
             document.getElementById(playersDetails[iteration]).innerHTML = plyr + " Player " + (iteration + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)] + "s";
             document.querySelector("[data-player='" + iteration + "']").classList.remove("alert-info");
             document.querySelector("[data-player='" + iteration + "']").classList.add("alert-success");
@@ -547,36 +546,36 @@ function evaluateHand(iteration) {
 
 
         }
-        document.getElementById("foldBt").classList.add("hide");
-        document.querySelector("[data-round='match']").classList.add("hide");
-        document.querySelector("button[title='Deal']").disabled = false;
 
-    }
 
-    console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
-    if (gameStep == 4 && iteration == 3) {
-        for (let j = 0; j < playersHands.length; j++) {
-            let playerCardsHTML = "";
-            for (let i = 0; i < playersHands[j].length; i++) {
-                playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[j][i].value + "-" + playersHands[j][i].suit + "' ></div>";
-
-            }
-            document.getElementById(playerIds[j]).innerHTML = playerCardsHTML;
-        }
         console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
-        return false;
-    }
-    return false;
+        if (iteration === 3) {
 
+
+
+            document.getElementById("foldBt").classList.add("hide");
+            document.querySelector("[data-round='match']").classList.add("hide");
+            document.querySelector("button[title='Deal']").disabled = false;
+            for (let j = 0; j < playersHands.length; j++) {
+                let playerCardsHTML = "";
+                for (let i = 0; i < playersHands[j].length; i++) {
+                    playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[j][i].value + "-" + playersHands[j][i].suit + "' ></div>";
+
+                }
+                document.getElementById(playerIds[j]).innerHTML = playerCardsHTML;
+            }
+            console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
+
+            return false;
+        }
+
+    }
 }
 
 
 
-
-
-
-
 function match(checked) {
+    firedEval = [];
     if (gameStep == 4) {
         gameStep = 1;
     }
@@ -622,9 +621,7 @@ function match(checked) {
         }
         document.getElementById("communityCards").innerHTML = communityCardsHTML;
         document.getElementById("communityCardDetails").innerHTML = "Community Cards"
-    }
-
-    if (gameStep == 3 || gameStep == 4) {
+    } else {
         let activeCards = JSON.parse(localStorage.getItem("completeCards"));
         let genNumber = generate(activeCards);
         let maxLength = 4;
@@ -647,11 +644,19 @@ function match(checked) {
         }
 
     }
+
     for (let i = 0; i < 4; i++) {
         setTimeout(() => {
-            evaluateHand(i);
-        }, (200 * (i + 1)))
+            if (activePlayers.indexOf(i) !== -1) {
+                evaluateHand(i);
+            }
+
+        }, 500);
+
     }
+
+
+
 
 
 }
