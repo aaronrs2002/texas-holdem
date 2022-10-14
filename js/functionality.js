@@ -113,6 +113,7 @@ function removeActivePlyr(plyrID) {
         }
     }
     activePlayers = tempActivePlayer;
+    return false;
 }
 const gameStepHierarchy = ["zeroPlaceholder", "deal", "the flop", "4th street", "sth street"];
 function evaluateHand(iteration) {
