@@ -433,8 +433,7 @@ function evaluateHand(iteration, gameStep) {
             }
 
         }
-        document.getElementById("foldBt").classList.remove("hide");
-        document.querySelector("[data-round='match']").classList.remove("hide");
+
         return false;
     }
 
@@ -461,6 +460,9 @@ function evaluateHand(iteration, gameStep) {
                 }
             }
 
+
+
+
         }/*broke up conditionals to help the javascript process*/
         if (gameStep !== 2 && iteration !== 0) {
             if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
@@ -476,6 +478,8 @@ function evaluateHand(iteration, gameStep) {
 
         if (iteration === 3) {
             if (document.querySelector("[data-status='betting']") !== null) {
+                document.querySelector("[data-round='match']").classList.remove("hide");
+                document.getElementById("foldBt").classList.remove("hide");
                 [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
                     let whichPlayer = e.getAttribute("data-player");
                     removeActivePlyr(Number(whichPlayer));
@@ -483,6 +487,7 @@ function evaluateHand(iteration, gameStep) {
                     e.dataset.status = "folded";
                 });
                 document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal;
+                document.getElementById("foldBt").classList.remove("hide");
                 document.querySelector("[data-round='match']").classList.remove("hide");
                 document.querySelector("[data-round='check']").classList.add("hide");
             } else {
@@ -492,8 +497,7 @@ function evaluateHand(iteration, gameStep) {
             }
             console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
         }
-        document.getElementById("foldBt").classList.remove("hide");
-        document.querySelector("[data-round='match']").classList.remove("hide");
+
         return false;
     }
 
@@ -531,28 +535,25 @@ function evaluateHand(iteration, gameStep) {
         }
 
 
-        console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
+        console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + " - JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
         if (iteration === 3) {
-
-
-
-
-            for (let j = 0; j < playersHands.length; j++) {
+            for (let i = 0; i < playersHands.length; i++) {
                 let playerCardsHTML = "";
-                for (let i = 0; i < playersHands[j].length; i++) {
-                    playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[j][i].value + "-" + playersHands[j][i].suit + "' ></div>";
+                for (let j = 0; j < playersHands[i].length; j++) {
 
+                    playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[i][j].value + "-" + playersHands[i][j].suit + "' ></div>";
+                    document.getElementById(playerIds[i]).innerHTML = playerCardsHTML;
                 }
-                document.getElementById(playerIds[j]).innerHTML = playerCardsHTML;
             }
+
             console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
 
-
+            document.getElementById("foldBt").classList.add("hide");
+            document.querySelector("[data-round='match']").classList.add("hide");
+            document.querySelector("button[title='Deal']").disabled = false;
+            return false;
         }
-        document.getElementById("foldBt").classList.add("hide");
-        document.querySelector("[data-round='match']").classList.add("hide");
-        document.querySelector("button[title='Deal']").disabled = false;
-        return false;
+
     }
 
 
@@ -653,7 +654,7 @@ function match(checked) {
 
 
 function deal() {
-
+    gameIncrement = 1;
 
     communityCards = [];
     document.getElementById("communityCards").innerHTML = "";
@@ -724,11 +725,16 @@ function deal() {
             player3Obj = handObj;
         }
         evaluateHand(iteration, 1);
+        return false;
     }
-    generatePlayer(0);
-    generatePlayer(1);
-    generatePlayer(2);
-    generatePlayer(3);
+
+
+    for (let i = 0; i < 4; i++) {
+        generatePlayer(i);
+    }
+
+
+    return false;
 }
 
 
