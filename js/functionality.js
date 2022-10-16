@@ -29,7 +29,7 @@ const messageElement = document.getElementById("message");
 //let aiBetRound1 = false;
 let communityCards = [];
 let thePot = 0;
-let originalCompareCards;
+//let originalCompareCards;
 /*end holdem custom variables
 
 
@@ -349,12 +349,13 @@ function evaluateHand(iteration, gameStep) {
     let winningHand = Math.max(...resultList);
     topHand = resultList.indexOf(winningHand);
     /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
-    originalCompareCards = compareCards;
+    //originalCompareCards = compareCards;
     for (let i = 0; i < resultList.length; i++) {
         if (resultList[i] !== winningHand) {
             compareCards[i] = -1;
         }
     }
+    console.log("conpareCards: " + compareCards);
     let winningCard = Math.max(...compareCards);
     /*start how many times number in array*/
     function getOccurrence(resultList, value) {
@@ -442,10 +443,10 @@ function evaluateHand(iteration, gameStep) {
                     document.querySelector("[data-round='check']").classList.remove("hide");
 
                 }
-
+                stepPlayed = true;
+                return false;
             }
-            stepPlayed = true;
-            return false;
+
         }
 
         if (gameStep === 2 || gameStep === 3) {
@@ -484,8 +485,8 @@ function evaluateHand(iteration, gameStep) {
 
             if (iteration === lastIteration) {
                 if (document.querySelector("[data-status='betting']") !== null) {
-                    document.querySelector("[data-round='match']").classList.remove("hide");
-                    document.getElementById("foldBt").classList.remove("hide");
+
+
                     [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
                         let whichPlayer = e.getAttribute("data-player");
                         removeActivePlyr(Number(whichPlayer));
@@ -502,18 +503,20 @@ function evaluateHand(iteration, gameStep) {
                     document.querySelector("[data-round='check']").classList.remove("hide");
                 }
                 console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
+                stepPlayed = true;
+                return false;
             }
-            stepPlayed = true;
-            return false;
+
         }
 
         if (gameStep === 4) {
             console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + "n - compareCards: " + compareCards);
-            const winner = compareCards.indexOf(Math.max(...compareCards));
+            // const winner = compareCards.indexOf(Math.max(...compareCards));
 
             //Math.max(...compareCards)
             messageElement.classList.remove("hide");
-            if (winner === 0) {
+            if (topHand === 0) {
+
                 yourDetails.classList.remove("alert-info");
                 yourDetails.classList.add("alert-success");
                 document.querySelector("#status").classList.remove("alert-info");
@@ -526,11 +529,10 @@ function evaluateHand(iteration, gameStep) {
                 document.getElementById("thePot").innerHTML = "";
                 document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
 
-            }
-            if (winner === iteration && iteration !== 0) {
-                document.getElementById(playersDetails[iteration]).innerHTML = plyr + " Player " + (iteration + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)] + "s";
-                document.querySelector("[data-player='" + iteration + "']").classList.remove("alert-info");
-                document.querySelector("[data-player='" + iteration + "']").classList.add("alert-success");
+            } else if (iteration === topHand) {
+                document.getElementById(playersDetails[topHand]).innerHTML = plyr + " Player " + (topHand + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)] + "s";
+                document.querySelector("[data-player='" + topHand + "']").classList.remove("alert-info");
+                document.querySelector("[data-player='" + topHand + "']").classList.add("alert-success");
                 messageElement.innerHTML = "You lost $" + bet;
                 yourDetails.classList.remove("alert-success"); yourDetails.classList.remove("alert-info"); yourDetails.classList.add("alert-danger");
                 messageElement.classList.remove("alert-success"); messageElement.classList.remove("alert-info"); messageElement.classList.add("alert-danger");
@@ -558,6 +560,7 @@ function evaluateHand(iteration, gameStep) {
 
                 document.getElementById("foldBt").classList.add("hide");
                 document.querySelector("[data-round='match']").classList.add("hide");
+                document.querySelector("[data-round='check']").classList.add("hide");
                 document.querySelector("button[title='Deal']").disabled = false;
 
             }
@@ -565,9 +568,9 @@ function evaluateHand(iteration, gameStep) {
             return false;
 
         }
-
+        return false;
     }
-
+    return false;
 
 }
 
