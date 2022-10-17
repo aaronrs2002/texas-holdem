@@ -123,6 +123,24 @@ function youWin() {
     document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
     document.querySelector("[data-round='match']").classList.add("hide");
     document.querySelector("[data-round='check']").classList.add("hide");
+    return false;
+}
+
+function youLose() {
+    document.getElementById(playersDetails[topHand]).innerHTML = plyr + " Player " + (topHand + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)] + "s";
+    document.querySelector("[data-player='" + topHand + "']").classList.remove("alert-info");
+    document.querySelector("[data-player='" + topHand + "']").classList.add("alert-success");
+    document.getElementById("status").classList.remove("hide");
+    messageElement.classList.remove("hide");
+    messageElement.innerHTML = "You lost $" + bet;
+    document.getElementById("status").classList.remove("alert-success"); document.getElementById("status").classList.remove("alert-info"); document.getElementById("status").classList.add("alert-danger");
+    messageElement.classList.remove("alert-success"); messageElement.classList.remove("alert-info"); messageElement.classList.add("alert-danger");
+
+    playerMoney = playerMoney - bet;
+    document.getElementById("betTarget").innerHTML = "Place your bet.";
+    document.querySelector("#playerMoney").innerHTML = playerMoney;
+    document.querySelector("[data-round='check']").classList.add("hide");
+    return false;
 }
 
 
@@ -407,6 +425,11 @@ function evaluateHand(iteration, gameStep) {
     console.log("playerHighCards: " + playerHighCards);
 
     if (getOccurrence(compareCards, winningCard) > 1 && iteration === lastIteration && gameStep === 4) {
+        if (iteration === 0) {
+            youWin();
+        } else {
+            youLose();
+        }
 
 
         //topHand = playerHighCards.indexOf(highestCard);
@@ -572,19 +595,7 @@ function evaluateHand(iteration, gameStep) {
                 youWin();
 
             } else if (iteration === topHand) {
-                document.getElementById(playersDetails[topHand]).innerHTML = plyr + " Player " + (topHand + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)] + "s";
-                document.querySelector("[data-player='" + topHand + "']").classList.remove("alert-info");
-                document.querySelector("[data-player='" + topHand + "']").classList.add("alert-success");
-                document.getElementById("status").classList.remove("hide");
-                messageElement.classList.remove("hide");
-                messageElement.innerHTML = "You lost $" + bet;
-                document.getElementById("status").classList.remove("alert-success"); document.getElementById("status").classList.remove("alert-info"); document.getElementById("status").classList.add("alert-danger");
-                messageElement.classList.remove("alert-success"); messageElement.classList.remove("alert-info"); messageElement.classList.add("alert-danger");
-
-                playerMoney = playerMoney - bet;
-                document.getElementById("betTarget").innerHTML = "Place your bet.";
-                document.querySelector("#playerMoney").innerHTML = playerMoney;
-                document.querySelector("[data-round='check']").classList.add("hide");
+                youLose();
 
 
 
