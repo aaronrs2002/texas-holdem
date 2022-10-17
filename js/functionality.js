@@ -349,6 +349,10 @@ function evaluateHand(iteration, gameStep) {
         document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
     }
 
+    if (iteration !== 0 && gameStep === 4) {
+        document.getElementById(playersDetails[iteration]).innerHTML = plyr + " " + (iteration + 1) + ": " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
+    }
+
 
     let winningHand = Math.max(...resultList);
     // = resultList.indexOf(winningHand);
