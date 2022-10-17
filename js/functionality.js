@@ -130,6 +130,7 @@ function evaluateHand(iteration, gameStep) {
         monetaryVal = 150;
     }
     console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + " - compareCards: " + compareCards);
+    document.getElementById("communityCardDetails").innerHTML = gameStepHierarchy[gameStep];
     countingIterations = iteration;
     bestHandIndex = 0;
     let cardsInvolved = "";
@@ -592,9 +593,22 @@ function match(checked) {
 
     gameIncrement = gameIncrement + 1;
     let gameStep = gameIncrement;
+    let activeCards = JSON.parse(localStorage.getItem("completeCards"));
+    let genNumber = generate(activeCards);
+    let maxLength = 4;
+    if (gameStep === 4) {
+        maxLength = 5;
+    }
+    console.log("MATCH WAS HIT - activePlayers: " + activePlayers);
+
+
     document.getElementById("communityCardDetails").classList.remove("hide");
-    //document.getElementById("foldBt").classList.add("hide");
-    //document.querySelector("[data-round='match']").classList.add("hide");
+    if (gameStep === 4) {
+        document.getElementById("foldBt").classList.add("hide");
+        document.querySelector("[data-round='match']").classList.add("hide");
+        document.querySelector("[data-round='check']").classList.add("hide");
+    }
+
 
     if (checked === false) {
 
@@ -611,6 +625,7 @@ function match(checked) {
             case 4: thePot = thePot + 150;
                 bet = bet + 150;
                 playerMoney = playerMoney - bet;
+                break;
         }
         document.getElementById("playerMoney").innerHTML = playerMoney;
         document.getElementById("betTarget").innerHTML = "Bet $" + bet;
@@ -637,12 +652,7 @@ function match(checked) {
         document.getElementById("communityCards").innerHTML = communityCardsHTML;
         document.getElementById("communityCardDetails").innerHTML = "Community Cards"
     } else {
-        let activeCards = JSON.parse(localStorage.getItem("completeCards"));
-        let genNumber = generate(activeCards);
-        let maxLength = 4;
-        if (gameStep === 4) {
-            maxLength = 5;
-        }
+
         while (communityCards.length < maxLength) {
             if (usedCardsArr.indexOf(activeCards[genNumber].title) === -1) {
 
@@ -665,11 +675,20 @@ function match(checked) {
     for (let i = 0; i < activePlayers.length; i++) {
         setTimeout(() => {
 
-            if (evaled.indexOf(i) === -1) {
-                console.log("gameStep: " + gameStep);
-                evaluateHand(activePlayers[i], gameStep);
-                console.log(activePlayers[i] + " is playing!");
-                evaled.push(activePlayers[i]);
+            if (evaled.indexOf(activePlayers[i]) === -1) {
+
+
+
+                if (Number(activePlayers[i]) && activePlayers[i] !== undefined) {
+                    console.log("WITHIN MATCH gameStep: " + gameStep + " - activePlayers: " + activePlayers);
+                    evaluateHand(activePlayers[i], gameStep);
+                    console.log(activePlayers[i] + " is playing!");
+                    evaled.push(activePlayers[i]);
+                } else {
+                    console.log("Tried to play " + activePlayers[i] + " - From activePlayers: " + activePlayers);
+                }
+
+
             }
         }, i * 100);
     }
