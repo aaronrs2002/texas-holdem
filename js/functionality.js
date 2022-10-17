@@ -354,7 +354,7 @@ function evaluateHand(iteration, gameStep) {
     /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
     //originalCompareCards = compareCards;
     for (let i = 0; i < resultList.length; i++) {
-        if (resultList[i] !== winningHand || activePlayers.indexOf(i) === -1) {
+        if (resultList[i] !== winningHand && activePlayers.indexOf(i) === -1) {
             compareCards[i] = -1;
         }
     }
