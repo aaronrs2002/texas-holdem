@@ -354,7 +354,7 @@ function evaluateHand(iteration, gameStep) {
     /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
     //originalCompareCards = compareCards;
     for (let i = 0; i < resultList.length; i++) {
-        if (resultList[i] !== winningHand && activePlayers.indexOf(i) === -1) {
+        if (resultList[i] !== winningHand) {
             compareCards[i] = -1;
         }
     }
@@ -661,16 +661,19 @@ function match(checked) {
     }
 
     let evaled = [];
-    for (let i = 0; i < 4; i++) {
+
+    for (let i = 0; i < activePlayers.length; i++) {
         setTimeout(() => {
 
-            if (activePlayers.indexOf(i) !== -1 && evaled.indexOf(i) === -1) {
+            if (evaled.indexOf(i) === -1) {
                 console.log("gameStep: " + gameStep);
-                evaluateHand(i, gameStep);
-                evaled.push(i);
+                evaluateHand(activePlayers[i], gameStep);
+                console.log(activePlayers[i] + " is playing!");
+                evaled.push(activePlayers[i]);
             }
         }, i * 100);
     }
+
     return false;
 }
 
