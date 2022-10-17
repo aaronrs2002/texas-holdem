@@ -590,11 +590,9 @@ function evaluateHand(iteration, gameStep) {
 let gameIncrement = 1;
 
 function match(checked) {
-
+    let activeCards = JSON.parse(localStorage.getItem("completeCards"));
     gameIncrement = gameIncrement + 1;
     let gameStep = gameIncrement;
-    let activeCards = JSON.parse(localStorage.getItem("completeCards"));
-    let genNumber = generate(activeCards);
     let maxLength = 4;
     if (gameStep === 4) {
         maxLength = 5;
@@ -626,18 +624,22 @@ function match(checked) {
                 bet = bet + 150;
                 playerMoney = playerMoney - bet;
                 break;
+            default:
+                thePot = thePot + 35;
+                bet = bet + 35;
+                playerMoney = playerMoney - bet;
         }
         document.getElementById("playerMoney").innerHTML = playerMoney;
         document.getElementById("betTarget").innerHTML = "Bet $" + bet;
         document.getElementById("thePot").innerHTML = "The Pot: " + thePot;
     }
 
-    if (gameStep == 2) {/*the flop*/
+    if (gameStep === 2) {/*the flop*/
         communityCards = [];
         document.getElementById("communityCardDetails").classList.remove("hide");
         let communityCardsHTML = "";
         while (communityCards.length < 3) {
-            let activeCards = JSON.parse(localStorage.getItem("completeCards"));
+
             let genNumber = generate(activeCards);
             if (usedCardsArr.indexOf(activeCards[genNumber].title) === -1) {
 
@@ -654,6 +656,7 @@ function match(checked) {
     } else {
 
         while (communityCards.length < maxLength) {
+            let genNumber = generate(activeCards);
             if (usedCardsArr.indexOf(activeCards[genNumber].title) === -1) {
 
                 let communityCardsHTML = document.getElementById("communityCards").innerHTML + `<div class='card ${activeCards[genNumber].title}' ></div>`;
@@ -672,26 +675,31 @@ function match(checked) {
 
     let evaled = [];
 
+    console.log("BEFORE EVALUATE HAND FIRED  - evaled:" + evaled);
+
     for (let i = 0; i < activePlayers.length; i++) {
-        setTimeout(() => {
-
-            if (evaled.indexOf(activePlayers[i]) === -1) {
 
 
-
-                if (Number(activePlayers[i]) && activePlayers[i] !== undefined) {
-                    console.log("WITHIN MATCH gameStep: " + gameStep + " - activePlayers: " + activePlayers);
-                    evaluateHand(activePlayers[i], gameStep);
-                    console.log(activePlayers[i] + " is playing!");
-                    evaled.push(activePlayers[i]);
-                } else {
-                    console.log("Tried to play " + activePlayers[i] + " - From activePlayers: " + activePlayers);
-                }
+        if (evaled.indexOf(activePlayers[i]) === -1) {
 
 
+
+            if (activePlayers[i] !== undefined) {
+                console.log("WITHIN MATCH gameStep: " + gameStep + " - activePlayers: " + activePlayers);
+                evaluateHand(activePlayers[i], gameStep);
+                console.log(activePlayers[i] + " is playing!");
+                evaled.push(activePlayers[i]);
+            } else {
+                console.log("Tried to play " + activePlayers[i] + " - From activePlayers: " + activePlayers);
             }
-        }, i * 100);
+
+
+        }
+
     }
+
+
+    console.log("AFTER EVALUATE HAND FIRED  - evaled:" + evaled);
 
     return false;
 }
