@@ -6,7 +6,7 @@ const cardHeirarchy = ["two", "three", "four", "five", "six", "seven", "eight", 
 const suitArr = ["diamonds", "hearts", "clubs", "spades"];
 const playersDetails = ["playerHandDetails", "playerTwoHandDetails", "playerThreeHandDetails", "playerFourHandDetails"];
 const playerIds = ["playerCards", "playerTwoCards", "playerThreeCards", "playerFourCards"];
-const gameStepHierarchy = ["zeroPlaceholder", "deal", "the flop", "4th street", "sth street"];
+const gameStepHierarchy = ["zeroPlaceholder", "pre flop", "flop", "turn", "river"];
 let usedCardsArr = [];
 let player0Obj;
 let player1Obj;
@@ -130,7 +130,7 @@ function evaluateHand(iteration, gameStep) {
         monetaryVal = 150;
     }
     console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + " - compareCards: " + compareCards);
-    document.getElementById("communityCardDetails").innerHTML = gameStepHierarchy[gameStep];
+    document.getElementById("communityCardDetails").innerHTML = "<h3>The " + gameStepHierarchy[gameStep] + "</h3>";
     countingIterations = iteration;
     bestHandIndex = 0;
     let cardsInvolved = "";
