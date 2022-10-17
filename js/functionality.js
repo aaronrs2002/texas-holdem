@@ -435,6 +435,8 @@ function evaluateHand(iteration, gameStep) {
 
                         e.innerHTML = "Player " + (Number(whichPlayer) + 1) + " folded.";
                         removeActivePlyr(Number(whichPlayer));
+                        compareCards[whichPlayer] = -1;
+                        resultList[whichPlayer] = -1;
                         e.dataset.status = "folded";
                     });
                     document.querySelector("[data-round='match']").innerHTML = "Match $35";
@@ -513,7 +515,7 @@ function evaluateHand(iteration, gameStep) {
         }
 
         if (gameStep === 4) {
-            console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + "n - compareCards: " + compareCards);
+            console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + " - compareCards: " + compareCards);
             // const winner = compareCards.indexOf(Math.max(...compareCards));
 
             //Math.max(...compareCards)
