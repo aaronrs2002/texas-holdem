@@ -347,16 +347,19 @@ function evaluateHand(iteration, gameStep) {
 
 
     let winningHand = Math.max(...resultList);
-    topHand = resultList.indexOf(winningHand);
+    // = resultList.indexOf(winningHand);
     /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
     //originalCompareCards = compareCards;
     for (let i = 0; i < resultList.length; i++) {
-        if (resultList[i] !== winningHand) {
+        if (resultList[i] !== winningHand || activePlayers.indexOf(i) === -1) {
             compareCards[i] = -1;
         }
     }
-    console.log("conpareCards: " + compareCards);
+
     let winningCard = Math.max(...compareCards);
+    topHand = compareCards.indexOf(winningCard);
+    //topHand = resultList.indexOf(winningCard);
+    if (gameStep === 4) { console.log("compareCards: " + compareCards + " player: " + topHand + " won with winnind card: " + winningCard); }
     /*start how many times number in array*/
     function getOccurrence(resultList, value) {
         var count = 0;
@@ -364,11 +367,11 @@ function evaluateHand(iteration, gameStep) {
         return count;
     }
 
-    if (getOccurrence(resultList, winningHand) > 1 && iteration === lastIteration) {
-        if (getOccurrence(compareCards, winningCard) === 1) {
-            winningCard = Math.max(...compareCards);
-            topHand = compareCards.indexOf(winningCard);
-        }
+    if (getOccurrence(compareCards, winningCard) > 1 && iteration === lastIteration && gameStep === 4) {
+        globalAlert("alert-warning", "It's a draw!");
+
+        /* winningCard = Math.max(...compareCards);
+         topHand = compareCards.indexOf(winningCard);*/
     }
     /*FIRST ROUND*/
     let highCardCount = 0;
@@ -449,29 +452,29 @@ function evaluateHand(iteration, gameStep) {
 
         }
 
-        if (gameStep === 2 || gameStep === 3) {
-            if (iteration !== 0)
-                if (gameStep === 2 && iteration !== 0) {
+        if (gameStep === 2 || gameStep === 3 && iteration !== 0) {
 
-                    if (resultList[iteration] >= 1 && valueArr[12] > 0) {
-                        if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
-                            document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
-                            document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
-                            thePot = thePot + monetaryVal;
-                            document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
+            if (gameStep === 2) {
 
-                        } else {
-                            document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
-                            document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
+                if (resultList[iteration] >= 1 && valueArr[12] > 0) {
+                    if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
+                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
+                        thePot = thePot + monetaryVal;
+                        document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
 
-                        }
+                    } else {
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " checks.";
+                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
+
                     }
+                }
+
+            }
 
 
 
-
-                }/*broke up conditionals to help the javascript process*/
-            if (gameStep !== 2 && iteration !== 0) {
+            if (gameStep !== 2) {
                 if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + " bets $" + monetaryVal;
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
