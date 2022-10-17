@@ -19,7 +19,7 @@ let compareCards = [0, 0, 0, 0];
 //maybe do not need
 let replaceAttempts = 0;
 let playerCardsInvolved = "";
-let playerHighCard = "";
+let playerHighCards = [0, 0, 0, 0];
 let topHand;
 const plyr = "<i class='fas fa-user'></i> ";
 const yourDetails = document.querySelector("[data-player='0']");
@@ -129,7 +129,7 @@ function evaluateHand(iteration, gameStep) {
     if (gameStep === 4) {
         monetaryVal = 150;
     }
-    console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
+    console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + " - compareCards: " + compareCards);
     countingIterations = iteration;
     bestHandIndex = 0;
     let cardsInvolved = "";
@@ -337,10 +337,13 @@ function evaluateHand(iteration, gameStep) {
     if (handHeirarchy[resultList[Number(iteration)]] === "high-card") {
         HighCardMessage = " <small><i>(" + highCard + " is player " + (iteration + 1) + "'s highest card)</i></small>";
     }
+    if (gameStep === 1) {
+        playerHighCards[iteration] = highCard;
+    }
 
     if (iteration === 0) {
         playerCardsInvolved = cardsInvolved;
-        playerHighCard = highCard;
+
         resultList[0] = Number(bestHandIndex);
         document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
     }
@@ -367,9 +370,13 @@ function evaluateHand(iteration, gameStep) {
         return count;
     }
 
-    if (getOccurrence(compareCards, winningCard) > 1 && iteration === lastIteration && gameStep === 4) {
-        globalAlert("alert-warning", "It's a draw!");
+    console.log("playerHighCards: " + playerHighCards);
 
+    if (getOccurrence(compareCards, winningCard) > 1 && iteration === lastIteration && gameStep === 4) {
+        let highestCard = cardHeirarchy.indexOf(Math.max(...playerHighCards));
+
+        //topHand = playerHighCards.indexOf(highestCard);
+        globalAlert("alert-warning", "It's a draw. Player with " + compareCards[Math.max(...playerHighCards)] + " wins!");
         /* winningCard = Math.max(...compareCards);
          topHand = compareCards.indexOf(winningCard);*/
     }
@@ -404,7 +411,7 @@ function evaluateHand(iteration, gameStep) {
 
 
 
-    if (stepPlayed === false) {
+    if (stepPlayed === false && activePlayers.indexOf(iteration) !== -1) {
 
 
 
@@ -656,8 +663,9 @@ function match(checked) {
     let evaled = [];
     for (let i = 0; i < 4; i++) {
         setTimeout(() => {
-            console.log("gameStep: " + gameStep);
+
             if (activePlayers.indexOf(i) !== -1 && evaled.indexOf(i) === -1) {
+                console.log("gameStep: " + gameStep);
                 evaluateHand(i, gameStep);
                 evaled.push(i);
             }
