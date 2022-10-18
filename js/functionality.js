@@ -323,6 +323,9 @@ function evaluateHand(iteration, gameStep) {
     for (let i = 0; i < valueArr.length; i++) {
         if (valueArr[i] > 0) {/*determine highest card*/
             highCard = cardHeirarchy[i];
+            if (gameStep === 1) {
+                playerHighCards[iteration] = i;
+            }
             compareCards[iteration] = i;
         }
         if (valueArr[i] === 2) {
@@ -383,9 +386,6 @@ function evaluateHand(iteration, gameStep) {
     if (handHeirarchy[resultList[Number(iteration)]] === "high-card") {
         HighCardMessage = highCard;
     }
-    if (gameStep === 1) {
-        playerHighCards[iteration] = "- " + highCard;
-    }
 
     if (iteration === 0) {
         playerCardsInvolved = cardsInvolved;
@@ -425,15 +425,29 @@ function evaluateHand(iteration, gameStep) {
     console.log("playerHighCards: " + playerHighCards);
 
     if (getOccurrence(compareCards, winningCard) > 1 && iteration === lastIteration && gameStep === 4) {
-        if (iteration === 0) {
-            youWin();
-        } else {
-            youLose();
+        /* if (iteration === 0) {
+             youWin();
+         } else {
+             youLose();
+         }*/
+        let currentHighCards = [];
+        for (let i = 0; i < activePlayers.length; i++) {
+            currentHighCards.push(playerHighCards[activePlayers[i]]);
         }
+        winningCard = Math.max(...currentHighCards);
+        topHand = compareCards.indexOf(winningCard);
 
+        console.log("currentHighCards: " + currentHighCards);
 
+        if (getOccurrence(currentHighCards, winningCard) > 1) {
+
+            globalAlert("alert-warning", "It's a draw. 2 Players have " + cardHeirarchy[winningCard] + ".");
+
+        } else {
+            globalAlert("alert-warning", "It's a draw. Player with " + cardHeirarchy[winningCard] + " wins!");
+        }
         //topHand = playerHighCards.indexOf(highestCard);
-        globalAlert("alert-warning", "It's a draw. Player with " + playerHighCards[iteration] + " wins!");
+
         /* winningCard = Math.max(...compareCards);
          topHand = compareCards.indexOf(winningCard);*/
     }
@@ -753,7 +767,7 @@ function match(checked) {
 
 function deal() {
     gameIncrement = 1;
-
+    playerHighCards = [];
     communityCards = [];
     document.getElementById("communityCards").innerHTML = "";
     document.getElementById("communityCardDetails").classList.add("hide");
@@ -767,6 +781,7 @@ function deal() {
     });
     document.getElementById("status").classList.add("hide");
     document.getElementById("status").classList.remove("alert-success");
+    document.getElementById("status").classList.remove("alert-danger");
     document.getElementById("message").innerHTML = "";
     bet = 10;
     thePot = 40;
