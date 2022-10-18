@@ -8,6 +8,7 @@ const playersDetails = ["playerHandDetails", "playerTwoHandDetails", "playerThre
 const playerIds = ["playerCards", "playerTwoCards", "playerThreeCards", "playerFourCards"];
 const gameStepHierarchy = ["zeroPlaceholder", "pre flop", "flop", "turn", "river"];
 let usedCardsArr = [];
+let cardScores = [0, 0, 0, 0];
 let player0Obj;
 let player1Obj;
 let player2Obj;
@@ -123,16 +124,23 @@ function youWin() {
     document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
     document.querySelector("[data-round='match']").classList.add("hide");
     document.querySelector("[data-round='check']").classList.add("hide");
+
+    document.querySelector("[data-player='0']").classList.remove("alert-info");
+    document.querySelector("[data-player='0']").classList.remove("alert-danger");
+    document.querySelector("[data-player='0']").classList.add("alert-success");
     return false;
 }
 
-function youLose() {
+function youLose(topHand) {
     document.getElementById(playersDetails[topHand]).innerHTML = plyr + " Player " + (topHand + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)] + "s";
     document.querySelector("[data-player='" + topHand + "']").classList.remove("alert-info");
     document.querySelector("[data-player='" + topHand + "']").classList.add("alert-success");
     document.getElementById("status").classList.remove("hide");
     messageElement.classList.remove("hide");
     messageElement.innerHTML = "You lost $" + bet;
+    document.querySelector("[data-player='0']").classList.remove("alert-success");
+    document.querySelector("[data-player='0']").classList.remove("alert-info");
+    document.querySelector("[data-player='0']").classList.add("alert-danger");
     document.getElementById("status").classList.remove("alert-success"); document.getElementById("status").classList.remove("alert-info"); document.getElementById("status").classList.add("alert-danger");
     messageElement.classList.remove("alert-success"); messageElement.classList.remove("alert-info"); messageElement.classList.add("alert-danger");
 
@@ -216,8 +224,6 @@ function evaluateHand(iteration, gameStep) {
     let ace = 0;
 
     for (let i = 0; i < cardsArr.length; i++) {
-
-        console.log("cardsArr.length: " + cardsArr.length + " - gameStep: " + gameStep + " cardHeirarchy.indexOf(cardsArr[i].value): " + cardHeirarchy.indexOf(cardsArr[i].value));
         cardIndexes.push(cardHeirarchy.indexOf(cardsArr[i].value));
         if (cardsArr[i].value === "ace") {
             cardIndexes.push(-1);/*aces need representation for a straight ace to 4 concept. -1 will work because 2 is represented as 0. This is just used for determining a straight*/
@@ -399,57 +405,50 @@ function evaluateHand(iteration, gameStep) {
     }
 
 
-    let winningHand = Math.max(...resultList);
-    // = resultList.indexOf(winningHand);
-    /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
-    //originalCompareCards = compareCards;
-    for (let i = 0; i < resultList.length; i++) {
-        if (resultList[i] !== winningHand) {
-            compareCards[i] = -1;
-        }
-    }
 
-    let winningCard = Math.max(...compareCards);
-    topHand = compareCards.indexOf(winningCard);
     //topHand = resultList.indexOf(winningCard);
-    if (gameStep === 4) {
-        console.log("compareCards: " + compareCards + " player: " + topHand + " won with winnind card: " + winningCard);
-    }
-    /*start how many times number in array*/
-    function getOccurrence(resultList, value) {
-        var count = 0;
-        resultList.forEach((v) => (v === value && count++));
-        return count;
-    }
-
-    console.log("playerHighCards: " + playerHighCards);
-
-    if (getOccurrence(compareCards, winningCard) > 1 && iteration === lastIteration && gameStep === 4) {
-        /* if (iteration === 0) {
-             youWin();
-         } else {
-             youLose();
-         }*/
-        let currentHighCards = [];
-        for (let i = 0; i < activePlayers.length; i++) {
-            currentHighCards.push(playerHighCards[activePlayers[i]]);
+    if (gameStep === 4 && iteration === lastIteration) {
+        let winningHand = Math.max(...resultList);
+        // = resultList.indexOf(winningHand);
+        /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
+        //originalCompareCards = compareCards;
+        for (let i = 0; i < resultList.length; i++) {
+            if (resultList[i] !== winningHand) {
+                compareCards[i] = -1;
+            }
         }
-        winningCard = Math.max(...currentHighCards);
+
+        let winningCard = Math.max(...compareCards);
         topHand = compareCards.indexOf(winningCard);
+        console.log("compareCards: " + compareCards + " player: " + topHand + " won with winnind card: " + winningCard);
 
-        console.log("currentHighCards: " + currentHighCards);
-
-        if (getOccurrence(currentHighCards, winningCard) > 1) {
-
-            globalAlert("alert-warning", "It's a draw. 2 Players have " + cardHeirarchy[winningCard] + ".");
-
-        } else {
-            globalAlert("alert-warning", "It's a draw. Player with " + cardHeirarchy[winningCard] + " wins!");
+        /*start how many times number in array*/
+        function getOccurrence(list, value) {
+            var count = 0;
+            list.forEach((v) => (v === value && count++));
+            return count;
         }
-        //topHand = playerHighCards.indexOf(highestCard);
 
-        /* winningCard = Math.max(...compareCards);
-         topHand = compareCards.indexOf(winningCard);*/
+        console.log("WINNING CARD SHOWED UP: " + getOccurrence(compareCards, winningCard) + " TIMES! IF GREATER THAN 1 WE WILL GET THE HIGHEST NUMBER FROM cardScores: " + cardScores);
+
+
+        if (getOccurrence(compareCards, winningCard) > 1) {
+
+
+            for (let i = 0; cardScores.length; i++) {
+                if (compareCards.indexOf(i) === -1) {
+                    cardScores[i] = -1;
+                }
+            }
+
+            console.log("cardScores: " + cardScores + " WINNING CARD WAS SHOWN " + getOccurrence(compareCards, winningCard) + " TIMES!");
+            let highestScore = Math.max(...cardScores);
+            topHand = cardScores.indexOf(highestScore);
+
+
+
+            globalAlert("alert-warning", "It's a draw. Player " + (topHand + 1) + " wins with highest cards.");
+        }
     }
 
 
@@ -609,7 +608,7 @@ function evaluateHand(iteration, gameStep) {
                 youWin();
 
             } else if (iteration === topHand) {
-                youLose();
+                youLose(topHand);
 
 
 
@@ -769,6 +768,7 @@ function deal() {
     gameIncrement = 1;
     playerHighCards = [];
     communityCards = [];
+    cardScores = [0, 0, 0, 0];
     document.getElementById("communityCards").innerHTML = "";
     document.getElementById("communityCardDetails").classList.add("hide");
 
@@ -818,24 +818,32 @@ function deal() {
             }
         }
         let handObj = [];
+        let score = 0;
         for (let i = 0; i < playersCards.length; i++) {
             handObj.push({
                 suit: playersCards[i].substring(playersCards[i].indexOf("-") + 1, playersCards[i].length),
                 value: playersCards[i].substring(0, playersCards[i].indexOf("-"))
             });
+            console.log("ADDING " + playersCards[i].substring(0, playersCards[i].indexOf("-")) + " - NUMBER: " + Number(cardHeirarchy.indexOf(playersCards[i].substring(0, playersCards[i].indexOf("-")))));
+            score = score + Number(cardHeirarchy.indexOf(playersCards[i].substring(0, playersCards[i].indexOf("-"))));
         }
+
         if (iteration === 0) {
             document.getElementById("playerCards").innerHTML = playerCardsHTML;
             player0Obj = handObj;
+            cardScores[0] = score;
         }
         if (iteration === 1) {
             player1Obj = handObj;
+            cardScores[1] = score;
         }
         if (iteration === 2) {
             player2Obj = handObj;
+            cardScores[2] = score;
         }
         if (iteration === 3) {
             player3Obj = handObj;
+            cardScores[3] = score;
         }
         evaluateHand(iteration, 1);
         return false;
