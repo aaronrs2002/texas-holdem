@@ -110,6 +110,11 @@ function fold() {
 
 
 function youWin() {
+    document.querySelector("[data-round='match']").classList.add("hide");
+    document.querySelector("[data-round='check']").classList.add("hide");
+    document.querySelector("[data-player='0']").classList.remove("alert-info");
+    document.querySelector("[data-player='0']").classList.remove("alert-danger");
+    document.querySelector("[data-player='0']").classList.add("alert-success");
     document.querySelector("button[title='Deal']").disabled = false;
     yourDetails.classList.remove("alert-info");
     yourDetails.classList.add("alert-success");
@@ -122,12 +127,7 @@ function youWin() {
     document.querySelector("#playerMoney").innerHTML = playerMoney;
     document.getElementById("thePot").innerHTML = "";
     document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
-    document.querySelector("[data-round='match']").classList.add("hide");
-    document.querySelector("[data-round='check']").classList.add("hide");
 
-    document.querySelector("[data-player='0']").classList.remove("alert-info");
-    document.querySelector("[data-player='0']").classList.remove("alert-danger");
-    document.querySelector("[data-player='0']").classList.add("alert-success");
     return false;
 }
 
@@ -408,26 +408,39 @@ function evaluateHand(iteration, gameStep) {
 
     //topHand = resultList.indexOf(winningCard);
     if (gameStep === 4 && iteration === lastIteration) {
-        let winningHand = Math.max(...resultList);
-        // = resultList.indexOf(winningHand);
-        /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
-        //originalCompareCards = compareCards;
-        for (let i = 0; i < resultList.length; i++) {
-            if (resultList[i] !== winningHand) {
-                compareCards[i] = -1;
-            }
-        }
-
-        let winningCard = Math.max(...compareCards);
-        topHand = compareCards.indexOf(winningCard);
-        console.log("compareCards: " + compareCards + " player: " + topHand + " won with winnind card: " + winningCard);
-
         /*start how many times number in array*/
         function getOccurrence(list, value) {
             var count = 0;
             list.forEach((v) => (v === value && count++));
             return count;
         }
+        let winningHand = Math.max(...resultList);
+        let winningCard;
+
+        if (getOccurrence(resultList, winningHand) === 1) {
+            topHand = resultList.indexOf(winningHand);
+        } else {
+            // = resultList.indexOf(winningHand);
+            /*we only want to count the winning cards of the wnning hand. However, you will need the orignal later*/
+            //originalCompareCards = compareCards;
+            for (let i = 0; i < resultList.length; i++) {
+                if (resultList[i] !== winningHand) {
+                    compareCards[i] = -1;
+                }
+            }
+
+            winningCard = Math.max(...compareCards);
+            topHand = compareCards.indexOf(winningCard);
+            console.log("resultList: " + resultList + " - compareCards: " + compareCards + " player: " + topHand + " won with winnind card: " + winningCard);
+        }
+
+
+
+
+
+
+
+
 
         console.log("WINNING CARD SHOWED UP: " + getOccurrence(compareCards, winningCard) + " TIMES! IF GREATER THAN 1 WE WILL GET THE HIGHEST NUMBER FROM cardScores: " + cardScores);
 
@@ -615,7 +628,7 @@ function evaluateHand(iteration, gameStep) {
             }
 
 
-            console.log("document.getElementById(playerIds[i]): " + document.getElementById(playerIds[i]) + " - iteration: " + iteration + " END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + " - JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
+            console.log("iteration: " + iteration + " END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + " - JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
             if (iteration === lastIteration) {
                 for (let i = 0; i < playersHands.length; i++) {
                     let playerCardsHTML = "";
@@ -789,7 +802,7 @@ function deal() {
     playerMoney = playerMoney - bet;
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
     document.querySelector("#playerMoney").innerHTML = playerMoney;
-    topHand;
+    topHand = null;
     clear("deal");
     window.location = "#playerCards";
     activeRound = 1;
