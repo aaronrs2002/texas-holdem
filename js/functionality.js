@@ -424,7 +424,7 @@ function evaluateHand(iteration, gameStep) {
         if (gameStep === 1) {
             if (iteration !== 0) {
                 if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $<span class='monetaryVal'>" + monetaryVal[gameStep] + "</span>";
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + ": bets $" + monetaryVal[gameStep];
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                     thePot = thePot + monetaryVal[gameStep];
                     console.log("PLAYER: " + (Number(iteration) + 1) + " - gameStep: " + gameStep + " - adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot + " - Bet $" + bet);
@@ -436,9 +436,6 @@ function evaluateHand(iteration, gameStep) {
             }
             if (iteration == lastIteration) {
                 if (document.querySelector("[data-status='betting']") !== null) {
-                    [].forEach.call(document.querySelector("[data-status='betting']"), function (e) {
-                        let whichPlayer = e.getAttribute("data-player");
-                    });
                     [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
                         let whichPlayer = e.getAttribute("data-player");
                         removeActivePlyr(Number(whichPlayer));
@@ -462,7 +459,7 @@ function evaluateHand(iteration, gameStep) {
             if (gameStep === 2) {
                 if (resultList[iteration] >= 1 && valueArr[12] > 0) {
                     if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
-                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $<span class='monetaryVal'>" + monetaryVal[gameStep] + "</span>";
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + ": bets $" + monetaryVal[gameStep];
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                         thePot = thePot + monetaryVal[gameStep];
                         console.log("PLAYER " + (Number(iteration) + 1) + " - gameStep: " + gameStep + " - adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot + " - Bet $" + bet);
@@ -476,7 +473,7 @@ function evaluateHand(iteration, gameStep) {
 
             if (gameStep !== 2) {
                 if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $<span class='monetaryVal'>" + monetaryVal[gameStep] + "</span>";
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep];
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                     thePot = thePot + monetaryVal[gameStep];
                     console.log("Player:  " + (Number(iteration) + 1) + " - gameStep: " + gameStep + " - adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot);
@@ -493,6 +490,9 @@ function evaluateHand(iteration, gameStep) {
                         removeActivePlyr(Number(whichPlayer));
                         e.innerHTML = "Player " + (Number(whichPlayer) + 1) + ": folded.";
                         e.dataset.status = "folded";
+                    });
+                    [].forEach.call(document.querySelectorAll("[data-status='betting']"), function (e) {
+                        e.innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep];
                     });
                     // document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep];
                     document.getElementById("foldBt").classList.remove("hide");
@@ -579,6 +579,7 @@ function match(checked) {
                 break;
 
         }
+
         document.getElementById("playerMoney").innerHTML = playerMoney;
         document.getElementById("betTarget").innerHTML = "Bet $" + bet;
         document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
