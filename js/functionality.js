@@ -68,7 +68,7 @@ function getOccurrence(list, value) {
     return count;
 }
 
-function ckForBet(rules) {
+/*function ckForBet(rules) {
     if (document.querySelector(".alert-info[data-status='betting']") !== null) {
         [].forEach.call(document.querySelectorAll(".alert-info[data-status='checking']"), function (e) {
             e.innerHTML = plyr + "Player  folded.";
@@ -83,7 +83,7 @@ function ckForBet(rules) {
         }
 
     }
-}
+}*/
 
 
 
@@ -406,22 +406,13 @@ function evaluateHand(iteration, gameStep) {
 
         resultList[0] = Number(bestHandIndex);
         document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
-    }/* else {
-        handDescriptions[iteration] = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
-    }*/
-
+    }
     if (iteration !== 0 && gameStep === 4) {
         document.getElementById(playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
     }
-
-
-
-    //topHand = resultList.indexOf(winningCard);
     if (gameStep === 4 && iteration === lastIteration) {
-
         let winningHand = Math.max(...resultList);
         let winningCard;
-
         if (getOccurrence(resultList, winningHand) === 1) {
             topHand = resultList.indexOf(winningHand);
         } else {
@@ -433,36 +424,25 @@ function evaluateHand(iteration, gameStep) {
                     compareCards[i] = -1;
                 }
             }
-
             winningCard = Math.max(...compareCards);
             topHand = compareCards.indexOf(winningCard);
             console.log("resultList: " + resultList + " - compareCards: " + compareCards + " player: " + topHand + " won with winnind card: " + winningCard);
             console.log("WINNING CARD SHOWED UP: " + getOccurrence(compareCards, winningCard) + " TIMES! IF GREATER THAN 1 WE WILL GET THE HIGHEST NUMBER FROM cardScores: " + cardScores);
-
             if (getOccurrence(compareCards, winningCard) > 1) {
-
-
                 for (let i = 0; i < 4; i++) {
                     if (compareCards[i] === -1) {
                         cardScores[i] = -1;
                     }
                 }
-
                 console.log("cardScores: " + cardScores + " WINNING CARD WAS SHOWN " + getOccurrence(compareCards, winningCard) + " TIMES!");
                 let highestScore = Math.max(...cardScores);
                 topHand = cardScores.indexOf(highestScore);
-
-
-
-                globalAlert("alert-warning", "It's a draw. Player " + (topHand + 1) + " wins with highest cards.");
+                /* if (document.querySelector(".alert-info[data-status='betting']") !== null) {
+                     globalAlert("alert-warning", "It's a draw. Player " + (topHand + 1) + " wins with highest cards.");
+                 }*/
             }
         }
-
     }
-
-
-
-
 
     /*FIRST ROUND*/
     let highCardCount = 0;
@@ -587,6 +567,8 @@ function evaluateHand(iteration, gameStep) {
                     [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
                         let whichPlayer = e.getAttribute("data-player");
                         removeActivePlyr(Number(whichPlayer));
+                        compareCards[whichPlayer] = -1;
+                        resultList[whichPlayer] = -1;
                         e.innerHTML = "Player " + (Number(whichPlayer) + 1) + ": folded.";
                         e.dataset.status = "folded";
                     });
