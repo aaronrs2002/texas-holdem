@@ -17,14 +17,15 @@ let activeRound = 1;
 let bestHandIndex = 0;
 let resultList = [0, 0, 0, 0];
 let compareCards = [0, 0, 0, 0];
-//maybe do not need
-let replaceAttempts = 0;
+let activePlayers = [0, 1, 2, 3];
 let playerCardsInvolved = "";
 let playerHighCards = [0, 0, 0, 0];
 let topHand;
 const plyr = "<i class='fas fa-user'></i> ";
 const yourDetails = document.querySelector("[data-player='0']");
 const messageElement = document.getElementById("message");
+
+
 
 
 //let aiBetRound1 = false;
@@ -58,6 +59,13 @@ function enablePlayBts() {
 }
 function generate(activeCards) {
     return Math.floor(Math.random() * activeCards.length);
+}
+
+/*start how many times number in array*/
+function getOccurrence(list, value) {
+    var count = 0;
+    list.forEach((v) => (v === value && count++));
+    return count;
 }
 
 function ckForBet(rules) {
@@ -132,7 +140,7 @@ function youWin() {
 }
 
 function youLose(topHand) {
-    document.getElementById(playersDetails[topHand]).innerHTML = plyr + " Player " + (topHand + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)] + "s";
+    // document.getElementById(playersDetails[topHand]).innerHTML = plyr + " Player " + (topHand + 1) + " won with " + handHeirarchy[Math.max(...resultList)] + " - " + cardHeirarchy[Math.max(...compareCards)];
     document.querySelector("[data-player='" + topHand + "']").classList.remove("alert-info");
     document.querySelector("[data-player='" + topHand + "']").classList.add("alert-success");
     document.getElementById("status").classList.remove("hide");
@@ -153,7 +161,7 @@ function youLose(topHand) {
 
 
 
-let activePlayers = [0, 1, 2, 3];
+
 
 function removeActivePlyr(plyrID) {
     let tempActivePlayer = [];
@@ -355,7 +363,7 @@ function evaluateHand(iteration, gameStep) {
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
         }
     }
-
+    console.log("valueArr: " + valueArr + " - valueArr.lastIndexOf(2): " + valueArr.lastIndexOf(2));
     if (valueArr.indexOf(2) !== -1) {
         compareCards[iteration] = valueArr.lastIndexOf(2);
     }
@@ -398,7 +406,9 @@ function evaluateHand(iteration, gameStep) {
 
         resultList[0] = Number(bestHandIndex);
         document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
-    }
+    }/* else {
+        handDescriptions[iteration] = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
+    }*/
 
     if (iteration !== 0 && gameStep === 4) {
         document.getElementById(playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
@@ -408,12 +418,7 @@ function evaluateHand(iteration, gameStep) {
 
     //topHand = resultList.indexOf(winningCard);
     if (gameStep === 4 && iteration === lastIteration) {
-        /*start how many times number in array*/
-        function getOccurrence(list, value) {
-            var count = 0;
-            list.forEach((v) => (v === value && count++));
-            return count;
-        }
+
         let winningHand = Math.max(...resultList);
         let winningCard;
 
@@ -798,7 +803,6 @@ function deal() {
     window.location = "#playerCards";
     activeRound = 1;
     countingIterations = 0;
-    replaceAttempts = 0;
     document.getElementById("foldBt").classList.remove("hide");
     document.querySelector("[data-round='match']").classList.remove("hide");
     document.querySelector("button[title='Deal']").disabled = true;
