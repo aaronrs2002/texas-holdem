@@ -432,36 +432,27 @@ function evaluateHand(iteration, gameStep) {
             winningCard = Math.max(...compareCards);
             topHand = compareCards.indexOf(winningCard);
             console.log("resultList: " + resultList + " - compareCards: " + compareCards + " player: " + topHand + " won with winnind card: " + winningCard);
-        }
+            console.log("WINNING CARD SHOWED UP: " + getOccurrence(compareCards, winningCard) + " TIMES! IF GREATER THAN 1 WE WILL GET THE HIGHEST NUMBER FROM cardScores: " + cardScores);
+
+            if (getOccurrence(compareCards, winningCard) > 1) {
 
 
-
-
-
-
-
-
-
-        console.log("WINNING CARD SHOWED UP: " + getOccurrence(compareCards, winningCard) + " TIMES! IF GREATER THAN 1 WE WILL GET THE HIGHEST NUMBER FROM cardScores: " + cardScores);
-
-
-        if (getOccurrence(compareCards, winningCard) > 1) {
-
-
-            for (let i = 0; cardScores.length; i++) {
-                if (compareCards.indexOf(i) === -1) {
-                    cardScores[i] = -1;
+                for (let i = 0; i < 4; i++) {
+                    if (compareCards[i] === -1) {
+                        cardScores[i] = -1;
+                    }
                 }
+
+                console.log("cardScores: " + cardScores + " WINNING CARD WAS SHOWN " + getOccurrence(compareCards, winningCard) + " TIMES!");
+                let highestScore = Math.max(...cardScores);
+                topHand = cardScores.indexOf(highestScore);
+
+
+
+                globalAlert("alert-warning", "It's a draw. Player " + (topHand + 1) + " wins with highest cards.");
             }
-
-            console.log("cardScores: " + cardScores + " WINNING CARD WAS SHOWN " + getOccurrence(compareCards, winningCard) + " TIMES!");
-            let highestScore = Math.max(...cardScores);
-            topHand = cardScores.indexOf(highestScore);
-
-
-
-            globalAlert("alert-warning", "It's a draw. Player " + (topHand + 1) + " wins with highest cards.");
         }
+
     }
 
 
@@ -610,7 +601,7 @@ function evaluateHand(iteration, gameStep) {
 
         }
 
-        if (gameStep === 4) {
+        if (gameStep === 4 && iteration === lastIteration) {
             console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + " - compareCards: " + compareCards);
             // const winner = compareCards.indexOf(Math.max(...compareCards));
 
@@ -620,7 +611,7 @@ function evaluateHand(iteration, gameStep) {
 
                 youWin();
 
-            } else if (iteration === topHand) {
+            } else {
                 youLose(topHand);
 
 
@@ -629,24 +620,24 @@ function evaluateHand(iteration, gameStep) {
 
 
             console.log("iteration: " + iteration + " END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + " - JSON.stringify(cardsArr): " + JSON.stringify(cardsArr));
-            if (iteration === lastIteration) {
-                for (let i = 0; i < playersHands.length; i++) {
-                    let playerCardsHTML = "";
-                    for (let j = 0; j < playersHands[i].length; j++) {
 
-                        playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[i][j].value + "-" + playersHands[i][j].suit + "' ></div>";
-                        document.getElementById(playerIds[i]).innerHTML = playerCardsHTML;
-                    }
+            for (let i = 0; i < playersHands.length; i++) {
+                let playerCardsHTML = "";
+                for (let j = 0; j < playersHands[i].length; j++) {
+
+                    playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[i][j].value + "-" + playersHands[i][j].suit + "' ></div>";
+                    document.getElementById(playerIds[i]).innerHTML = playerCardsHTML;
                 }
-
-                console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
-
-                document.getElementById("foldBt").classList.add("hide");
-                document.querySelector("[data-round='match']").classList.add("hide");
-                document.querySelector("[data-round='check']").classList.add("hide");
-                document.querySelector("button[title='Deal']").disabled = false;
-
             }
+
+            console.log("END: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers);
+
+            document.getElementById("foldBt").classList.add("hide");
+            document.querySelector("[data-round='match']").classList.add("hide");
+            document.querySelector("[data-round='check']").classList.add("hide");
+            document.querySelector("button[title='Deal']").disabled = false;
+
+
             stepPlayed = true;
             return false;
 
