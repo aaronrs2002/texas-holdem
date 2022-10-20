@@ -497,7 +497,7 @@ function evaluateHand(iteration, gameStep) {
             for (let i = 0; i < 4; i++) {
                 let playerCardsHTML = "";
                 for (let j = 0; j < playersHands[i].length; j++) {
-                    console.log("gameStep:" + gameStep + " - playersHands[i][j].value + " - " + playersHands[i][j].suit" + playersHands[i][j].value + "-" + playersHands[i][j].suit);
+                    console.log("gameStep:" + gameStep + " - playersHands[i][j].value + " + playersHands[i][j].value + " - playersHands[i][j].suit -" + playersHands[i][j].suit);
                     playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[i][j].value + "-" + playersHands[i][j].suit + "' ></div>";
                     document.getElementById(playerIds[i]).innerHTML = playerCardsHTML;
                     console.log("nested loop i:" + i + " - j: " + j);
