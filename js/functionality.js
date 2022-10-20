@@ -11,6 +11,7 @@ let player0Obj;
 let player1Obj;
 let player2Obj;
 let player3Obj;
+const playersHands = [player0Obj, player1Obj, player2Obj, player3Obj];
 let activeRound = 1;
 let bestHandIndex = 0;
 let resultList = [0, 0, 0, 0];
@@ -124,7 +125,7 @@ function youLose(topHand) {
     document.querySelector("[data-player='0']").classList.remove("alert-info");
     document.querySelector("[data-player='0']").classList.add("alert-danger");
     document.getElementById("status").classList.remove("alert-success"); document.getElementById("status").classList.remove("alert-info"); document.getElementById("status").classList.add("alert-danger");
-    messageElement.classList.remove("alert-success"); messageElement.classList.remove("alert-info"); messageElement.classList.add("alert-danger");
+    //messageElement.classList.remove("alert-success"); messageElement.classList.remove("alert-info"); messageElement.classList.add("alert-danger");
     playerMoney = playerMoney - bet;
     document.getElementById("betTarget").innerHTML = "Place your bet.";
     document.querySelector("#playerMoney").innerHTML = playerMoney;
@@ -160,7 +161,6 @@ function evaluateHand(iteration, gameStep) {
     bestHandIndex = 0;
     let cardsInvolved = "";
     let cardIndexes = [];
-    const playersHands = [player0Obj, player1Obj, player2Obj, player3Obj];
     let cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
 
     // cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
@@ -426,7 +426,7 @@ function evaluateHand(iteration, gameStep) {
                 if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep];
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
-                    thePot = thePot + monetaryVal[gameStep];
+                    //thePot = thePot + monetaryVal[gameStep];
                     console.log("PLAYER: " + (Number(iteration) + 1) + " - gameStep: " + gameStep + " - adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot + " - Bet $" + bet);
                     document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
                 } else {
@@ -461,7 +461,7 @@ function evaluateHand(iteration, gameStep) {
                     if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
                         document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep];
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
-                        thePot = thePot + monetaryVal[gameStep];
+                        //thePot = thePot + monetaryVal[gameStep];
                         console.log("PLAYER " + (Number(iteration) + 1) + " - gameStep: " + gameStep + " - adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot + " - Bet $" + bet);
                         document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
                     } else {
@@ -475,7 +475,7 @@ function evaluateHand(iteration, gameStep) {
                 if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep];
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
-                    thePot = thePot + monetaryVal[gameStep];
+                    //thePot = thePot + monetaryVal[gameStep];
                     console.log("Player:  " + (Number(iteration) + 1) + " - gameStep: " + gameStep + " - adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot);
                     document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
                 } else {
@@ -559,23 +559,23 @@ function match(checked) {
     if (checked === false) {
         switch (gameStep) {
             case 2:
-                thePot = thePot + monetaryVal[gameStep];
+                thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
                 bet = bet + monetaryVal[gameStep];
                 playerMoney = playerMoney - monetaryVal[gameStep];
                 document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep];
-                console.log("PLAYER 1 gameStep: " + gameStep + " - You are adding $35 to the POT: $" + thePot + " - Bet $" + bet);
+                console.log("PLAYER 1 gameStep: " + gameStep + " - You are adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot + " - Bet $" + bet);
                 break;
-            case 3: thePot = thePot + monetaryVal[gameStep];
+            case 3: thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
                 bet = bet + monetaryVal[gameStep];
                 playerMoney = playerMoney - monetaryVal[gameStep];
                 document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep];
-                console.log("PLAYER 1 gameStep: " + gameStep + " - You are adding $75 to the POT: $" + thePot + " - Bet $" + bet);
+                console.log("PLAYER 1 gameStep: " + gameStep + " - You are adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot + " - Bet $" + bet);
                 break;
-            case 4: thePot = thePot + monetaryVal[gameStep];
+            case 4: thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
                 bet = bet + monetaryVal[gameStep];
                 playerMoney = playerMoney - monetaryVal[gameStep];
                 //document.querySelector("[data-round='match']").innerHTML = "Match $" + 150;
-                console.log("PLAYER 1 gameStep: " + gameStep + " - You are adding $150 to the POT: $" + thePot + " - Bet $" + bet);
+                console.log("PLAYER 1 gameStep: " + gameStep + " - You are adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot + " - Bet $" + bet);
                 break;
 
         }
@@ -691,6 +691,8 @@ function deal() {
             if (usedCardsArr.indexOf(activeCards[genNumber].title) === -1) {
                 if (iteration === 0) {
                     playerCardsHTML = playerCardsHTML + `<div class='card ${activeCards[genNumber].title}' ></div>`;
+                } else {
+                    playerCardsHTML = playerCardsHTML + `<div class='card hiddenDealerCard' ></div>`;
                 }
                 playersCards.push(cards[genNumber].title);
                 usedCardsArr.push(cards[genNumber].title);
@@ -706,23 +708,33 @@ function deal() {
             //console.log("ADDING " + playersCards[i].substring(0, playersCards[i].indexOf("-")) + " - NUMBER: " + Number(cardHeirarchy.indexOf(playersCards[i].substring(0, playersCards[i].indexOf("-")))));
             score = score + Number(cardHeirarchy.indexOf(playersCards[i].substring(0, playersCards[i].indexOf("-"))));
         }
-        if (iteration === 0) {
-            document.getElementById("playerCards").innerHTML = playerCardsHTML;
-            player0Obj = handObj;
-            cardScores[0] = score;
-        }
-        if (iteration === 1) {
-            player1Obj = handObj;
-            cardScores[1] = score;
-        }
-        if (iteration === 2) {
-            player2Obj = handObj;
-            cardScores[2] = score;
-        }
-        if (iteration === 3) {
-            player3Obj = handObj;
-            cardScores[3] = score;
-        }
+
+
+
+
+
+
+
+        /*if (iteration === 0) {*/
+        document.getElementById(playerIds[iteration]).innerHTML = playerCardsHTML;
+        playersHands[iteration] = handObj;
+        cardScores[iteration] = score;
+        /* }
+         if (iteration === 1) {
+             document.getElementById(playerIds[iteration]).innerHTML = playerCardsHTML;
+             player1Obj = handObj;
+             cardScores[1] = score;
+         }
+         if (iteration === 2) {
+             document.getElementById(playerIds[iteration]).innerHTML = playerCardsHTML;
+             player2Obj = handObj;
+             cardScores[2] = score;
+         }
+         if (iteration === 3) {
+             document.getElementById(playerIds[iteration]).innerHTML = playerCardsHTML;
+             player3Obj = handObj;
+             cardScores[3] = score;
+         }*/
         evaluateHand(iteration, 1);
         return false;
     }
