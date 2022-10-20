@@ -582,12 +582,14 @@ function match(checked) {
         while (communityCards.length < maxLength) {
             let genNumber = generate(activeCards);
             if (usedCardsArr.indexOf(activeCards[genNumber].title) === -1) {
-                let communityCardsHTML = document.getElementById("communityCards").innerHTML + `<div class='card ${activeCards[genNumber].title}' ></div>`;
+
+                let communityCardsHTML = document.getElementById("communityCards").innerHTML;
+                communityCardsHTML = document.getElementById("communityCards").innerHTML + `<div class='card ${activeCards[genNumber].title}' ></div>`;
                 communityCards.push({
                     suit: activeCards[genNumber].title.substring(activeCards[genNumber].title.indexOf("-") + 1, activeCards[genNumber].title.length),
                     value: activeCards[genNumber].title.substring(0, activeCards[genNumber].title.indexOf("-"))
                 });
-                console.log("PUSHING TO COMMUITY CARDS " + activeCards[genNumber].title + " gameStep: " + gameStep)
+                console.log("PUSHING TO COMMUITY CARDS " + activeCards[genNumber].title + " gameStep: " + gameStep + " communityCards: " + communityCards);
                 usedCardsArr.push(cards[genNumber].title);
 
                 document.getElementById("communityCards").innerHTML = communityCardsHTML;
