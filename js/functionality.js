@@ -428,7 +428,7 @@ function evaluateHand(iteration, gameStep) {
         if (gameStep === 1) {
             if (iteration !== 0) {
                 if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep];
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                 } else {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": checks.";
@@ -459,7 +459,7 @@ function evaluateHand(iteration, gameStep) {
             if (gameStep === 2) {
                 if (resultList[iteration] >= 1 && valueArr[12] > 0) {
                     if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
-                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep];
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                     } else {
                         document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": checks.";
@@ -470,7 +470,7 @@ function evaluateHand(iteration, gameStep) {
 
             if (gameStep !== 2) {
                 if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep];
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                 } else {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": checks.";
@@ -486,7 +486,7 @@ function evaluateHand(iteration, gameStep) {
                         e.dataset.status = "folded";
                     });
                     [].forEach.call(document.querySelectorAll("[data-status='betting']"), function (e) {
-                        e.innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep];
+                        e.innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
                     });
                     document.getElementById("foldBt").classList.remove("hide");
                     document.querySelector("[data-round='match']").classList.remove("hide");
@@ -550,13 +550,13 @@ function match(checked) {
                 thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
                 bet = bet + monetaryVal[gameStep];
                 playerMoney = playerMoney - monetaryVal[gameStep];
-                document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep];
+                document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
                 console.log("PLAYER 1 gameStep: " + gameStep + " - (" + monetaryVal[gameStep] + " * " + activePlayers.length + ") $" + (monetaryVal[gameStep] * activePlayers.length) + " added to the POT: $" + thePot + " - Bet $" + bet);
                 break;
             case 3: thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
                 bet = bet + monetaryVal[gameStep];
                 playerMoney = playerMoney - monetaryVal[gameStep];
-                document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep];
+                document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
                 console.log("PLAYER 1 gameStep: " + gameStep + " - (" + monetaryVal[gameStep] + " * " + activePlayers.length + ") $" + (monetaryVal[gameStep] * activePlayers.length) + " added to the POT: $" + thePot + " - Bet $" + bet);
                 break;
             case 4: thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
@@ -656,7 +656,7 @@ function deal() {
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
     document.querySelector("#playerMoney").innerHTML = playerMoney;
     //document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
-    document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[1]
+    document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[2]
     topHand = null;
     clear("deal");
     //window.location = "#playerCards";
