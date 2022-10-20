@@ -83,6 +83,8 @@ function clear(action) {
     document.getElementById("playerCards").innerHTML = "";
     document.getElementById("status").classList.add("hide");
     document.querySelector("button[title='Deal']").disabled = false;
+    document.querySelector("button[title='Deal']").classList.remove("hide");
+
 }
 
 function fold() {
@@ -101,6 +103,8 @@ function youWin() {
     document.querySelector("[data-player='0']").classList.remove("alert-danger");
     document.querySelector("[data-player='0']").classList.add("alert-success");
     document.querySelector("button[title='Deal']").disabled = false;
+    document.querySelector("button[title='Deal']").classList.remove("hide");
+
     yourDetails.classList.remove("alert-info");
     yourDetails.classList.add("alert-success");
     document.querySelector("#status").classList.remove("alert-info");
@@ -110,7 +114,7 @@ function youWin() {
     playerMoney = playerMoney + thePot;
     document.getElementById("playerMoney").classList.remove("hide");
     document.querySelector("#playerMoney").innerHTML = playerMoney;
-    document.getElementById("thePot").innerHTML = "";
+    //document.getElementById("thePot").innerHTML = "";
     document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
     return false;
 }
@@ -156,7 +160,7 @@ function evaluateHand(iteration, gameStep) {
     let stepPlayed = false;
 
     //console.log("START: " + gameStepHierarchy[gameStep] + " activePlayers: " + activePlayers + " - compareCards: " + compareCards);
-    document.getElementById("communityCardDetails").innerHTML = "<h3>The " + gameStepHierarchy[gameStep] + "</h3>";
+    document.getElementById("communityCardDetails").innerHTML = "<h3>The " + gameStepHierarchy[gameStep] + " - Pot: $" + thePot + "</h3>";
     countingIterations = iteration;
     bestHandIndex = 0;
     let cardsInvolved = "";
@@ -428,7 +432,7 @@ function evaluateHand(iteration, gameStep) {
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                     //thePot = thePot + monetaryVal[gameStep];
                     console.log("PLAYER: " + (Number(iteration) + 1) + " - gameStep: " + gameStep + " - adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot + " - Bet $" + bet);
-                    document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
+                    // document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
                 } else {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": checks.";
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
@@ -463,7 +467,7 @@ function evaluateHand(iteration, gameStep) {
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                         //thePot = thePot + monetaryVal[gameStep];
                         console.log("PLAYER " + (Number(iteration) + 1) + " - gameStep: " + gameStep + " - adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot + " - Bet $" + bet);
-                        document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
+                        //document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
                     } else {
                         document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": checks.";
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
@@ -477,7 +481,7 @@ function evaluateHand(iteration, gameStep) {
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                     //thePot = thePot + monetaryVal[gameStep];
                     console.log("Player:  " + (Number(iteration) + 1) + " - gameStep: " + gameStep + " - adding $" + monetaryVal[gameStep] + " to the POT: $" + thePot);
-                    document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
+                    // document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
                 } else {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": checks.";
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
@@ -531,6 +535,8 @@ function evaluateHand(iteration, gameStep) {
             document.querySelector("[data-round='match']").classList.add("hide");
             document.querySelector("[data-round='check']").classList.add("hide");
             document.querySelector("button[title='Deal']").disabled = false;
+            document.querySelector("button[title='Deal']").classList.remove("hide");
+
             stepPlayed = true;
             return false;
         }
@@ -582,7 +588,7 @@ function match(checked) {
 
         document.getElementById("playerMoney").innerHTML = playerMoney;
         document.getElementById("betTarget").innerHTML = "Bet $" + bet;
-        document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
+        //document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
 
     }
 
@@ -667,16 +673,17 @@ function deal() {
     playerMoney = playerMoney - bet;
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
     document.querySelector("#playerMoney").innerHTML = playerMoney;
-    document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
+    //document.getElementById("thePot").innerHTML = "The Pot: $" + thePot;
     document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[1]
     topHand = null;
     clear("deal");
-    window.location = "#playerCards";
+    //window.location = "#playerCards";
     activeRound = 1;
     countingIterations = 0;
     document.getElementById("foldBt").classList.remove("hide");
     document.querySelector("[data-round='match']").classList.remove("hide");
     document.querySelector("button[title='Deal']").disabled = true;
+    document.querySelector("button[title='Deal']").classList.add("hide");
     bestHandIndex = 0;
     cards = JSON.parse(localStorage.getItem("completeCards"));
     let activeCards = cards;
@@ -692,7 +699,7 @@ function deal() {
                 if (iteration === 0) {
                     playerCardsHTML = playerCardsHTML + `<div class='card ${activeCards[genNumber].title}' ></div>`;
                 } else {
-                    playerCardsHTML = playerCardsHTML + `<div class='card hiddenDealerCard' ></div>`;
+                    playerCardsHTML = playerCardsHTML + `<div class='card hiddenDealerCard desktopOnly' ></div>`;
                 }
                 playersCards.push(cards[genNumber].title);
                 usedCardsArr.push(cards[genNumber].title);
