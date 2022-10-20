@@ -115,7 +115,7 @@ function youWin() {
     document.getElementById("playerMoney").classList.remove("hide");
     document.querySelector("#playerMoney").innerHTML = playerMoney;
     //document.getElementById("thePot").innerHTML = "";
-    document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
+    document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM <small>(BETA TESTING)</small>";
     return false;
 }
 
@@ -531,6 +531,7 @@ function evaluateHand(iteration, gameStep) {
 
 
 function match(checked) {
+    window.location = "#";
     let activeCards = JSON.parse(localStorage.getItem("completeCards"));
     gameIncrement = gameIncrement + 1;
     let gameStep = gameIncrement;
