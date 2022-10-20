@@ -332,24 +332,24 @@ function evaluateHand(iteration, gameStep) {
             bestHandIndex = 8;
         }
     }
-    if (flush === true && straight === true && valueArr[Number(valueArr.length) - 1] > 0) {  /*checking for royal flush (valueArr[Number(valueArr.length) - 1] is an ace)*/
+    if (flush === true && straight === true && valueArr[valueArr.length - 1] > 0) {  /*checking for royal flush (valueArr[valueArr.length - 1] is an ace)*/
         if (bestHandIndex < 9) {
             bestHandIndex = 9;
         }
     }
-    resultList[Number(iteration)] = bestHandIndex;
+    resultList[iteration] = bestHandIndex;
     document.getElementById(playersDetails[iteration]).classList.remove("hide");
     let HighCardMessage = "";
-    if (handHeirarchy[resultList[Number(iteration)]] === "high-card") {
+    if (handHeirarchy[resultList[iteration]] === "high-card") {
         HighCardMessage = highCard;
     }
     if (iteration === 0) {
         playerCardsInvolved = cardsInvolved;
-        resultList[0] = Number(bestHandIndex);
-        document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
+        resultList[0] = bestHandIndex;
+        document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
     }
     if (iteration !== 0 && gameStep === 4) {
-        document.getElementById(playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[Number(iteration)]] + "  " + cardsInvolved + HighCardMessage;
+        document.getElementById(playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
     }
     if (gameStep === 4 && iteration === lastIteration) {
         let winningHand = Math.max(...resultList);
@@ -387,13 +387,13 @@ function evaluateHand(iteration, gameStep) {
     let threeSuited = false;
     let fourSuited = false;
     for (let i = 0; i < suitedArr.length; i++) {/*determine if the first round has match suit*/
-        if (Number(suitedArr[i]) > 1) {
+        if (suitedArr[i] > 1) {
             firstRoundSuited = true;
         }
-        if (Number(suitedArr[i]) > 2) {
+        if (suitedArr[i] > 2) {
             threeSuited = true;
         }
-        if (Number(suitedArr[i]) > 3) {
+        if (suitedArr[i] > 3) {
             fourSuited = true;
         }
     }
@@ -414,8 +414,8 @@ function evaluateHand(iteration, gameStep) {
                 if (document.querySelector("[data-status='betting']") !== null) {
                     [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
                         let whichPlayer = e.getAttribute("data-player");
-                        removeActivePlyr(Number(whichPlayer));
-                        e.innerHTML = plyr + " Player " + (Number(whichPlayer) + 1) + ": folded.";
+                        removeActivePlyr(whichPlayer);
+                        e.innerHTML = plyr + " Player " + (whichPlayer + 1) + ": folded.";
                         e.dataset.status = "folded";
                     });
                     document.querySelector("[data-round='match']").classList.remove("hide");
@@ -464,8 +464,8 @@ function evaluateHand(iteration, gameStep) {
                 if (document.querySelector("[data-status='betting']") !== null) {
                     [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
                         let whichPlayer = e.getAttribute("data-player");
-                        removeActivePlyr(Number(whichPlayer));
-                        e.innerHTML = "Player " + (iteration + 1) + ": " + (Number(whichPlayer) + 1) + ": folded.";
+                        removeActivePlyr(whichPlayer);
+                        e.innerHTML = "Player " + (iteration + 1) + ": " + (whichPlayer + 1) + ": folded.";
                         e.dataset.status = "folded";
                     });
                     [].forEach.call(document.querySelectorAll("[data-status='betting']"), function (e) {
@@ -681,7 +681,7 @@ function deal() {
                 suit: playersCards[i].substring(playersCards[i].indexOf("-") + 1, playersCards[i].length),
                 value: playersCards[i].substring(0, playersCards[i].indexOf("-"))
             });
-            score = score + Number(cardHeirarchy.indexOf(playersCards[i].substring(0, playersCards[i].indexOf("-"))));
+            score = score + cardHeirarchy.indexOf(playersCards[i].substring(0, playersCards[i].indexOf("-")));
         }
         document.getElementById(playerIds[iteration]).innerHTML = playerCardsHTML;
         playersHands[iteration] = handObj;
