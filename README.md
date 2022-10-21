@@ -1,3 +1,4 @@
-# texas-holdem
+# texas-holdem (beta testing currently)
+#PLAY GAME HERE: https://aaronrs2002.github.io/texas-holdem/
 
-#beta testing currently. A Game still freezes on ocassiion. Testing to find out why.
+
