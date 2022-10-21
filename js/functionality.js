@@ -364,10 +364,14 @@ function evaluateHand(iteration, gameStep) {
         playerCardsInvolved = cardsInvolved;
         resultList[0] = bestHandIndex;
         document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
+        /*browser bug fix*/
+        document.querySelector("#" + playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
     }
     console.log("You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage);
     if (iteration !== 0 && gameStep === 4) {
         document.getElementById(playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
+        /*browser bug fix*/
+        document.querySelector("#" + playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
     }
     console.log(plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage);
     if (gameStep === 4 && iteration === lastIteration) {
