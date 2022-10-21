@@ -444,7 +444,7 @@ function evaluateHand(iteration, gameStep) {
         if (gameStep === 2 || gameStep === 3) {
             if (gameStep === 2 && iteration !== 0) {
                 if (resultList[iteration] >= 1 && valueArr[12] > 0) {
-                    if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
+                    if (connectedTwo === true || connectedThree === true || highCardCount > 1 || firstRoundSuited === true) {
                         document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + " Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
                         document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "betting";
                     } else {
