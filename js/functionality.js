@@ -427,7 +427,7 @@ function evaluateHand(iteration, gameStep) {
     }
     if (stepPlayed === false && activePlayers.indexOf(iteration) !== -1) {
 
-        if (gameStep === 1) {
+        if (gameStep === 1 && iteration !== 0) {
 
             if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
                 console.log("gameStep " + gameStep + " - passing bets.");
