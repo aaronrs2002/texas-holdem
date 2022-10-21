@@ -71,6 +71,7 @@ function clear(action) {
     document.getElementById("status").classList.add("hide");
     document.querySelector("button[title='Deal']").disabled = false;
     document.querySelector("button[title='Deal']").classList.remove("hide");
+    document.getElementById("communityCards").innerHTML = "";
 
 }
 
@@ -721,3 +722,4 @@ function deal() {
     }
     return false;
 }
+

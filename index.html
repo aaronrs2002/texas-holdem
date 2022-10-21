@@ -64,8 +64,7 @@
                             </select>
 
                         </div>
-                        <div class="col-12"><i><small>Game freezes on occasion. Testing to find out why.</small></i>
-                        </div>
+
 
                     </div>
                 </div>
@@ -134,7 +133,16 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 py-2">
+        <div class="col-md-12 py-1">
+            <div class="btn-group block" role="group" id="dictionaryOptions">
+                <button type="button" class="btn btn-primary active" data-word="2"
+                    onclick="javascript:choosePoker('texas-holdem')">Texas holdem</button>
+                <button type="button" class="btn btn-primary" data-word="1"
+                    onclick="javascript:choosePoker('five-card-draw')">5 card draw</button>
+
+            </div>
+        </div>
+        <div class="col-md-12 py-1">
 
             <div class="d-grid gap-2">
                 <button class="btn btn-info" onClick="javascript:toggle('rules')" type="button"
@@ -199,5 +207,6 @@
 <script src="https://aaronrs2002.github.io/black-jack/js/footer.js"></script>
 <script src="https://aaronrs2002.github.io/black-jack/js/cards.js"></script>
 <script src="js/functionality.js"></script>
+<script src="js/navigation.js"></script>
 
 </html>
