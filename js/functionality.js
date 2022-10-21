@@ -139,7 +139,6 @@ function removeActivePlyr(plyrID) {
         }
     }
     activePlayers = tempActivePlayer;
-    console.log("activePlayers: " + activePlayers);
     if (activePlayers == 0) {
         youWin();
     }
@@ -184,11 +183,7 @@ function evaluateHand(iteration, gameStep) {
     let king = 0;
     let ace = 0;
     for (let i = 0; i < cardsArr.length; i++) {
-        console.log("JSON.stringify(cardsArr): " + JSON.stringify(cardsArr))
-        console.log("cardHeirarchy.indexOf(cardsArr[i].value): " + cardHeirarchy.indexOf(cardsArr[i].value) + " - cardsArr[i].value: " + cardsArr[i].value);
-
         if (cardHeirarchy.indexOf(cardsArr[i].value) !== null) {
-            console.log("cardHeirarchy.indexOf(cardsArr[i].value): " + cardHeirarchy.indexOf(cardsArr[i].value) + " - is good.");
             cardIndexes.push(cardHeirarchy.indexOf(cardsArr[i].value));
         }
 
@@ -255,10 +250,7 @@ function evaluateHand(iteration, gameStep) {
             bestHandIndex = 5;
         }
     }
-    console.log("suitedArr: " + suitedArr + " - cardsArr: " + cardsArr + " - cardIndexes: " + cardIndexes);
-
     cardIndexes = cardIndexes.sort(((a, b) => a - b));
-    console.log("cardIndexes: " + cardIndexes);
     var results = [];
     let connectedTwo = false;
     let connectedThree = false;
@@ -281,7 +273,6 @@ function evaluateHand(iteration, gameStep) {
             }
         }
     }
-    console.log("Results: " + results);
     if (results.length > 0) {
         if (bestHandIndex < 4) {
             bestHandIndex = 4;
@@ -321,7 +312,6 @@ function evaluateHand(iteration, gameStep) {
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
         }
     }
-    console.log("valueArr: " + valueArr + " - cardsInvolved: " + cardsInvolved);
     if (valueArr.indexOf(2) !== -1) {
         compareCards[iteration] = valueArr.lastIndexOf(2);
     }
@@ -331,7 +321,6 @@ function evaluateHand(iteration, gameStep) {
     if (valueArr.indexOf(4) !== -1) {
         compareCards[iteration] = valueArr.lastIndexOf(4);
     }
-    console.log("compareCards: " + compareCards);
     if (pairQty > 1) { /*checking for 2 pair*/
         if (bestHandIndex < 2) {
             bestHandIndex = 2;
@@ -353,8 +342,6 @@ function evaluateHand(iteration, gameStep) {
         }
     }
     resultList[iteration] = bestHandIndex;
-
-    console.log("resultList: " + resultList);
     document.getElementById(playersDetails[iteration]).classList.remove("hide");
     let HighCardMessage = "";
     if (handHeirarchy[resultList[iteration]] === "high-card") {
@@ -367,21 +354,16 @@ function evaluateHand(iteration, gameStep) {
         /*browser bug fix*/
         document.querySelector("#" + playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
     }
-    console.log("You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage);
     if (iteration !== 0 && gameStep === 4) {
         document.getElementById(playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
         /*browser bug fix*/
         document.querySelector("#" + playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
     }
-    console.log(plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage);
     if (gameStep === 4 && iteration === lastIteration) {
         let winningHand = Math.max(...resultList);
         let winningCard;
-
-        console.log("Math.max(...resultList): " + winningHand + " - getOccurrence(resultList, winningHand): " + getOccurrence(resultList, winningHand));
         if (getOccurrence(resultList, winningHand) === 1) {
             topHand = resultList.indexOf(winningHand);
-            console.log("topHand: " + topHand);
         } else {
             for (let i = 0; i < resultList.length; i++) {
                 if (resultList[i] !== winningHand) {
@@ -390,20 +372,17 @@ function evaluateHand(iteration, gameStep) {
             }
             winningCard = Math.max(...compareCards);
             topHand = compareCards.indexOf(winningCard);
-            console.log("topHand: " + topHand + " - winningCard: " + winningCard + " -  getOccurrence(compareCards, winningCard): " + getOccurrence(compareCards, winningCard));
             if (getOccurrence(compareCards, winningCard) > 1) {
                 for (let i = 0; i < 4; i++) {
                     if (compareCards[i] === -1) {
                         cardScores[i] = -1;
                     }
                 }
-                console.log("compareCards: " + compareCards + " - cardScores: " + cardScores);
                 let highestScore = Math.max(...cardScores);
                 topHand = cardScores.indexOf(highestScore);
             }
         }
     }
-    console.log("topHand: " + topHand);
     let highCardCount = 0;  /*FIRST ROUND*/
     for (let i = 0; i < valueArr.length; i++) {
         if (i > 7 && valueArr[i] > 0) {
@@ -411,22 +390,18 @@ function evaluateHand(iteration, gameStep) {
         }
     }
     /*END OF HAND EVALUATION */
-    console.log("activePlayers: " + activePlayers + " - resultsList: " + resultList + "  - compareCards: " + compareCards);
     let firstRoundSuited = false;
     let threeSuited = false;
     let fourSuited = false;
     for (let i = 0; i < suitedArr.length; i++) {/*determine if the first round has match suit*/
         if (suitedArr[i] > 1) {
             firstRoundSuited = true;
-            console.log("firstRoundSuited: " + firstRoundSuited + " - suitedArr: " + suitedArr);
         }
         if (suitedArr[i] > 2) {
             threeSuited = true;
-            console.log("threeSuited: " + threeSuited + " - suitedArr: " + suitedArr);
         }
         if (suitedArr[i] > 3) {
             fourSuited = true;
-            console.log("fourSuited: " + fourSuited + " - suitedArr: " + suitedArr);
         }
     }
     if (stepPlayed === false && activePlayers.indexOf(iteration) !== -1) {
@@ -434,13 +409,11 @@ function evaluateHand(iteration, gameStep) {
         if (gameStep === 1 && iteration !== 0) {
 
             if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
-                console.log("gameStep " + gameStep + " - passing bets.");
                 document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
                 document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
             } else {
                 document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": checks.";
                 document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
-                console.log("gameStep " + gameStep + " - checking bets.");
             }
 
             if (iteration == lastIteration) {
@@ -472,11 +445,9 @@ function evaluateHand(iteration, gameStep) {
             if (gameStep === 2 && iteration !== 0) {
                 if (resultList[iteration] >= 1 && valueArr[12] > 0) {
                     if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
-                        console.log("gameStep " + gameStep + " - passing bets.");
                         document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + " Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
                         document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "betting";
                     } else {
-                        console.log("gameStep " + gameStep + " - checking bets.");
                         document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + " Player " + (Number(iteration) + 1) + ": checks.";
                         document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "checking";
                     }
@@ -484,11 +455,9 @@ function evaluateHand(iteration, gameStep) {
             }
             if (gameStep === 3 && iteration !== 0) {
                 if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
-                    console.log("gameStep " + gameStep + " - passing bets.");
                     document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
                     document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "betting";
                 } else {
-                    console.log("gameStep " + gameStep + " - checking bets.");
                     document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": checks.";
                     document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "checking";
                 }
@@ -515,7 +484,6 @@ function evaluateHand(iteration, gameStep) {
                 document.querySelector("[data-round='match']").disabled = false;
                 document.querySelector("[data-round='check']").disabled = false;
                 stepPlayed = true;
-                console.log("gameStep " + gameStep + " - finished.");
                 return false;
             }
 
@@ -531,10 +499,8 @@ function evaluateHand(iteration, gameStep) {
             for (let i = 0; i < 4; i++) {
                 let playerCardsHTML = "";
                 for (let j = 0; j < playersHands[i].length; j++) {
-                    console.log("gameStep:" + gameStep + " - playersHands[i][j].value + " + playersHands[i][j].value + " - playersHands[i][j].suit -" + playersHands[i][j].suit);
                     playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[i][j].value + "-" + playersHands[i][j].suit + "' ></div>";
                     document.getElementById(playerIds[i]).innerHTML = playerCardsHTML;
-                    console.log("nested loop i:" + i + " - j: " + j);
                 }
             }
             document.getElementById("foldBt").classList.add("hide");
@@ -545,22 +511,17 @@ function evaluateHand(iteration, gameStep) {
 
             document.querySelector("[data-round='match']").disabled = false;
             document.querySelector("[data-round='check']").disabled = false;
-            console.log("gameStep " + gameStep + " - finished.");
             stepPlayed = true;
             return false;
         }
 
-    } else {
-        console.log("CAN'T PLAY iteration: " + iteration);
     }
 }
 
 function match(checked) {
     document.querySelector("[data-round='match']").disabled = true;
     document.querySelector("[data-round='check']").disabled = true;
-    console.log("activePlayers: " + activePlayers);
     window.location = "#";
-    //let activeCards = JSON.parse(localStorage.getItem("completeCards"));
     gameIncrement = gameIncrement + 1;
     let gameStep = gameIncrement;
     let maxLength = 4;
@@ -574,14 +535,12 @@ function match(checked) {
             bet = bet + monetaryVal[gameStep];
             playerMoney = playerMoney - monetaryVal[gameStep];
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
-            console.log("PLAYER 1 gameStep: " + gameStep + " - (" + monetaryVal[gameStep] + " * " + activePlayers.length + ") $" + (monetaryVal[gameStep] * activePlayers.length) + " added to the POT: $" + thePot + " - Bet $" + bet);
         }
         if (gameStep === 3) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
             bet = bet + monetaryVal[gameStep];
             playerMoney = playerMoney - monetaryVal[gameStep];
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
-            console.log("PLAYER 1 gameStep: " + gameStep + " - (" + monetaryVal[gameStep] + " * " + activePlayers.length + ") $" + (monetaryVal[gameStep] * activePlayers.length) + " added to the POT: $" + thePot + " - Bet $" + bet);
         }
         if (gameStep === 4) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
@@ -590,7 +549,6 @@ function match(checked) {
             document.getElementById("foldBt").classList.add("hide");
             document.querySelector("[data-round='match']").classList.add("hide");
             document.querySelector("[data-round='check']").classList.add("hide");
-            console.log("PLAYER 1 gameStep: " + gameStep + " - (" + monetaryVal[gameStep] + " * " + activePlayers.length + ") $" + (monetaryVal[gameStep] * activePlayers.length) + " added to the POT: $" + thePot + " - Bet $" + bet);
         }
     }
     document.getElementById("playerMoney").innerHTML = playerMoney;
@@ -623,7 +581,6 @@ function match(checked) {
                     suit: activeCards[genNumber].title.substring(activeCards[genNumber].title.indexOf("-") + 1, activeCards[genNumber].title.length),
                     value: activeCards[genNumber].title.substring(0, activeCards[genNumber].title.indexOf("-"))
                 });
-                console.log("PUSHING TO COMMUITY CARDS " + activeCards[genNumber].title + " gameStep: " + gameStep + " communityCards: " + communityCards);
                 usedCardsArr.push(cards[genNumber].title);
 
                 document.getElementById("communityCards").innerHTML = communityCardsHTML;
@@ -640,7 +597,6 @@ function match(checked) {
                 evaled.push(activePlayers[i]);
             }
         }
-        console.log("activePlayers: " + activePlayers + " - evaled: " + evaled);
     }
 
 }
@@ -648,7 +604,6 @@ function match(checked) {
 function deal() {
     usedCardsArr = [];
     playedTimes = playedTimes + 1;
-    console.log("You have played this game " + playedTimes + " before it crashed.");
     gameIncrement = 1;
     communityCards = [];
     bestHandIndex = 0;
@@ -687,8 +642,6 @@ function deal() {
     document.querySelector("button[title='Deal']").disabled = true;
     document.querySelector("button[title='Deal']").classList.add("hide");
     cards = JSON.parse(localStorage.getItem("completeCards"));
-    //let activeCards = cards;
-    //console.log("gameIncrement: " + gameIncrement + " - ALL PLAYERS adding $10 to the POT: $" + thePot + " - Bet $" + bet);
     function generatePlayer(iteration) {
         cardsInvolved = "";
         let playersCards = [];
