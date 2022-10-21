@@ -465,7 +465,7 @@ function evaluateHand(iteration, gameStep) {
 
 
         if (gameStep === 2 || gameStep === 3) {
-            if (gameStep === 2) {
+            if (gameStep === 2 && iteration !== 0) {
                 if (resultList[iteration] >= 1 && valueArr[12] > 0) {
                     if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
                         console.log("gameStep " + gameStep + " - passing bets.");
@@ -478,7 +478,7 @@ function evaluateHand(iteration, gameStep) {
                     }
                 }
             }
-            if (gameStep === 3) {
+            if (gameStep === 3 && iteration !== 0) {
                 if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
                     console.log("gameStep " + gameStep + " - passing bets.");
                     document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
@@ -489,7 +489,7 @@ function evaluateHand(iteration, gameStep) {
                     document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "checking";
                 }
             }/*broke up conditionals to help the javascript process*/
-            if (iteration === lastIteration) {
+            if (iteration === lastIteration && iteration !== 0) {
                 if (document.querySelector("[data-status='betting']") !== null) {
                     [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
                         let whichPlayer = Number(e.getAttribute("data-player"));
