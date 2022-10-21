@@ -427,97 +427,96 @@ function evaluateHand(iteration, gameStep) {
     }
     if (stepPlayed === false && activePlayers.indexOf(iteration) !== -1) {
 
-        if (iteration !== 0) {
-            if (gameStep === 1) {
+        if (gameStep === 1) {
 
-                if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
-                    console.log("gameStep " + gameStep + " - passing bets.");
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
-                    document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
-                } else {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": checks.";
-                    document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
-                    console.log("gameStep " + gameStep + " - checking bets.");
-                }
-
-                if (iteration == lastIteration) {
-                    if (document.querySelector("[data-status='betting']") !== null) {
-                        [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
-                            let whichPlayer = Number(e.getAttribute("data-player"));
-                            removeActivePlyr(whichPlayer);
-                            e.innerHTML = plyr + " Player " + (whichPlayer + 1) + ": folded.";
-                            e.dataset.status = "folded";
-                        });
-                        document.querySelector("[data-round='match']").classList.remove("hide");
-                        document.querySelector("[data-round='check']").classList.add("hide");
-                    } else {
-                        document.querySelector("[data-round='match']").classList.add("hide");
-                        document.getElementById("foldBt").classList.add("hide");
-                        document.querySelector("[data-round='check']").classList.remove("hide");
-                    }
-                    document.querySelector("[data-round='match']").disabled = false;
-                    document.querySelector("[data-round='check']").disabled = false;
-                    stepPlayed = true;
-                    return false;
-                }
-
+            if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
+                console.log("gameStep " + gameStep + " - passing bets.");
+                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
+            } else {
+                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": checks.";
+                document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
+                console.log("gameStep " + gameStep + " - checking bets.");
             }
 
-
-
-            if (gameStep === 2 || gameStep === 3) {
-                if (gameStep === 2) {
-                    if (resultList[iteration] >= 1 && valueArr[12] > 0) {
-                        if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
-                            console.log("gameStep " + gameStep + " - passing bets.");
-                            document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + " Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
-                            document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "betting";
-                        } else {
-                            console.log("gameStep " + gameStep + " - checking bets.");
-                            document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + " Player " + (Number(iteration) + 1) + ": checks.";
-                            document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "checking";
-                        }
-                    }
+            if (iteration == lastIteration) {
+                if (document.querySelector("[data-status='betting']") !== null) {
+                    [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
+                        let whichPlayer = Number(e.getAttribute("data-player"));
+                        removeActivePlyr(whichPlayer);
+                        e.innerHTML = plyr + " Player " + (whichPlayer + 1) + ": folded.";
+                        e.dataset.status = "folded";
+                    });
+                    document.querySelector("[data-round='match']").classList.remove("hide");
+                    document.querySelector("[data-round='check']").classList.add("hide");
+                } else {
+                    document.querySelector("[data-round='match']").classList.add("hide");
+                    document.getElementById("foldBt").classList.add("hide");
+                    document.querySelector("[data-round='check']").classList.remove("hide");
                 }
-                if (gameStep === 3) {
-                    if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
+                document.querySelector("[data-round='match']").disabled = false;
+                document.querySelector("[data-round='check']").disabled = false;
+                stepPlayed = true;
+                return false;
+            }
+
+        }
+
+
+
+        if (gameStep === 2 || gameStep === 3) {
+            if (gameStep === 2) {
+                if (resultList[iteration] >= 1 && valueArr[12] > 0) {
+                    if (connectedTwo === true || highCardCount > 1 || firstRoundSuited === true) {
                         console.log("gameStep " + gameStep + " - passing bets.");
-                        document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                        document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + " Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
                         document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "betting";
                     } else {
                         console.log("gameStep " + gameStep + " - checking bets.");
-                        document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": checks.";
+                        document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + " Player " + (Number(iteration) + 1) + ": checks.";
                         document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "checking";
                     }
-                }/*broke up conditionals to help the javascript process*/
-                if (iteration === lastIteration) {
-                    if (document.querySelector("[data-status='betting']") !== null) {
-                        [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
-                            let whichPlayer = Number(e.getAttribute("data-player"));
-                            removeActivePlyr(whichPlayer);
-                            e.innerHTML = "Player " + (iteration + 1) + ": " + (whichPlayer + 1) + ": folded.";
-                            e.dataset.status = "folded";
-                        });
-                        [].forEach.call(document.querySelectorAll("[data-status='betting']"), function (e) {
-                            e.innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
-                        });
-                        document.getElementById("foldBt").classList.remove("hide");
-                        document.querySelector("[data-round='match']").classList.remove("hide");
-                        document.querySelector("[data-round='check']").classList.add("hide");
-                    } else {
-                        document.querySelector("[data-round='match']").classList.add("hide");
-                        document.getElementById("foldBt").classList.add("hide");
-                        document.querySelector("[data-round='check']").classList.remove("hide");
-                    }
-                    document.querySelector("[data-round='match']").disabled = false;
-                    document.querySelector("[data-round='check']").disabled = false;
-                    stepPlayed = true;
-                    console.log("gameStep " + gameStep + " - finished.");
-                    return false;
                 }
-
             }
-        }/*end no player 0*/
+            if (gameStep === 3) {
+                if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
+                    console.log("gameStep " + gameStep + " - passing bets.");
+                    document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                    document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "betting";
+                } else {
+                    console.log("gameStep " + gameStep + " - checking bets.");
+                    document.querySelector("[data-player='" + Number(iteration) + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": checks.";
+                    document.querySelector("[data-player='" + Number(iteration) + "']").dataset.status = "checking";
+                }
+            }/*broke up conditionals to help the javascript process*/
+            if (iteration === lastIteration) {
+                if (document.querySelector("[data-status='betting']") !== null) {
+                    [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
+                        let whichPlayer = Number(e.getAttribute("data-player"));
+                        removeActivePlyr(whichPlayer);
+                        e.innerHTML = "Player " + (iteration + 1) + ": " + (whichPlayer + 1) + ": folded.";
+                        e.dataset.status = "folded";
+                    });
+                    [].forEach.call(document.querySelectorAll("[data-status='betting']"), function (e) {
+                        e.innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                    });
+                    document.getElementById("foldBt").classList.remove("hide");
+                    document.querySelector("[data-round='match']").classList.remove("hide");
+                    document.querySelector("[data-round='check']").classList.add("hide");
+                } else {
+                    document.querySelector("[data-round='match']").classList.add("hide");
+                    document.getElementById("foldBt").classList.add("hide");
+                    document.querySelector("[data-round='check']").classList.remove("hide");
+                }
+                document.querySelector("[data-round='match']").disabled = false;
+                document.querySelector("[data-round='check']").disabled = false;
+                stepPlayed = true;
+                console.log("gameStep " + gameStep + " - finished.");
+                return false;
+            }
+
+        }
+
         if (gameStep === 4 && iteration === lastIteration) {
             messageElement.classList.remove("hide");
             if (topHand === 0) {
