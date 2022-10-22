@@ -100,6 +100,7 @@ function youWin() {
     document.getElementById("status").classList.add("alert-success");
     messageElement.innerHTML = "You Won $" + thePot;
     playerMoney = playerMoney + thePot;
+    setPlayerMoney(playerMoney);
     document.getElementById("playerMoney").classList.remove("hide");
     document.querySelector("#playerMoney").innerHTML = playerMoney;
     document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM <small>(BETA TESTING)</small>";
@@ -117,6 +118,7 @@ function youLose(topHand) {
     document.querySelector("[data-player='0']").classList.add("alert-danger");
     document.getElementById("status").classList.remove("alert-success"); document.getElementById("status").classList.remove("alert-info"); document.getElementById("status").classList.add("alert-danger");
     playerMoney = playerMoney - bet;
+    setPlayerMoney(playerMoney);
     document.getElementById("betTarget").innerHTML = "Place your bet.";
     document.querySelector("#playerMoney").innerHTML = playerMoney;
     document.querySelector("[data-round='check']").classList.add("hide");
