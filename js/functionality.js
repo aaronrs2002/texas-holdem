@@ -77,8 +77,8 @@ function clear(action) {
 
 function fold() {
     playerMoney = playerMoney - bet;
-    setPlayerMoney(playerMoney);
     bet = Math.round(bet);
+    setPlayerMoney(playerMoney);
     document.getElementById("betTarget").innerHTML = "Folded. You lost $" + bet + ". Place your bet.";
     clear("fold");
     window.location = "#";
@@ -536,18 +536,21 @@ function match(checked) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
             bet = bet + monetaryVal[gameStep];
             playerMoney = playerMoney - monetaryVal[gameStep];
+            setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
         }
         if (gameStep === 3) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
             bet = bet + monetaryVal[gameStep];
             playerMoney = playerMoney - monetaryVal[gameStep];
+            setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
         }
         if (gameStep === 4) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
             bet = bet + monetaryVal[gameStep];
             playerMoney = playerMoney - monetaryVal[gameStep];
+            setPlayerMoney(playerMoney);
             document.getElementById("foldBt").classList.add("hide");
             document.querySelector("[data-round='match']").classList.add("hide");
             document.querySelector("[data-round='check']").classList.add("hide");
@@ -633,6 +636,7 @@ function deal() {
     thePot = 40;
 
     playerMoney = playerMoney - bet;
+    setPlayerMoney(playerMoney);
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
     document.querySelector("#playerMoney").innerHTML = playerMoney;
     document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[2]
