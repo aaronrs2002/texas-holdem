@@ -99,7 +99,7 @@ function youWin() {
     setPlayerMoney(playerMoney);
     document.getElementById("playerMoney").classList.remove("hide");
     document.querySelector("#playerMoney").innerHTML = playerMoney;
-    document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM <small>(BETA TESTING)</small>";
+    document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
     return false;
 }
 
