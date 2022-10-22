@@ -91,9 +91,9 @@ function youWin() {
     document.querySelector("button[title='Deal']").classList.remove("hide");
     yourDetails.classList.remove("alert-info");
     yourDetails.classList.add("alert-success");
-    document.querySelector("#status").classList.remove("alert-info");
+    document.querySelector("#notification").classList.remove("alert-info");
     document.querySelector("#status").classList.remove("hide");
-    document.getElementById("status").classList.add("alert-success");
+    document.getElementById("notification").classList.add("alert-success");
     messageElement.innerHTML = "You Won $" + thePot;
     playerMoney = playerMoney + thePot;
     setPlayerMoney(playerMoney);
@@ -112,7 +112,7 @@ function youLose(topHand) {
     document.querySelector("[data-player='0']").classList.remove("alert-success");
     document.querySelector("[data-player='0']").classList.remove("alert-info");
     document.querySelector("[data-player='0']").classList.add("alert-danger");
-    document.getElementById("status").classList.remove("alert-success"); document.getElementById("status").classList.remove("alert-info"); document.getElementById("status").classList.add("alert-danger");
+    document.getElementById("notification").classList.remove("alert-success"); document.getElementById("notification").classList.remove("alert-info"); document.getElementById("notification").classList.add("alert-danger");
     document.getElementById("betTarget").innerHTML = "Place your bet.";
     document.querySelector("[data-round='check']").classList.add("hide");
     document.getElementById("foldBt").classList.add("hide");
@@ -622,8 +622,9 @@ function deal() {
         e.dataset.status = "ready";
     });
     document.getElementById("status").classList.add("hide");
-    document.getElementById("status").classList.remove("alert-success");
-    document.getElementById("status").classList.remove("alert-danger");
+    document.getElementById("notification").classList.remove("alert-success");
+    document.getElementById("notification").classList.remove("alert-danger");
+    document.getElementById("notification").classList.add("alert-info");
     document.getElementById("message").innerHTML = "";
     bet = 10;
     thePot = 40;

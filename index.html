@@ -47,7 +47,7 @@
             </div>
 
             <div class="col-md-12">
-                <div class="alert alert-info" role="alert">
+                <div class="alert alert-info" role="alert" id="notification">
                     <div class="row">
 
                         <div class="col-6">
@@ -62,6 +62,11 @@
                                 <option value="2">2 opponents</option>
                                 <option value="3" selected>3 opponents</option>
                             </select>
+
+                        </div>
+                        <div class="col-md-12 hide" id="status">
+
+                            <h3 id="message"></h3>
 
                         </div>
 
@@ -100,11 +105,7 @@
                 <div class="col-md-12 py-1">
                     <div class="alert alert-info hide" role="alert" id="playerHandDetails" data-player="0"></div>
                 </div>
-                <div class="col-md-12 py-1">
-                    <div class="alert hide" id="status" role="alert">
-                        <h5 id="message"></h5>
-                    </div>
-                </div>
+
             </div>
             <div class="col-md-3">
                 <div class="col-md-12" id="playerTwoCards">
