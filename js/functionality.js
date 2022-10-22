@@ -38,7 +38,7 @@ let monetaryVal = [10, 25, 35, 45, 50];
 
 function setPlayerMoney(passPlayerMoney) {
     playerMoney = passPlayerMoney;
-    playerMoney = Math.round(playerMoney);
+    // playerMoney = Math.round(playerMoney);
     document.getElementById("playerMoney").innerHTML = passPlayerMoney;
     document.querySelector("#playerMoney").innerHTML = passPlayerMoney;/*SAFARI BUG NEEDS BOTH*/
     localStorage.setItem("balance", passPlayerMoney);
@@ -76,8 +76,8 @@ function clear(action) {
 }
 
 function fold() {
-    playerMoney = playerMoney - bet;
     bet = Math.round(bet);
+    playerMoney = playerMoney - bet;
     setPlayerMoney(playerMoney);
     document.getElementById("betTarget").innerHTML = "Folded. You lost $" + bet + ". Place your bet.";
     clear("fold");
