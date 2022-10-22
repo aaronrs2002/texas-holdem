@@ -76,8 +76,8 @@ function clear(action) {
 }
 
 function fold() {
-    bet = Math.round(bet);
-    playerMoney = playerMoney - bet;
+    //bet = Math.round(bet);
+    playerMoney = (playerMoney - bet);
     setPlayerMoney(playerMoney);
     document.getElementById("betTarget").innerHTML = "Folded. You lost $" + bet + ". Place your bet.";
     clear("fold");
@@ -117,10 +117,10 @@ function youLose(topHand) {
     document.querySelector("[data-player='0']").classList.remove("alert-info");
     document.querySelector("[data-player='0']").classList.add("alert-danger");
     document.getElementById("status").classList.remove("alert-success"); document.getElementById("status").classList.remove("alert-info"); document.getElementById("status").classList.add("alert-danger");
-    playerMoney = playerMoney - bet;
+    playerMoney = (playerMoney - bet);
     setPlayerMoney(playerMoney);
     document.getElementById("betTarget").innerHTML = "Place your bet.";
-    document.querySelector("#playerMoney").innerHTML = playerMoney;
+    //document.querySelector("#playerMoney").innerHTML = playerMoney;
     document.querySelector("[data-round='check']").classList.add("hide");
     document.getElementById("foldBt").classList.add("hide");
     document.querySelector("[data-round='match']").classList.add("hide");
@@ -535,21 +535,21 @@ function match(checked) {
         if (gameStep === 2) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
             bet = bet + monetaryVal[gameStep];
-            playerMoney = playerMoney - monetaryVal[gameStep];
+            playerMoney = (playerMoney - monetaryVal[gameStep]);
             setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
         }
         if (gameStep === 3) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
             bet = bet + monetaryVal[gameStep];
-            playerMoney = playerMoney - monetaryVal[gameStep];
+            playerMoney = (playerMoney - monetaryVal[gameStep]);
             setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
         }
         if (gameStep === 4) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
             bet = bet + monetaryVal[gameStep];
-            playerMoney = playerMoney - monetaryVal[gameStep];
+            playerMoney = (playerMoney - monetaryVal[gameStep]);
             setPlayerMoney(playerMoney);
             document.getElementById("foldBt").classList.add("hide");
             document.querySelector("[data-round='match']").classList.add("hide");
@@ -635,7 +635,7 @@ function deal() {
     bet = 10;
     thePot = 40;
 
-    playerMoney = playerMoney - bet;
+    playerMoney = (playerMoney - bet);
     setPlayerMoney(playerMoney);
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
     document.querySelector("#playerMoney").innerHTML = playerMoney;
