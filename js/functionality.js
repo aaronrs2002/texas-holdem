@@ -38,7 +38,6 @@ let monetaryVal = [10, 25, 35, 45, 50];
 
 function setPlayerMoney(passPlayerMoney) {
     playerMoney = passPlayerMoney;
-    // playerMoney = Math.round(playerMoney);
     document.getElementById("playerMoney").innerHTML = passPlayerMoney;
     document.querySelector("#playerMoney").innerHTML = passPlayerMoney;/*SAFARI BUG NEEDS BOTH*/
     localStorage.setItem("balance", passPlayerMoney);
@@ -76,9 +75,6 @@ function clear(action) {
 }
 
 function fold() {
-    //bet = Math.round(bet);
-    // playerMoney = (playerMoney - bet);
-    //setPlayerMoney(playerMoney);
     document.getElementById("betTarget").innerHTML = "Folded. You lost $" + bet + ". Place your bet.";
     clear("fold");
     window.location = "#";
@@ -117,10 +113,7 @@ function youLose(topHand) {
     document.querySelector("[data-player='0']").classList.remove("alert-info");
     document.querySelector("[data-player='0']").classList.add("alert-danger");
     document.getElementById("status").classList.remove("alert-success"); document.getElementById("status").classList.remove("alert-info"); document.getElementById("status").classList.add("alert-danger");
-    // playerMoney = (playerMoney - bet);
-    //setPlayerMoney(playerMoney);
     document.getElementById("betTarget").innerHTML = "Place your bet.";
-    //document.querySelector("#playerMoney").innerHTML = playerMoney;
     document.querySelector("[data-round='check']").classList.add("hide");
     document.getElementById("foldBt").classList.add("hide");
     document.querySelector("[data-round='match']").classList.add("hide");
