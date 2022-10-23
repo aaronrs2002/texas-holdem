@@ -15,7 +15,6 @@ let player2Obj;
 let player3Obj;
 const playersHands = [player0Obj, player1Obj, player2Obj, player3Obj];
 let bestHandIndex = 0;
-let cardScores = [0, 0, 0, 0];
 let resultList = [0, 0, 0, 0];
 let compareCards = [0, 0, 0, 0];
 let activePlayers = [0, 1, 2, 3];
@@ -80,7 +79,13 @@ function fold() {
     window.location = "#";
 }
 
-function youWin() {
+function youWin(type) {
+    if (type === "split") {
+        thePot = (thePot / 2);
+        document.getElementById("betTarget").innerHTML = "SPLIT";
+    } else {
+        document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
+    }
     document.getElementById("foldBt").classList.add("hide");
     document.querySelector("[data-round='match']").classList.add("hide");
     document.querySelector("[data-round='check']").classList.add("hide");
@@ -99,7 +104,6 @@ function youWin() {
     setPlayerMoney(playerMoney);
     document.getElementById("playerMoney").classList.remove("hide");
     document.querySelector("#playerMoney").innerHTML = playerMoney;
-    document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
     return false;
 }
 
@@ -126,7 +130,6 @@ function youLose(topHand) {
 function removeActivePlyr(plyrID) {
     compareCards[plyrID] = -1;
     resultList[plyrID] = -1;
-    cardScores[plyrID] = -1;
     let tempActivePlayer = [];
     for (let i = 0; i < activePlayers.length; i++) {
         if (activePlayers[i] !== plyrID) {
@@ -135,7 +138,7 @@ function removeActivePlyr(plyrID) {
     }
     activePlayers = tempActivePlayer;
     if (activePlayers == 0) {
-        youWin();
+        youWin("default");
     }
 
 }
@@ -368,13 +371,18 @@ function evaluateHand(iteration, gameStep) {
             winningCard = Math.max(...compareCards);
             topHand = compareCards.indexOf(winningCard);
             if (getOccurrence(compareCards, winningCard) > 1) {
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < compareCards.length; i++) {
                     if (compareCards[i] === -1) {
-                        cardScores[i] = -1;
+                        playerHighCards[i] = -1;
                     }
                 }
-                let highestScore = Math.max(...cardScores);
-                topHand = cardScores.indexOf(highestScore);
+                winningCard = Math.max(...playerHighCards);
+                topHand = playerHighCards.indexOf(winningCard);
+
+                if (getOccurrence(playerHighCards, winningCard) > 1) {
+                    youWin("split");
+
+                }
             }
         }
     }
@@ -487,7 +495,7 @@ function evaluateHand(iteration, gameStep) {
         if (gameStep === 4 && iteration === lastIteration) {
             messageElement.classList.remove("hide");
             if (topHand === 0) {
-                youWin();
+                youWin("default");
             } else {
                 youLose(topHand);
             }
@@ -605,7 +613,6 @@ function deal() {
     gameIncrement = 1;
     communityCards = [];
     bestHandIndex = 0;
-    cardScores = [0, 0, 0, 0];
     resultList = [0, 0, 0, 0];
     compareCards = [0, 0, 0, 0];
     activePlayers = [0, 1, 2, 3];
@@ -669,7 +676,6 @@ function deal() {
         }
         document.getElementById(playerIds[iteration]).innerHTML = playerCardsHTML;
         playersHands[iteration] = handObj;
-        cardScores[iteration] = score;
         evaluateHand(iteration, 1);
         return false;
     }
