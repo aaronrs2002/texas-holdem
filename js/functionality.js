@@ -83,7 +83,9 @@ function youWin(type) {
     if (type === "split") {
         thePot = (thePot / 2);
         document.getElementById("betTarget").innerHTML = "SPLIT POT";
+        messageElement.innerHTML = "Split pot. You Won $" + thePot;
     } else {
+        messageElement.innerHTML = "You Won $" + thePot;
         document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
     }
     document.getElementById("foldBt").classList.add("hide");
@@ -99,7 +101,7 @@ function youWin(type) {
     document.querySelector("#notification").classList.remove("alert-info");
     document.querySelector("#status").classList.remove("hide");
     document.getElementById("notification").classList.add("alert-success");
-    messageElement.innerHTML = "You Won $" + thePot;
+
     playerMoney = playerMoney + thePot;
     setPlayerMoney(playerMoney);
     document.getElementById("playerMoney").classList.remove("hide");
