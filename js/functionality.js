@@ -82,7 +82,7 @@ function fold() {
 function youWin(type) {
     if (type === "split") {
         thePot = (thePot / 2);
-        document.getElementById("betTarget").innerHTML = "SPLIT";
+        document.getElementById("betTarget").innerHTML = "SPLIT POT";
     } else {
         document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
     }
