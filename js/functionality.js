@@ -360,11 +360,19 @@ function evaluateHand(iteration, gameStep) {
         document.querySelector("#" + playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
     }
     if (gameStep === 4 && iteration === lastIteration) {
+        if (getOccurrence(valueArr, 2) > 2) {/*player cannot have 3 pair. Get rid of lowest pair here*/
+            for (let i = 0; i < valueArr.length; i++) {
+                if (valueArr[i] === 2 && getOccurrence(valueArr, 2) > 2) {
+                    valueArr[i] = -2;
+                }
+            }
+        }
         let winningHand = Math.max(...resultList);
         let winningCard;
         if (getOccurrence(resultList, winningHand) === 1) {
             topHand = resultList.indexOf(winningHand);
         } else {
+
             for (let i = 0; i < resultList.length; i++) {
                 if (resultList[i] !== winningHand) {
                     compareCards[i] = -1;
