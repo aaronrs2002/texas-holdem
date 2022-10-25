@@ -568,7 +568,6 @@ function match(checked) {
         }
     } else {
         document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
-        console.log("did this work?")
     }
     document.getElementById("playerMoney").innerHTML = playerMoney;
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
