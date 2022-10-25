@@ -566,6 +566,9 @@ function match(checked) {
             document.querySelector("[data-round='match']").classList.add("hide");
             document.querySelector("[data-round='check']").classList.add("hide");
         }
+    } else {
+        document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
+        console.log("did this work?")
     }
     document.getElementById("playerMoney").innerHTML = playerMoney;
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
