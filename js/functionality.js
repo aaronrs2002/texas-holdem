@@ -480,7 +480,7 @@ function evaluateHand(iteration, gameStep) {
                     [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
                         let whichPlayer = Number(e.getAttribute("data-player"));
                         removeActivePlyr(whichPlayer);
-                        e.innerHTML = "Player " + (iteration + 1) + ": " + (whichPlayer + 1) + ": folded.";
+                        e.innerHTML = "Player " + (iteration + 1) + ": " + (whichPlayer + 1) + " folded.";
                         e.dataset.status = "folded";
                     });
                     [].forEach.call(document.querySelectorAll("[data-status='betting']"), function (e) {
