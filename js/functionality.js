@@ -305,7 +305,13 @@ function evaluateHand(iteration, gameStep) {
             tripleQty = tripleQty + 1;
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
         }
-        if (valueArr[i] === 4) {
+
+if (bestHandIndex < 4 && straight === true {
+                        bestHandIndex = 4;
+
+                    }
+
+        if (valueArre[i] === 4) {
             if (bestHandIndex < 7) {
                 bestHandIndex = 7;
             }
