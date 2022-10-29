@@ -306,7 +306,7 @@ function evaluateHand(iteration, gameStep) {
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
         }
 
-if (bestHandIndex < 4 && straight === true {
+if (bestHandIndex < 4 && straight === true ){
                         bestHandIndex = 4;
 
                     }
