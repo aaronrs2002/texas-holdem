@@ -251,13 +251,11 @@ function evaluateHand(iteration, gameStep) {
         }
     }
     cardIndexes = cardIndexes.sort(((a, b) => a - b));
-    var results = [];
     let connectedTwo = false;
     let connectedThree = false;
     let connectedFour = false;
     for (var i = 0; i < cardIndexes.length; i++) {    /*DETERMINE A STRIGHT*/
         if (cardIndexes[i + 1] == cardIndexes[i] + 1 && cardIndexes[i + 2] == cardIndexes[i] + 2 && cardIndexes[i + 3] == cardIndexes[i] + 3 && cardIndexes[i + 4] == cardIndexes[i] + 4) {
-            results.push(i);
             compareCards[iteration] = i;
             while (cardIndexes[i] + 1 == cardIndexes[i + 1]) {
                 if (i == 2) {/*for first round deal*/
@@ -269,16 +267,18 @@ function evaluateHand(iteration, gameStep) {
                 if (i == 4) {
                     connectedFour = true;
                 }
+                if (i == 5) {
+                    straight = true;
+                    if (bestHandIndex < 4) {
+                        bestHandIndex = 4;
+
+                    }
+                }
                 i++;
             }
         }
     }
-    if (results.length > 0) {
-        if (bestHandIndex < 4) {
-            bestHandIndex = 4;
-            straight = true;
-        }
-    }
+
     let valueArr = [two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace]; /*Determine matching values*/
     let pairQty = 0;
     let tripleQty = 0;
