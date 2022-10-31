@@ -254,31 +254,23 @@ function evaluateHand(iteration, gameStep) {
     let connectedTwo = false;
     let connectedThree = false;
     let connectedFour = false;
-    for (var i = 0; i < cardIndexes.length; i++) {    /*DETERMINE A STRIGHT*/
-        if (cardIndexes[i + 1] == cardIndexes[i] + 1 && cardIndexes[i + 2] == cardIndexes[i] + 2 && cardIndexes[i + 3] == cardIndexes[i] + 3 && cardIndexes[i + 4] == cardIndexes[i] + 4) {
-            compareCards[iteration] = i;
-            while (cardIndexes[i] + 1 == cardIndexes[i + 1]) {
-                if (i == 2) {/*for first round deal*/
-                    connectedTwo = true;
-                }
-                if (i == 3) {
-                    connectedThree = true;
-                }
-                if (i == 4) {
-                    connectedFour = true;
-                }
-                if (i == 5) {
-                    straight = true;
-                    if (bestHandIndex < 4) {
-                        bestHandIndex = 4;
-
-                    }
-                }
-                i++;
+    for (var i = 0; i < cardIndexes.length; i++) {    /*LOOKING FOR A STRIGHT*/
+        if (cardIndexes[i + 1] === cardIndexes[i] + 1) {
+            connectedTwo = true;
+        }
+        if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2) {
+            connectedThree = true;
+        }
+        if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2 && cardIndexes[i + 3] === cardIndexes[i] + 3) {
+            connectedFour = true;
+        }
+        if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2 && cardIndexes[i + 3] === cardIndexes[i] + 3 && cardIndexes[i + 4] === cardIndexes[i] + 4) {
+            straight = true;
+            if (bestHandIndex < 4) {
+                bestHandIndex = 4;
             }
         }
     }
-
     let valueArr = [two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace]; /*Determine matching values*/
     let pairQty = 0;
     let tripleQty = 0;
@@ -332,8 +324,7 @@ function evaluateHand(iteration, gameStep) {
             bestHandIndex = 6;
         }
     }
-
-    if (bestHandIndex < 4 && straight == true) {
+    if (bestHandIndex < 4 && straight === true) {
         bestHandIndex = 4;
     }
 
