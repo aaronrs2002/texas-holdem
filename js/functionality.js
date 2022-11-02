@@ -274,10 +274,10 @@ function evaluateHand(iteration, gameStep) {
                 playerHighCards[iteration] = i;
             }
             if (resultList[iteration] === 0) {
-
                 highCard = " - " + cardHeirarchy[valueArr.lastIndexOf(1)];
+                compareCards[iteration] = i;
             }
-            compareCards[iteration] = i;
+
         }
         if (valueArr[i] === 2) {//a pair
             if (resultList[iteration] < 1) {
@@ -290,15 +290,17 @@ function evaluateHand(iteration, gameStep) {
             if (resultList[iteration] < 3) {
                 resultList[iteration] = 3;
                 compareCards[iteration] = valueArr.lastIndexOf(3);
+                cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
             }
-            cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
+
         }
         if (valueArr[i] === 4) {
             if (resultList[iteration] < 7) {
                 resultList[iteration] = 7;
                 compareCards[iteration] = valueArr.lastIndexOf(4);
+                cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
             }
-            cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
+
         }
     }
     if (getOccurrence(valueArr, 2) > 1) {//2 pair - if the number 2 occurs more than once
@@ -334,6 +336,8 @@ function evaluateHand(iteration, gameStep) {
             resultList[iteration] = 9;
         }
     }
+
+    console.log("compareCards: " + compareCards);
     document.getElementById(playersDetails[iteration]).classList.remove("hide");
     let HighCardMessage = "";
     if (resultList[iteration] === 0) {
