@@ -275,7 +275,7 @@ function evaluateHand(iteration, gameStep) {
             }
             if (resultList[iteration] === 0) {
                 compareCards[iteration] = valueArr.lastIndexOf(1);
-                highCard = cardHeirarchy[valueArr.lastIndexOf(1)];
+                highCard = " - " + cardHeirarchy[valueArr.lastIndexOf(1)];
             }
             compareCards[iteration] = i;
         }
