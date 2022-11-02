@@ -394,7 +394,7 @@ function evaluateHand(iteration, gameStep) {
                 winningCard = Math.max(...playerHighCards);
                 topHand = playerHighCards.indexOf(winningCard);
                 console.log("compareCards: " + compareCards + " - getOccurrence(compareCards, winningCard): " + getOccurrence(compareCards, winningCard));
-                if (getOccurrence(playerHighCards, winningCard) > 1) {
+                if (getOccurrence(compareCards, winningCard) > 1) {
                     youWin("split");
 
                 }
