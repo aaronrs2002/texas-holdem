@@ -329,7 +329,7 @@ function evaluateHand(iteration, gameStep) {
         }
     }
 
-    if (valueArr[8] > 0 && valueArr[9] > 0 && valueArr[10] > 0 && valueArr[11] > 0 && valueArr[12] > 0) {  /*checking for royal flush (valueArr[valueArr.length - 1] is an ace)*/
+    if (valueArr[8] > 0 && valueArr[9] > 0 && valueArr[10] > 0 && valueArr[11] > 0 && valueArr[12] > 0 && flush === true) {  /*checking for royal flush (valueArr[valueArr.length - 1] is an ace)*/
         if (resultList[iteration] < 9) {
             resultList[iteration] = 9;
         }
@@ -363,12 +363,15 @@ function evaluateHand(iteration, gameStep) {
             topHand = resultList.indexOf(winningHand);
         } else {
 
+            console.log("getOccurrence(resultList, winningHand): " + getOccurrence(resultList, winningHand));
+
             for (let i = 0; i < resultList.length; i++) {
                 if (resultList[i] !== winningHand) {
                     compareCards[i] = -1;
                 }
             }
             winningCard = Math.max(...compareCards);
+            console.log("getOccurrence(compareCards, winningCard): " + getOccurrence(compareCards, winningCard));
             topHand = compareCards.indexOf(winningCard);
             if (getOccurrence(compareCards, winningCard) > 1) {
                 for (let i = 0; i < compareCards.length; i++) {
