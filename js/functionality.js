@@ -322,7 +322,7 @@ function evaluateHand(iteration, gameStep) {
         if (resultList[iteration] < 6) {
             resultList[iteration] = 6;
             communityCards[iteration] = valueArr.lastIndexOf(3);
-            cardsInvolved = valueArr.lastIndexOf(2) + "s - " + valueArr.lastIndexOf(3) + "s";
+            cardsInvolved = cardHeirarchy[valueArr.lastIndexOf(2)] + "s - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
         }
     }
     if (flush === true && straight === true) {/*checking for straight flush*/
