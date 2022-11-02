@@ -327,7 +327,7 @@ function evaluateHand(iteration, gameStep) {
         }
     }
 
-    if (pairQty == 1 && tripleQty == 1) {    /*checking for full house*/
+    if ((pairQty == 1 && tripleQty == 1) || (valueArr.indexOf(3) !== -1 && valueArr.indexOf(2) !== -1)) {    /*checking for full house*/
         if (bestHandIndex < 6) {
             bestHandIndex = 6;
         }
