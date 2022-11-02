@@ -342,7 +342,6 @@ function evaluateHand(iteration, gameStep) {
             compareCards[i] = -1;
         }
     }
-    console.log("compareCards: " + compareCards);
     document.getElementById(playersDetails[iteration]).classList.remove("hide");
     let HighCardMessage = "";
     if (resultList[iteration] === 0) {
@@ -372,19 +371,13 @@ function evaluateHand(iteration, gameStep) {
         if (getOccurrence(resultList, winningHand) === 1) {
             topHand = resultList.indexOf(winningHand);
         } else {
-
-            console.log("getOccurrence(resultList, winningHand): " + getOccurrence(resultList, winningHand));
-
             for (let i = 0; i < resultList.length; i++) {
                 if (resultList[i] !== winningHand) {
                     compareCards[i] = -1;
                 }
             }
             winningCard = Math.max(...compareCards);
-            console.log("compareCards: " + compareCards + " - getOccurrence(compareCards, winningCard): " + getOccurrence(compareCards, winningCard));
             topHand = compareCards.indexOf(winningCard);
-
-
             if (getOccurrence(compareCards, winningCard) > 1) {
                 for (let i = 0; i < compareCards.length; i++) {
                     if (compareCards[i] === -1) {
@@ -393,10 +386,8 @@ function evaluateHand(iteration, gameStep) {
                 }
                 winningCard = Math.max(...playerHighCards);
                 topHand = playerHighCards.indexOf(winningCard);
-                console.log("compareCards: " + compareCards + " - getOccurrence(compareCards, winningCard): " + getOccurrence(compareCards, winningCard));
                 if (getOccurrence(compareCards, winningCard) > 1) {
                     youWin("split");
-
                 }
             }
         }
