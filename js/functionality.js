@@ -300,7 +300,6 @@ function evaluateHand(iteration, gameStep) {
                 compareCards[iteration] = valueArr.lastIndexOf(4);
                 cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
             }
-
         }
     }
     if (getOccurrence(valueArr, 2) > 1) {//2 pair - if the number 2 occurs more than once
@@ -323,6 +322,7 @@ function evaluateHand(iteration, gameStep) {
         if (resultList[iteration] < 6) {
             resultList[iteration] = 6;
             communityCards[iteration] = valueArr.lastIndexOf(3);
+            cardsInvolved = valueArr.lastIndexOf(2) + "s - " + valueArr.lastIndexOf(3) + "s";
         }
     }
     if (flush === true && straight === true) {/*checking for straight flush*/
@@ -336,7 +336,12 @@ function evaluateHand(iteration, gameStep) {
             resultList[iteration] = 9;
         }
     }
-
+    for (let i = 0; i < 4; i++) {
+        if (activePlayers.indexOf(i) === -1) {
+            resultList[i] = -1;
+            compareCards[i] = -1;
+        }
+    }
     console.log("compareCards: " + compareCards);
     document.getElementById(playersDetails[iteration]).classList.remove("hide");
     let HighCardMessage = "";
@@ -388,7 +393,7 @@ function evaluateHand(iteration, gameStep) {
                 }
                 winningCard = Math.max(...playerHighCards);
                 topHand = playerHighCards.indexOf(winningCard);
-
+                console.log("compareCards: " + compareCards + " - getOccurrence(compareCards, winningCard): " + getOccurrence(compareCards, winningCard));
                 if (getOccurrence(playerHighCards, winningCard) > 1) {
                     youWin("split");
 
