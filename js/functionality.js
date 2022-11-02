@@ -243,13 +243,7 @@ function evaluateHand(iteration, gameStep) {
             clubs = clubs + 1;
         }
     }
-    let suitedArr = [spades, hearts, diamonds, clubs];
-    if (suitedArr.indexOf(5) !== -1) {    /*DETERMINE A flush*/
-        flush = true;
-        if (bestHandIndex < 5) {
-            bestHandIndex = 5;
-        }
-    }
+
     cardIndexes = cardIndexes.sort(((a, b) => a - b));
     let connectedTwo = false;
     let connectedThree = false;
@@ -326,6 +320,14 @@ function evaluateHand(iteration, gameStep) {
     }
     if (bestHandIndex < 4 && straight === true) {
         bestHandIndex = 4;
+    }
+
+    let suitedArr = [spades, hearts, diamonds, clubs];
+    if (suitedArr.indexOf(5) !== -1) {    /*DETERMINE A flush*/
+        flush = true;
+        if (bestHandIndex < 5) {
+            bestHandIndex = 5;
+        }
     }
 
     if (flush === true && straight === true) {/*checking for straight flush*/
