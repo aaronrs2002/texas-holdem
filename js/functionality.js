@@ -401,13 +401,13 @@ function evaluateHand(iteration, gameStep) {
                 }
                 multiWinMax = Math.max(...winnersList);
                 topHand = winnersList.indexOf(multiWinMax);
-                if (getOccurrence(winnersList, multiWinMax) > 1) {
-                    console.log("WE HAD TO SPLIT " + cardHeirarchy[multiWinMax]);
+                if (getOccurrence(winnersList, multiWinMax) > 1 && compareCards[0] === multiWinMax) {
+                    console.log("WE HAD TO SPLIT " + cardHeirarchy[multiWinMax] + " - winnersList: " + winnersList);
                     youWin("split");
                     showPlayersCards();
                     return false;
                 } else {
-                    console.log("NO SPLIT " + cardHeirarchy[multiWinMax]);
+                    console.log("NO SPLIT " + cardHeirarchy[multiWinMax] + " - winnersList: " + winnersList);
                 }
             }
         }
