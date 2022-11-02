@@ -379,14 +379,19 @@ function evaluateHand(iteration, gameStep) {
             winningCard = Math.max(...compareCards);
             topHand = compareCards.indexOf(winningCard);
             if (getOccurrence(compareCards, winningCard) > 1) {
-                for (let i = 0; i < compareCards.length; i++) {
-                    if (compareCards[i] === -1) {
-                        playerHighCards[i] = -1;
+                let winnersList = [];
+                for (let i = 0; i < 4; i++) {
+                    if (compareCards[i] !== -1) {
+                        let tempPlayerCards = [cardHeirarchy.indexOf(playersHands[i][0].value), cardHeirarchy.indexOf(playersHands[i][1].value)];
+                        let tempWinner = Math.max(...tempPlayerCards);
+                        winnersList.push(tempWinner);
+                    } else {
+                        winnersList.push(-1);
                     }
                 }
-                winningCard = Math.max(...playerHighCards);
-                topHand = playerHighCards.indexOf(winningCard);
-                if (getOccurrence(compareCards, winningCard) > 1) {
+                multiWinMax = Math.max(...winnersList);
+                topHand = winnersList.indexOf(multiWinMax);
+                if (getOccurrence(winnersList, multiWinMax) > 1) {
                     youWin("split");
                 }
             }
