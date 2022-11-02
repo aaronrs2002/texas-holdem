@@ -336,8 +336,8 @@ function evaluateHand(iteration, gameStep) {
     }
     document.getElementById(playersDetails[iteration]).classList.remove("hide");
     let HighCardMessage = "";
-    if (handHeirarchy[resultList[iteration]] === "high-card") {
-        HighCardMessage = highCard;
+    if (resultList[iteration] === 0) {
+        HighCardMessage = " - " + cardHeirarchy[valueArr.lastIndexOf(1)];
     }
     if (iteration === 0) {
         document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
