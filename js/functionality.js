@@ -14,7 +14,7 @@ let player1Obj;
 let player2Obj;
 let player3Obj;
 const playersHands = [player0Obj, player1Obj, player2Obj, player3Obj];
-let bestHandIndex = 0;
+//let bestHandIndex = 0;
 let resultList = [0, 0, 0, 0];
 let compareCards = [0, 0, 0, 0];
 let activePlayers = [0, 1, 2, 3];
@@ -277,14 +277,14 @@ function evaluateHand(iteration, gameStep) {
             }
             compareCards[iteration] = i;
         }
-        if (valueArr[i] === 2) {
+        if (valueArr[i] === 2) {/*determine a pair*/
             if (bestHandIndex < 1) {
                 bestHandIndex = 1;
             }
             pairQty = pairQty + 1;
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[i] + "s";
         }
-        if (valueArr[i] === 3) {
+        if (valueArr[i] === 3) {/*determine three of a kind*/
             if (bestHandIndex < 3) {
                 bestHandIndex = 3;
             }
@@ -292,7 +292,7 @@ function evaluateHand(iteration, gameStep) {
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
         }
 
-        if (valueArr[i] === 4) {
+        if (valueArr[i] === 4) {/*determine a four of a kind*/
             if (bestHandIndex < 7) {
                 bestHandIndex = 7;
             }
@@ -624,7 +624,7 @@ function deal() {
     playedTimes = playedTimes + 1;
     gameIncrement = 1;
     communityCards = [];
-    bestHandIndex = 0;
+    //bestHandIndex = 0;
     resultList = [0, 0, 0, 0];
     compareCards = [0, 0, 0, 0];
     activePlayers = [0, 1, 2, 3];
