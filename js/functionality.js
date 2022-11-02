@@ -280,7 +280,6 @@ function evaluateHand(iteration, gameStep) {
         if (valueArr[i] === 2) {/*determine a pair*/
             if (bestHandIndex < 1) {
                 bestHandIndex = 1;
-                console.log("Updated bestHandIndex: " + bestHandIndex);
             }
             pairQty = pairQty + 1;
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[i] + "s";
@@ -288,7 +287,6 @@ function evaluateHand(iteration, gameStep) {
         if (valueArr[i] === 3) {/*determine three of a kind*/
             if (bestHandIndex < 3) {
                 bestHandIndex = 3;
-                console.log("Updated bestHandIndex: " + bestHandIndex);
             }
             tripleQty = tripleQty + 1;
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
@@ -297,7 +295,6 @@ function evaluateHand(iteration, gameStep) {
         if (valueArr[i] === 4) {/*determine a four of a kind*/
             if (bestHandIndex < 7) {
                 bestHandIndex = 7;
-                console.log("Updated bestHandIndex: " + bestHandIndex);
             }
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
         }
@@ -314,13 +311,11 @@ function evaluateHand(iteration, gameStep) {
     if (pairQty > 1) { /*checking for 2 pair*/
         if (bestHandIndex < 2) {
             bestHandIndex = 2;
-            console.log("Updated bestHandIndex: " + bestHandIndex);
         }
     }
 
     if (bestHandIndex < 4 && straight === true) {
         bestHandIndex = 4;
-        console.log("Updated bestHandIndex: " + bestHandIndex);
     }
 
     let suitedArr = [spades, hearts, diamonds, clubs];
@@ -328,28 +323,24 @@ function evaluateHand(iteration, gameStep) {
         flush = true;
         if (bestHandIndex < 5) {
             bestHandIndex = 5;
-            console.log("Updated bestHandIndex: " + bestHandIndex);
         }
     }
 
     if (pairQty == 1 && tripleQty == 1) {    /*checking for full house*/
         if (bestHandIndex < 6) {
             bestHandIndex = 6;
-            console.log("Updated bestHandIndex: " + bestHandIndex);
         }
     }
 
     if (flush === true && straight === true) {/*checking for straight flush*/
         if (bestHandIndex < 8) {
             bestHandIndex = 8;
-            console.log("Updated bestHandIndex: " + bestHandIndex);
         }
     }
-    console.log("cardHeirarchy[8]: " + cardHeirarchy[8] + " - cardHeirarchy[9]: " + cardHeirarchy[9] + " - cardHeirarchy[10]: " + cardHeirarchy[10] + " - cardHeirarchy[11]: " + cardHeirarchy[11] + " - cardHeirarchy[12]: " + cardHeirarchy[12]);
+
     if (valueArr[8] > 0 && valueArr[9] > 0 && valueArr[10] > 0 && valueArr[11] > 0 && valueArr[12] > 0) {  /*checking for royal flush (valueArr[valueArr.length - 1] is an ace)*/
         if (bestHandIndex < 9) {
             bestHandIndex = 9;
-            console.log("Updated bestHandIndex: " + bestHandIndex);
         }
     }
     resultList[iteration] = bestHandIndex;
