@@ -41,6 +41,16 @@ function setPlayerMoney(passPlayerMoney) {
     localStorage.setItem("balance", passPlayerMoney);
 }
 
+function showPlayersCards() {
+    for (let i = 0; i < 4; i++) {
+        let playerCardsHTML = "";
+        for (let j = 0; j < playersHands[i].length; j++) {
+            playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[i][j].value + "-" + playersHands[i][j].suit + "' ></div>";
+            document.getElementById(playerIds[i]).innerHTML = playerCardsHTML;
+        }
+    }
+}
+
 function generate(activeCards) {
     return Math.floor(Math.random() * activeCards.length);
 }
@@ -394,7 +404,7 @@ function evaluateHand(iteration, gameStep) {
                 if (getOccurrence(winnersList, multiWinMax) > 1) {
                     console.log("WE HAD TO SPLIT " + cardHeirarchy[multiWinMax]);
                     youWin("split");
-                    clear("deal");
+                    showPlayersCards();
                     return false;
                 } else {
                     console.log("NO SPLIT " + cardHeirarchy[multiWinMax]);
@@ -516,13 +526,7 @@ function evaluateHand(iteration, gameStep) {
             } else {
                 youLose(topHand);
             }
-            for (let i = 0; i < 4; i++) {
-                let playerCardsHTML = "";
-                for (let j = 0; j < playersHands[i].length; j++) {
-                    playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[i][j].value + "-" + playersHands[i][j].suit + "' ></div>";
-                    document.getElementById(playerIds[i]).innerHTML = playerCardsHTML;
-                }
-            }
+            showPlayersCards();
             document.getElementById("foldBt").classList.add("hide");
             document.querySelector("[data-round='match']").classList.add("hide");
             document.querySelector("[data-round='check']").classList.add("hide");
