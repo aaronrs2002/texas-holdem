@@ -392,7 +392,12 @@ function evaluateHand(iteration, gameStep) {
                 multiWinMax = Math.max(...winnersList);
                 topHand = winnersList.indexOf(multiWinMax);
                 if (getOccurrence(winnersList, multiWinMax) > 1) {
+                    console.log("WE HAD TO SPLIT " + cardHeirarchy[multiWinMax]);
                     youWin("split");
+                    clear("deal");
+                    return false;
+                } else {
+                    console.log("NO SPLIT " + cardHeirarchy[multiWinMax]);
                 }
             }
         }
