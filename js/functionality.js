@@ -18,7 +18,6 @@ const playersHands = [player0Obj, player1Obj, player2Obj, player3Obj];
 let resultList = [0, 0, 0, 0];
 let compareCards = [0, 0, 0, 0];
 let activePlayers = [0, 1, 2, 3];
-let playerCardsInvolved = "";
 let playerHighCards = [0, 0, 0, 0];
 let topHand;
 const plyr = "<i class='fas fa-user'></i> ";
@@ -274,6 +273,10 @@ function evaluateHand(iteration, gameStep) {
             if (gameStep === 1) {
                 playerHighCards[iteration] = i;
             }
+            if (resultList[iteration] === 0) {
+                compareCards[iteration] = valueArr.lastIndexOf(1);
+                highCard = valueArr.lastIndexOf(1);
+            }
             compareCards[iteration] = i;
         }
         if (valueArr[i] === 2) {//a pair
@@ -337,7 +340,6 @@ function evaluateHand(iteration, gameStep) {
         HighCardMessage = highCard;
     }
     if (iteration === 0) {
-        playerCardsInvolved = cardsInvolved;
         document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
         /*browser bug fix*/
         document.querySelector("#" + playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
@@ -617,7 +619,6 @@ function deal() {
     resultList = [0, 0, 0, 0];
     compareCards = [0, 0, 0, 0];
     activePlayers = [0, 1, 2, 3];
-    playerCardsInvolved = "";
     playerHighCards = [0, 0, 0, 0];
     topHand = null;
     document.getElementById("communityCards").innerHTML = "";
