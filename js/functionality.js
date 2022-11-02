@@ -149,7 +149,7 @@ function evaluateHand(iteration, gameStep) {
     let stepPlayed = false;
     document.getElementById("communityCardDetails").innerHTML = "<h3>The " + gameStepHierarchy[gameStep] + " - Pot: $" + thePot + "</h3>";
     countingIterations = iteration;
-    bestHandIndex = 0;
+    //bestHandIndex = 0;
     let cardsInvolved = "";
     let cardIndexes = [];
     let cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
@@ -260,92 +260,77 @@ function evaluateHand(iteration, gameStep) {
         }
         if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2 && cardIndexes[i + 3] === cardIndexes[i] + 3 && cardIndexes[i + 4] === cardIndexes[i] + 4) {
             straight = true;
-            if (bestHandIndex < 4) {
-                bestHandIndex = 4;
+            if (resultList[iteration] < 4) {
+                resultList[iteration] = 4;
                 communityCards[iteration] = cardIndexes[i + 4];
             }
         }
     }
     let valueArr = [two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace]; /*Determine matching values*/
-    let pairQty = 0;
-    let tripleQty = 0;
     let lastIteration = activePlayers[activePlayers.length - 1];
     for (let i = 0; i < valueArr.length; i++) {
-        if (valueArr[i] > 0) {/*determine highest card*/
+        if (valueArr[i] > 0) {//determine highest card
             highCard = cardHeirarchy[i];
             if (gameStep === 1) {
                 playerHighCards[iteration] = i;
             }
             compareCards[iteration] = i;
         }
-        if (valueArr[i] === 2) {/*determine a pair*/
-            if (bestHandIndex < 1) {
-                bestHandIndex = 1;
+        if (valueArr[i] === 2) {//a pair
+            if (resultList[iteration] < 1) {
+                resultList[iteration] = 1;
+                compareCards[iteration] = valueArr.lastIndexOf(2);
             }
-            pairQty = pairQty + 1;
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[i] + "s";
         }
-        if (valueArr[i] === 3) {/*determine three of a kind*/
-            if (bestHandIndex < 3) {
-                bestHandIndex = 3;
+        if (valueArr[i] === 3) {//three of a kind
+            if (resultList[iteration] < 3) {
+                resultList[iteration] = 3;
+                compareCards[iteration] = valueArr.lastIndexOf(3);
             }
-            tripleQty = tripleQty + 1;
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
         }
-
-        if (valueArr[i] === 4) {/*determine a four of a kind*/
-            if (bestHandIndex < 7) {
-                bestHandIndex = 7;
+        if (valueArr[i] === 4) {
+            if (resultList[iteration] < 7) {
+                resultList[iteration] = 7;
+                compareCards[iteration] = valueArr.lastIndexOf(4);
             }
             cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
         }
     }
-    if (valueArr.indexOf(2) !== -1) {
-        compareCards[iteration] = valueArr.lastIndexOf(2);
-    }
-    if (valueArr.indexOf(3) !== -1) {
-        compareCards[iteration] = valueArr.lastIndexOf(3);
-    }
-    if (valueArr.indexOf(4) !== -1) {
-        compareCards[iteration] = valueArr.lastIndexOf(4);
-    }
-    if (pairQty > 1) { /*checking for 2 pair*/
-        if (bestHandIndex < 2) {
-            bestHandIndex = 2;
+    if (getOccurrence(valueArr, 2) > 1) {//2 pair - if the number 2 occurs more than once
+        if (resultList[iteration] < 2) {
+            resultList[iteration] = 2;
+            compareCards[iteration] = valueArr.lastIndexOf(2);
         }
     }
-
-    if (bestHandIndex < 4 && straight === true) {
-        bestHandIndex = 4;
+    if (resultList[iteration] < 4 && straight === true) {//declared earlier as well
+        resultList[iteration] = 4;
     }
-
     let suitedArr = [spades, hearts, diamonds, clubs];
     if (suitedArr.indexOf(5) !== -1) {    /*DETERMINE A flush*/
         flush = true;
-        if (bestHandIndex < 5) {
-            bestHandIndex = 5;
+        if (resultList[iteration] < 5) {
+            resultList[iteration] = 5;
         }
     }
-
-    if ((pairQty == 1 && tripleQty == 1) || (valueArr.indexOf(3) !== -1 && valueArr.indexOf(2) !== -1)) {    /*checking for full house*/
-        if (bestHandIndex < 6) {
-            bestHandIndex = 6;
+    if (valueArr.indexOf(3) !== -1 && valueArr.indexOf(2) !== -1) {    /*checking for full house*/
+        if (resultList[iteration] < 6) {
+            resultList[iteration] = 6;
+            communityCards[iteration] = valueArr.lastIndexOf(3);
         }
-        communityCards[iteration] = valueArr.lastIndexOf(3);
     }
-
     if (flush === true && straight === true) {/*checking for straight flush*/
-        if (bestHandIndex < 8) {
-            bestHandIndex = 8;
+        if (resultList[iteration] < 8) {
+            resultList[iteration] = 8;
         }
     }
 
     if (valueArr[8] > 0 && valueArr[9] > 0 && valueArr[10] > 0 && valueArr[11] > 0 && valueArr[12] > 0) {  /*checking for royal flush (valueArr[valueArr.length - 1] is an ace)*/
-        if (bestHandIndex < 9) {
-            bestHandIndex = 9;
+        if (resultList[iteration] < 9) {
+            resultList[iteration] = 9;
         }
     }
-    resultList[iteration] = bestHandIndex;
     document.getElementById(playersDetails[iteration]).classList.remove("hide");
     let HighCardMessage = "";
     if (handHeirarchy[resultList[iteration]] === "high-card") {
@@ -353,7 +338,6 @@ function evaluateHand(iteration, gameStep) {
     }
     if (iteration === 0) {
         playerCardsInvolved = cardsInvolved;
-        resultList[0] = bestHandIndex;
         document.getElementById(playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
         /*browser bug fix*/
         document.querySelector("#" + playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
