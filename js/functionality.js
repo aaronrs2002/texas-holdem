@@ -274,7 +274,7 @@ function evaluateHand(iteration, gameStep) {
                 playerHighCards[iteration] = i;
             }
             if (resultList[iteration] === 0) {
-                compareCards[iteration] = valueArr.lastIndexOf(1);
+
                 highCard = " - " + cardHeirarchy[valueArr.lastIndexOf(1)];
             }
             compareCards[iteration] = i;
@@ -337,6 +337,7 @@ function evaluateHand(iteration, gameStep) {
     document.getElementById(playersDetails[iteration]).classList.remove("hide");
     let HighCardMessage = "";
     if (resultList[iteration] === 0) {
+        compareCards[iteration] = valueArr.lastIndexOf(1);
         HighCardMessage = " - " + cardHeirarchy[valueArr.lastIndexOf(1)];
     }
     if (iteration === 0) {
@@ -371,8 +372,10 @@ function evaluateHand(iteration, gameStep) {
                 }
             }
             winningCard = Math.max(...compareCards);
-            console.log("getOccurrence(compareCards, winningCard): " + getOccurrence(compareCards, winningCard));
+            console.log("compareCards: " + compareCards + " - getOccurrence(compareCards, winningCard): " + getOccurrence(compareCards, winningCard));
             topHand = compareCards.indexOf(winningCard);
+
+
             if (getOccurrence(compareCards, winningCard) > 1) {
                 for (let i = 0; i < compareCards.length; i++) {
                     if (compareCards[i] === -1) {
