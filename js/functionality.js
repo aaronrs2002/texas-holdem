@@ -477,12 +477,12 @@ function evaluateHand(iteration, gameStep) {
                     [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
                         let whichPlayer = e.getAttribute("data-player");
                         removeActivePlyr(whichPlayer);
-                        e.innerHTML = "Player " + (whichPlayer + 1) + ": folded.";
+                        e.innerHTML = "Player " + (Number(whichPlayer) + 1) + ": folded.";
                         e.dataset.status = "folded";
                     });
                     [].forEach.call(document.querySelectorAll("[data-status='betting']"), function (e) {
                         let whichPlayer = e.getAttribute("data-player");
-                        e.innerHTML = plyr + "Player " + (whichPlayer + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                        e.innerHTML = plyr + "Player " + (Number(whichPlayer) + 1) + ": bets $" + monetaryVal[gameStep + 1];
                     });
                     document.getElementById("foldBt").classList.remove("hide");
                     document.querySelector("[data-round='match']").classList.remove("hide");
