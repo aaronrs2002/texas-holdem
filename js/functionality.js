@@ -262,6 +262,7 @@ function evaluateHand(iteration, gameStep) {
             straight = true;
             if (bestHandIndex < 4) {
                 bestHandIndex = 4;
+                communityCards[iteration] = cardIndexes[i + 4];
             }
         }
     }
@@ -330,6 +331,7 @@ function evaluateHand(iteration, gameStep) {
         if (bestHandIndex < 6) {
             bestHandIndex = 6;
         }
+        communityCards[iteration] = valueArr.lastIndexOf(3);
     }
 
     if (flush === true && straight === true) {/*checking for straight flush*/
