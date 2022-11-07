@@ -40,7 +40,7 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-md-12 mb-2  animated fadeInDown">
+            <div class="col-md-12 my-2  animated fadeInDown">
                 <button class="btn btn-success btn-block btn-lg p-2" title="Deal" onClick="javascript:deal()">Deal
                     $10</button>
 
@@ -84,16 +84,20 @@
                 </div>
             </div>
 
+            <div class="col-md-12">
+                <div class="btn-group block my-1" role="group">
+                    <button class="btn btn-success hide" data-round="raise" title="raise"
+                        onClick="javascript:match(false,2)">Raise
+                        to <span id="raiseAmt"></span></button>
+                    <button class="btn btn-success hide" data-round="match" title="match"
+                        onClick="javascript:match(false,1)">Match</button>
+                    <button class="btn btn-success hide" data-round="check" title="check"
+                        onClick="javascript:match(true,1)">Check</button>
+                    <button id="foldBt" class="btn btn-danger hide" onClick="javascript:fold()">Fold</button>
+                </div>
 
-            <div class="d-grid gap-2">
-                <button class="btn btn-success mb-2 hide" data-round="match"
-                    onClick="javascript:match(false)">Match</button>
-                <button class="btn btn-success  mb-2 hide" data-round="check"
-                    onClick="javascript:match(true)">Check</button>
             </div>
-            <div class="d-grid gap-2">
-                <button id="foldBt" class="btn btn-danger mb-2 hide" onClick="javascript:fold()">Fold</button>
-            </div>
+
         </div>
         <div class="row playersRow">
             <div class="col-md-3">
