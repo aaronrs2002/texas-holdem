@@ -130,7 +130,9 @@ function youLose(topHand) {
     document.querySelector("[data-player='0']").classList.remove("alert-success");
     document.querySelector("[data-player='0']").classList.remove("alert-info");
     document.querySelector("[data-player='0']").classList.add("alert-danger");
-    document.getElementById("notification").classList.remove("alert-success"); document.getElementById("notification").classList.remove("alert-info"); document.getElementById("notification").classList.add("alert-danger");
+    document.getElementById("notification").classList.remove("alert-success");
+    document.getElementById("notification").classList.remove("alert-info");
+    document.getElementById("notification").classList.add("alert-danger");
     document.getElementById("betTarget").innerHTML = "Place your bet.";
     document.querySelector("[data-round='check']").classList.add("hide");
     document.getElementById("foldBt").classList.add("hide");
@@ -143,15 +145,21 @@ function youLose(topHand) {
 }
 
 function removeActivePlyr(plyrID) {
+    plyrID = Number(plyrID)
     compareCards[plyrID] = -1;
     resultList[plyrID] = -1;
     let tempActivePlayer = [];
     for (let i = 0; i < activePlayers.length; i++) {
         if (activePlayers[i] !== plyrID) {
+            console.log("Adding " + activePlayers[i] + " to tempActivePlayers")
             tempActivePlayer.push(activePlayers[i]);
         }
     }
+
+
     activePlayers = tempActivePlayer;
+
+    console.log("Removed " + plyrID + " - activePlayers: " + activePlayers);
     if (activePlayers == 0) {
         youWin("default");
     }
@@ -368,7 +376,9 @@ function evaluateHand(iteration, gameStep) {
         /*browser bug fix*/
         document.querySelector("#" + playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
     }
-    if (iteration !== 0 && gameStep === 4) {
+
+    if (iteration !== 0 && gameStep === 4 && activePlayers.indexOf[iteration] !== -1) {
+        console.log("Updating player " + iteration);
         document.getElementById(playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
         /*browser bug fix*/
         document.querySelector("#" + playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
@@ -407,12 +417,9 @@ function evaluateHand(iteration, gameStep) {
                 multiWinMax = Math.max(...winnersList);
                 topHand = winnersList.indexOf(multiWinMax);
                 if (getOccurrence(winnersList, multiWinMax) > 1 && compareCards[0] === multiWinMax) {
-                    console.log("WE HAD TO SPLIT " + cardHeirarchy[multiWinMax] + " - winnersList: " + winnersList);
                     youWin("split");
                     showPlayersCards();
                     return false;
-                } else {
-                    console.log("NO SPLIT " + cardHeirarchy[multiWinMax] + " - winnersList: " + winnersList);
                 }
             }
         }
