@@ -151,19 +151,13 @@ function removeActivePlyr(plyrID) {
     let tempActivePlayer = [];
     for (let i = 0; i < activePlayers.length; i++) {
         if (activePlayers[i] !== plyrID) {
-            console.log("Adding " + activePlayers[i] + " to tempActivePlayers")
             tempActivePlayer.push(activePlayers[i]);
         }
     }
-
-
     activePlayers = tempActivePlayer;
-
-    console.log("Removed " + plyrID + " - activePlayers: " + activePlayers);
     if (activePlayers == 0) {
         youWin("default");
     }
-
 }
 
 function evaluateHand(iteration, gameStep) {
@@ -378,7 +372,6 @@ function evaluateHand(iteration, gameStep) {
     }
 
     if (iteration !== 0 && gameStep === 4 && activePlayers.indexOf[iteration] !== -1) {
-        console.log("Updating player " + iteration);
         document.getElementById(playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
         /*browser bug fix*/
         document.querySelector("#" + playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
