@@ -260,28 +260,9 @@ function evaluateHand(iteration, gameStep) {
         }
     }
 
-    cardIndexes = cardIndexes.sort(((a, b) => a - b));
-    let connectedTwo = false;
-    let connectedThree = false;
-    let connectedFour = false;
-    for (var i = 0; i < cardIndexes.length; i++) {    /*LOOKING FOR A STRIGHT*/
-        if (cardIndexes[i + 1] === cardIndexes[i] + 1) {
-            connectedTwo = true;
-        }
-        if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2) {
-            connectedThree = true;
-        }
-        if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2 && cardIndexes[i + 3] === cardIndexes[i] + 3) {
-            connectedFour = true;
-        }
-        if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2 && cardIndexes[i + 3] === cardIndexes[i] + 3 && cardIndexes[i + 4] === cardIndexes[i] + 4) {
-            straight = true;
-            if (resultList[iteration] < 4) {
-                resultList[iteration] = 4;
-                communityCards[iteration] = cardIndexes[i + 4];
-            }
-        }
-    }
+
+
+
     let valueArr = [two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace]; /*Determine matching values*/
     let lastIteration = activePlayers[activePlayers.length - 1];
     for (let i = 0; i < valueArr.length; i++) {
@@ -333,6 +314,29 @@ function evaluateHand(iteration, gameStep) {
         flush = true;
         if (resultList[iteration] < 5) {
             resultList[iteration] = 5;
+        }
+    }
+    /*LOOKING FOR A STRAIGHT*/
+    cardIndexes = cardIndexes.sort(((a, b) => a - b));
+    let connectedTwo = false;
+    let connectedThree = false;
+    let connectedFour = false;
+    for (var i = 0; i < cardIndexes.length; i++) {
+        if (cardIndexes[i + 1] === cardIndexes[i] + 1) {
+            connectedTwo = true;
+        }
+        if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2) {
+            connectedThree = true;
+        }
+        if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2 && cardIndexes[i + 3] === cardIndexes[i] + 3) {
+            connectedFour = true;
+        }
+        if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2 && cardIndexes[i + 3] === cardIndexes[i] + 3 && cardIndexes[i + 4] === cardIndexes[i] + 4) {
+            straight = true;
+            if (resultList[iteration] < 4) {
+                resultList[iteration] = 4;
+                communityCards[iteration] = cardIndexes[i + 4];
+            }
         }
     }
     if (valueArr.indexOf(3) !== -1 && valueArr.indexOf(2) !== -1) {    /*checking for full house*/
