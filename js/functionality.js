@@ -306,16 +306,7 @@ function evaluateHand(iteration, gameStep) {
             compareCards[iteration] = valueArr.lastIndexOf(2);
         }
     }
-    if (resultList[iteration] < 4 && straight === true) {//declared earlier as well
-        resultList[iteration] = 4;
-    }
-    let suitedArr = [spades, hearts, diamonds, clubs];
-    if (suitedArr.indexOf(5) !== -1) {    /*DETERMINE A flush*/
-        flush = true;
-        if (resultList[iteration] < 5) {
-            resultList[iteration] = 5;
-        }
-    }
+
     /*LOOKING FOR A STRAIGHT*/
     cardIndexes = cardIndexes.sort(((a, b) => a - b));
     let connectedTwo = false;
@@ -337,6 +328,16 @@ function evaluateHand(iteration, gameStep) {
                 resultList[iteration] = 4;
                 communityCards[iteration] = cardIndexes[i + 4];
             }
+        }
+    }
+    if (resultList[iteration] < 4 && straight === true) {//declared earlier as well
+        resultList[iteration] = 4;
+    }
+    let suitedArr = [spades, hearts, diamonds, clubs];
+    if (suitedArr.indexOf(5) !== -1) {    /*DETERMINE A flush*/
+        flush = true;
+        if (resultList[iteration] < 5) {
+            resultList[iteration] = 5;
         }
     }
     if (valueArr.indexOf(3) !== -1 && valueArr.indexOf(2) !== -1) {    /*checking for full house*/
