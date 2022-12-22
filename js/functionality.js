@@ -330,6 +330,15 @@ function evaluateHand(iteration, gameStep) {
             }
         }
     }
+    /*ATTEMPT TO FIX PAIRS OVERRIDDING STRAIGHT*/
+    for (let i = -1; i < 13; i++) {
+        if (valueArr[i] > 0 && valueArr[i + 1] > 0 && valueArr[i + 2] > 0 && valueArr[i + 3] > 0 && valueArr[i + 4] > 0) {
+            resultList[iteration] = 4;
+            communityCards[iteration] = valueArr[i + 4];
+            straight = true;
+        }
+    }
+    /*END ATTEMPT*/
     if (resultList[iteration] < 4 && straight === true) {//declared earlier as well
         resultList[iteration] = 4;
     }
