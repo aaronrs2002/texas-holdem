@@ -8,7 +8,12 @@ const playersDetails = ["playerHandDetails", "playerTwoHandDetails", "playerThre
 const playerIds = ["playerCards", "playerTwoCards", "playerThreeCards", "playerFourCards"];
 const gameStepHierarchy = ["zeroPlaceholder", "pre flop", "flop", "turn", "river"];
 let usedCardsArr = [];
-
+/*looking for pairs*/
+plyr1Pair = [];
+plyr2Pair = [];
+plyr3Pair = [];
+plyr4Pair = [];
+/*stop looking for pair*/
 let player0Obj;
 let player1Obj;
 let player2Obj;
@@ -81,7 +86,6 @@ function clear(action) {
     document.querySelector("button[title='Deal']").disabled = false;
     document.querySelector("button[title='Deal']").classList.remove("hide");
     document.getElementById("communityCards").innerHTML = "";
-
 }
 
 function fold() {
@@ -202,8 +206,6 @@ function evaluateHand(iteration, gameStep) {
         if (cardHeirarchy.indexOf(cardsArr[i].value) !== null) {
             cardIndexes.push(cardHeirarchy.indexOf(cardsArr[i].value));
         }
-
-
         if (cardsArr[i].value === "ace") {
             cardIndexes.push(-1);/*aces need representation for a straight ace to 4 concept. -1 will work because 2 is represented as 0. This is just used for determining a straight*/
         }
@@ -259,10 +261,6 @@ function evaluateHand(iteration, gameStep) {
             clubs = clubs + 1;
         }
     }
-
-
-
-
     let valueArr = [two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace]; /*Determine matching values*/
     let lastIteration = activePlayers[activePlayers.length - 1];
     for (let i = 0; i < valueArr.length; i++) {
@@ -275,9 +273,13 @@ function evaluateHand(iteration, gameStep) {
                 highCard = " - " + cardHeirarchy[valueArr.lastIndexOf(1)];
                 compareCards[iteration] = i;
             }
-
         }
-        if (valueArr[i] === 2) {//a pair
+        if (valueArr[i] === 2) {//a pair                
+            /*collect pair for later eval*/
+            if (iteration === 0) { plyr1Pair.push(i) }
+            if (iteration === 1) { plyr2Pair.push(i) }
+            if (iteration === 2) { plyr3Pair.push(i) }
+            if (iteration === 3) { plyr4Pair.push(i) }/*end pair collection*/
             if (resultList[iteration] < 1) {
                 resultList[iteration] = 1;
                 compareCards[iteration] = valueArr.lastIndexOf(2);
@@ -290,7 +292,6 @@ function evaluateHand(iteration, gameStep) {
                 compareCards[iteration] = valueArr.lastIndexOf(3);
                 cardsInvolved = cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(3)] + "s";
             }
-
         }
         if (valueArr[i] === 4) {
             if (resultList[iteration] < 7) {
@@ -306,7 +307,6 @@ function evaluateHand(iteration, gameStep) {
             compareCards[iteration] = valueArr.lastIndexOf(2);
         }
     }
-
     /*LOOKING FOR A STRAIGHT*/
     cardIndexes = cardIndexes.sort(((a, b) => a - b));
     let connectedTwo = false;
@@ -361,7 +361,6 @@ function evaluateHand(iteration, gameStep) {
             resultList[iteration] = 8;
         }
     }
-
     if (valueArr[8] > 0 && valueArr[9] > 0 && valueArr[10] > 0 && valueArr[11] > 0 && valueArr[12] > 0 && flush === true) {  /*checking for royal flush (valueArr[valueArr.length - 1] is an ace)*/
         if (resultList[iteration] < 9) {
             resultList[iteration] = 9;
@@ -384,7 +383,6 @@ function evaluateHand(iteration, gameStep) {
         /*browser bug fix*/
         document.querySelector("#" + playersDetails[iteration]).innerHTML = "You have: " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
     }
-
     if (iteration !== 0 && gameStep === 4 && activePlayers.indexOf[iteration] !== -1) {
         document.getElementById(playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
         /*browser bug fix*/
@@ -411,6 +409,34 @@ function evaluateHand(iteration, gameStep) {
             winningCard = Math.max(...compareCards);
             topHand = compareCards.indexOf(winningCard);
             if (getOccurrence(compareCards, winningCard) > 1) {
+                /* If the 2 winning players have two pair, who has the best 2 pair?*/
+                if (winningHand === 2) {
+                    let allPairs = [...plyr1Pair, ...plyr2Pair, ...plyr3Pair, ...plyr4Pair];
+                    let highestPair = Math.max(...allPairs);
+                    //take out player without high pair
+                    const playersWithPair = [plyr1Pair, plyr2Pair, plyr3Pair, plyr4Pair];
+                    for (let i = 0; i < 4; i++) {
+                        if (playersWithPair[i].indexOf(highestPair) === -1) {
+                            compareCards[i] = -1;
+                            resultList[i] = -1;
+                            playersWithPair[i] = [];
+                        }
+                    }
+                    for (let i = 0; i < allPairs.length; i++) {
+                        if (allPairs[i] === highestPair) {
+                            allPairs[i] = -1;
+                        }
+                    }
+                    let secondHighestPair = Math.max(...allPairs);
+                    for (let i = 0; i < 4; i++) {
+                        if (playersWithPair[i].indexOf(secondHighestPair) === -1) {
+                            compareCards[i] = -1;
+                            resultList[i] = -1;
+                            playersWithPair[i] = [];
+                        }
+                    }
+                }
+                /*end*/
                 let winnersList = [];
                 for (let i = 0; i < 4; i++) {
                     if (compareCards[i] !== -1) {
@@ -660,6 +686,12 @@ function match(checked, betMultiplier) {
 
 
 function deal() {
+    /*looking for pairs*/
+    plyr1Pair = [];
+    plyr2Pair = [];
+    plyr3Pair = [];
+    plyr4Pair = [];
+    /*stop looking for pair*/
     usedCardsArr = [];
     playedTimes = playedTimes + 1;
     gameIncrement = 1;
