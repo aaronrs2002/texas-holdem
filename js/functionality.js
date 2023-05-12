@@ -42,15 +42,12 @@ let gameIncrement = 1;
 /*start random bet */
 const getMonetaryVal = () => {
     const maxBet = [35, 75, 150];
-    const bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 1);
+    const bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
     const bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
     const bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
     return [null, null, bet1, bet2, bet3];/*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
-
 }
-getMonetaryVal();
-
-
+let monetaryVal = getMonetaryVal();
 function setPlayerMoney(passPlayerMoney) {
     playerMoney = passPlayerMoney;
     document.getElementById("playerMoney").innerHTML = passPlayerMoney;
@@ -619,7 +616,7 @@ function match(checked, betMultiplier) {
     document.getElementById("communityCardDetails").classList.remove("hide");
     monetaryVal[gameStep] = (monetaryVal[gameStep] * betMultiplier);
     if (betMultiplier === 3) {
-        monetaryVal[gameStep] = 250;
+        monetaryVal[gameStep] = 300;
         maxBetHit = true;
     }
     if (checked === false) {
@@ -629,7 +626,7 @@ function match(checked, betMultiplier) {
             playerMoney = (playerMoney - monetaryVal[gameStep]);
             setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
-            document.querySelector("[data-round='max']").innerHTML = "Max $" + 250;
+            document.querySelector("[data-round='max']").innerHTML = "Max $" + 300;
 
         }
         if (gameStep === 3) {
@@ -638,7 +635,7 @@ function match(checked, betMultiplier) {
             playerMoney = (playerMoney - monetaryVal[gameStep]);
             setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
-            document.querySelector("[data-round='max']").innerHTML = "Max $" + 250;
+            document.querySelector("[data-round='max']").innerHTML = "Max $" + 300;
         }
         if (gameStep === 4) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
@@ -653,7 +650,7 @@ function match(checked, betMultiplier) {
         }
     } else {
         document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
-        document.querySelector("[data-round='max']").innerHTML = "Max $" + 250;
+        document.querySelector("[data-round='max']").innerHTML = "Max $" + 300;
     }
     document.getElementById("playerMoney").innerHTML = playerMoney;
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
@@ -737,7 +734,7 @@ function deal() {
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
     document.querySelector("#playerMoney").innerHTML = playerMoney;
     document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[2];
-    document.querySelector("[data-round='max']").innerHTML = "Max $" + 250;
+    document.querySelector("[data-round='max']").innerHTML = "Max $" + 300;
     clear("deal");
     countingIterations = 0;
     document.getElementById("foldBt").classList.remove("hide");
