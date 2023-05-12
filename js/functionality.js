@@ -1,4 +1,5 @@
 let playedTimes = 0;
+let maxBetHit = false;
 localStorage.setItem("completeCards", JSON.stringify(cards));
 const activeCards = JSON.parse(localStorage.getItem("completeCards"));
 const handHeirarchy = ["high-card", "pair", "two-pairs", "three-of-a-kind", "straight", "flush", "full-house", "four-of-a-kind", "straight-flush", "royal-flush"];
@@ -38,7 +39,17 @@ if (localStorage.getItem("balance") && Number(localStorage.getItem("balance"))) 
 document.querySelector("#playerMoney").innerHTML = playerMoney;
 let bet = 0;
 let gameIncrement = 1;
-let monetaryVal = [null, null, 35, 45, 50];/*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
+/*start random bet */
+const getMonetaryVal = () => {
+    const maxBet = [35, 75, 150];
+    const bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 1);
+    const bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
+    const bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
+    return [null, null, bet1, bet2, bet3];/*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
+
+}
+getMonetaryVal();
+
 
 function setPlayerMoney(passPlayerMoney) {
     playerMoney = passPlayerMoney;
@@ -75,6 +86,7 @@ function clear(action) {
         document.getElementById("playerFourHandDetails").classList.add("hide");
     }
     document.getElementById("foldBt").classList.add("hide");
+    document.querySelector("[data-round='max']").classList.add("hide");
     document.querySelector("[data-round='match']").classList.add("hide");
     document.querySelector("[data-round='raise']").classList.add("hide");
     document.querySelector("[data-round='check']").classList.add("hide");
@@ -104,6 +116,7 @@ function youWin(type) {
         document.getElementById("betTarget").innerHTML = "TEXAS HOLDEM";
     }
     document.getElementById("foldBt").classList.add("hide");
+    document.querySelector("[data-round='max']").classList.add("hide");
     document.querySelector("[data-round='match']").classList.add("hide");
     document.querySelector("[data-round='check']").classList.add("hide");
     document.querySelector("[data-round='raise']").classList.add("hide");
@@ -139,6 +152,7 @@ function youLose(topHand) {
     document.getElementById("betTarget").innerHTML = "Place your bet.";
     document.querySelector("[data-round='check']").classList.add("hide");
     document.getElementById("foldBt").classList.add("hide");
+    document.querySelector("[data-round='max']").classList.add("hide");
     document.querySelector("[data-round='match']").classList.add("hide");
     document.querySelector("[data-round='check']").classList.add("hide");
     document.querySelector("[data-round='raise']").classList.add("hide");
@@ -167,6 +181,7 @@ function evaluateHand(iteration, gameStep) {
     let stepPlayed = false;
     document.getElementById("communityCardDetails").innerHTML = "<h3>The " + gameStepHierarchy[gameStep] + " - Pot: $" + thePot + "</h3>";
     document.getElementById("raiseAmt").innerHTML = "$" + (monetaryVal[gameIncrement + 1] * 2);
+    //document.getElementById("maxAmt").innerHTML = "$" + 100;
     countingIterations = iteration;
     let cardsInvolved = "";
     let cardIndexes = [];
@@ -491,16 +506,19 @@ function evaluateHand(iteration, gameStep) {
                         e.innerHTML = plyr + " Player " + (whichPlayer + 1) + ": folded.";
                         e.dataset.status = "folded";
                     });
+                    document.querySelector("[data-round='max']").classList.remove("hide");
                     document.querySelector("[data-round='match']").classList.remove("hide");
                     document.querySelector("[data-round='raise']").classList.remove("hide");
                     document.querySelector("[data-round='check']").classList.add("hide");
                 } else {
+                    document.querySelector("[data-round='max']").classList.add("hide");
                     document.querySelector("[data-round='match']").classList.add("hide");
                     document.getElementById("foldBt").classList.add("hide");
                     document.querySelector("[data-round='raise']").classList.add("hide");
                     document.querySelector("[data-round='check']").classList.remove("hide");
 
                 }
+                document.querySelector("[data-round='max']").disabled = false;
                 document.querySelector("[data-round='match']").disabled = false;
                 document.querySelector("[data-round='check']").disabled = false;
                 stepPlayed = true;
@@ -542,15 +560,18 @@ function evaluateHand(iteration, gameStep) {
                         e.innerHTML = plyr + "Player " + (Number(whichPlayer) + 1) + ": bets $" + monetaryVal[gameStep + 1];
                     });
                     document.getElementById("foldBt").classList.remove("hide");
+                    document.querySelector("[data-round='max']").classList.remove("hide");
                     document.querySelector("[data-round='match']").classList.remove("hide");
                     document.querySelector("[data-round='raise']").classList.remove("hide");
                     document.querySelector("[data-round='check']").classList.add("hide");
                 } else {
+                    document.querySelector("[data-round='max']").classList.add("hide");
                     document.querySelector("[data-round='match']").classList.add("hide");
                     document.querySelector("[data-round='raise']").classList.add("hide");
                     document.getElementById("foldBt").classList.add("hide");
                     document.querySelector("[data-round='check']").classList.remove("hide");
                 }
+                document.querySelector("[data-round='max']").disabled = false;
                 document.querySelector("[data-round='match']").disabled = false;
                 document.querySelector("[data-round='check']").disabled = false;
                 stepPlayed = true;
@@ -566,11 +587,13 @@ function evaluateHand(iteration, gameStep) {
             }
             showPlayersCards();
             document.getElementById("foldBt").classList.add("hide");
+            document.querySelector("[data-round='max']").classList.add("hide");
             document.querySelector("[data-round='match']").classList.add("hide");
             document.querySelector("[data-round='raise']").classList.add("hide");
             document.querySelector("[data-round='check']").classList.add("hide");
             document.querySelector("button[title='Deal']").disabled = false;
             document.querySelector("button[title='Deal']").classList.remove("hide");
+            document.querySelector("[data-round='max']").disabled = false;
             document.querySelector("[data-round='match']").disabled = false;
             document.querySelector("[data-round='check']").disabled = false;
             stepPlayed = true;
@@ -580,9 +603,12 @@ function evaluateHand(iteration, gameStep) {
 }
 
 function match(checked, betMultiplier) {
-    document.querySelector("[data-round='match']").disabled = true;
+
+    //  document.querySelector("[data-round='match']").disabled = true;
     document.querySelector("[data-round='check']").disabled = true;
     document.querySelector("[data-round='match']").disabled = false;
+    document.querySelector("[data-round='max']").disabled = false;
+
     window.location = "#";
     gameIncrement = gameIncrement + 1;
     let gameStep = gameIncrement;
@@ -592,6 +618,10 @@ function match(checked, betMultiplier) {
     }
     document.getElementById("communityCardDetails").classList.remove("hide");
     monetaryVal[gameStep] = (monetaryVal[gameStep] * betMultiplier);
+    if (betMultiplier === 3) {
+        monetaryVal[gameStep] = 250;
+        maxBetHit = true;
+    }
     if (checked === false) {
         if (gameStep === 2) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
@@ -599,6 +629,8 @@ function match(checked, betMultiplier) {
             playerMoney = (playerMoney - monetaryVal[gameStep]);
             setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
+            document.querySelector("[data-round='max']").innerHTML = "Max $" + 250;
+
         }
         if (gameStep === 3) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
@@ -606,6 +638,7 @@ function match(checked, betMultiplier) {
             playerMoney = (playerMoney - monetaryVal[gameStep]);
             setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
+            document.querySelector("[data-round='max']").innerHTML = "Max $" + 250;
         }
         if (gameStep === 4) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
@@ -613,12 +646,14 @@ function match(checked, betMultiplier) {
             playerMoney = (playerMoney - monetaryVal[gameStep]);
             setPlayerMoney(playerMoney);
             document.getElementById("foldBt").classList.add("hide");
+            document.querySelector("[data-round='max']").classList.add("hide");
             document.querySelector("[data-round='match']").classList.add("hide");
             document.querySelector("[data-round='check']").classList.add("hide");
             document.querySelector("[data-round='raise']").classList.add("hide");
         }
     } else {
         document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
+        document.querySelector("[data-round='max']").innerHTML = "Max $" + 250;
     }
     document.getElementById("playerMoney").innerHTML = playerMoney;
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
@@ -666,6 +701,7 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
+    maxBetHit = false;
     plyr1Pair = [];
     plyr2Pair = [];
     plyr3Pair = [];
@@ -678,7 +714,7 @@ function deal() {
     compareCards = [0, 0, 0, 0];
     activePlayers = [0, 1, 2, 3];
     playerHighCards = [0, 0, 0, 0];
-    monetaryVal = [null, null, 35, 45, 50];
+    monetaryVal = getMonetaryVal();
     topHand = null;
     document.getElementById("communityCards").innerHTML = "";
     document.getElementById("communityCardDetails").classList.add("hide");
@@ -700,10 +736,12 @@ function deal() {
     setPlayerMoney(playerMoney);
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
     document.querySelector("#playerMoney").innerHTML = playerMoney;
-    document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[2]
+    document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[2];
+    document.querySelector("[data-round='max']").innerHTML = "Max $" + 250;
     clear("deal");
     countingIterations = 0;
     document.getElementById("foldBt").classList.remove("hide");
+    document.querySelector("[data-round='max']").classList.remove("hide");
     document.querySelector("[data-round='match']").classList.remove("hide");
     document.querySelector("[data-round='raise']").classList.remove("hide");
     document.querySelector("button[title='Deal']").disabled = true;
