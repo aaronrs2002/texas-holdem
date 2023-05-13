@@ -41,7 +41,7 @@ let bet = 0;
 let gameIncrement = 1;
 /*start random bet */
 const getMonetaryVal = () => {
-    const maxBet = [35, 75, 150];
+    const maxBet = [100, 200, 300];
     const bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
     const bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
     const bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
