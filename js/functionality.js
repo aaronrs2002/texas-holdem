@@ -1,4 +1,6 @@
 let playedTimes = 0;
+let maxBetHit = false;
+let dblBets = false;
 localStorage.setItem("completeCards", JSON.stringify(cards));
 const activeCards = JSON.parse(localStorage.getItem("completeCards"));
 const handHeirarchy = ["high-card", "pair", "two-pairs", "three-of-a-kind", "straight", "flush", "full-house", "four-of-a-kind", "straight-flush", "royal-flush"];
@@ -39,14 +41,13 @@ document.querySelector("#playerMoney").innerHTML = playerMoney;
 let bet = 0;
 let gameIncrement = 1;
 /*start random bet */
-const getMonetaryVal = () => {
-    const maxBet = [100, 200, 300];
-    const bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
-    const bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
-    const bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
-    return [null, null, bet1, bet2, bet3];/*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
-}
-let monetaryVal = getMonetaryVal();
+let maxBet = [100, 200, 300];
+
+let bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
+let bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
+let bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
+let monetaryVal = [null, null, bet1, bet2, bet3];/*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
+
 function setPlayerMoney(passPlayerMoney) {
     playerMoney = passPlayerMoney;
     document.getElementById("playerMoney").innerHTML = passPlayerMoney;
@@ -172,6 +173,21 @@ function removeActivePlyr(plyrID) {
         youWin("default");
     }
 }
+
+/*
+
+function computerBetsMax(activeBet, flush, straight, handLevels, player) {
+    const randFvToGrand = Math.floor(Math.random() * (1000 + 1) + 500);
+
+
+    bet = randFvToGrand;
+    maxBet[activeBet] = bet;
+    getMonetaryVal();
+    document.querySelector("[data-player='" + player + "']").innerHTML = plyr + "Player " + (player + 1) + ": bets $" + bet;
+    document.querySelector("[data-player='" + player + "']").dataset.status = "betting";
+
+
+}*/
 
 function evaluateHand(iteration, gameStep) {
     let stepPlayed = false;
@@ -484,10 +500,14 @@ function evaluateHand(iteration, gameStep) {
         if (suitedArr[i] > 3) {
             fourSuited = true;
         }
+
     }
     /*END OF HAND EVALUATION */
     if (stepPlayed === false && activePlayers.indexOf(iteration) !== -1) {
         if (gameStep === 1 && iteration !== 0) {
+
+
+
             if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 1 || firstRoundSuited === true || valueArr[12] > 0) {
                 document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
                 document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
@@ -522,7 +542,9 @@ function evaluateHand(iteration, gameStep) {
                 return false;
             }
         }
-
+        if (resultList[iteration] >= 4 && iteration !== 0) {
+            dblBets = true;
+        }
         if (gameStep === 2 || gameStep === 3) {
             if (gameStep === 2 && iteration !== 0) {
                 if (resultList[iteration] >= 1 && valueArr[12] > 0) {
@@ -533,9 +555,22 @@ function evaluateHand(iteration, gameStep) {
                         document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": checks.";
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
                     }
+
+                    /*START FOLD BASED ON MAX BET*/
+                    if (maxBetHit === true) {
+                        if (connectedThree === false && resultList[iteration] >= 2 && fourSuited === false) {
+                            document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": checks.";
+                            document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
+                        }
+                    }
                 }
+
+
+
             }
             if (gameStep === 3 && iteration !== 0) {
+
+
                 if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
@@ -543,6 +578,7 @@ function evaluateHand(iteration, gameStep) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": checks.";
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
                 }
+
             }/*broke up conditionals to help the javascript process*/
             if (iteration === lastIteration && iteration !== 0) {
                 if (document.querySelector("[data-status='betting']") !== null) {
@@ -600,8 +636,20 @@ function evaluateHand(iteration, gameStep) {
 }
 
 function match(checked, betMultiplier) {
-
-    //  document.querySelector("[data-round='match']").disabled = true;
+    if (betMultiplier === 3) {
+        maxBetHit = true;
+    }
+    if (dblBets === true && checked === false) {
+        maxBet = [300, 400, 500];
+    } else {
+        maxBet = [100, 200, 300];
+    }
+    bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
+    bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
+    bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
+    monetaryVal = [null, null, bet1, bet2, bet3];
+    /*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
+    document.querySelector("[data-round='match']").disabled = true;
     document.querySelector("[data-round='check']").disabled = true;
     document.querySelector("[data-round='match']").disabled = false;
     document.querySelector("[data-round='max']").disabled = false;
@@ -695,6 +743,9 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
+    maxBetHit = false;
+    dblBets = false;
+    maxBet = [100, 200, 300];
     plyr1Pair = [];
     plyr2Pair = [];
     plyr3Pair = [];
@@ -707,7 +758,7 @@ function deal() {
     compareCards = [0, 0, 0, 0];
     activePlayers = [0, 1, 2, 3];
     playerHighCards = [0, 0, 0, 0];
-    monetaryVal = getMonetaryVal();
+    // monetaryVal = monetaryVal();
     topHand = null;
     document.getElementById("communityCards").innerHTML = "";
     document.getElementById("communityCardDetails").classList.add("hide");
