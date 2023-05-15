@@ -542,7 +542,7 @@ function evaluateHand(iteration, gameStep) {
                 return false;
             }
         }
-        if (resultList[iteration] >= 4 && iteration !== 0) {
+        if (resultList[iteration] >= 3 && iteration !== 0) {
             dblBets = true;
         }
         if (gameStep === 2 || gameStep === 3) {
