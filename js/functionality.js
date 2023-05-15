@@ -568,7 +568,7 @@ function evaluateHand(iteration, gameStep) {
             }/*broke up conditionals to help the javascript process*/
 
             /*START FOLD BASED ON MAX BET*/
-            if (maxBetHit === true) {
+            if (maxBetHit === true && iteration !== 0)) {
                 if (connectedThree === false && resultList[iteration] <= 2 && fourSuited === false) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": checks.";
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
