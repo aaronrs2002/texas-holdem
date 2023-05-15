@@ -555,16 +555,9 @@ function evaluateHand(iteration, gameStep) {
                         document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": checks.";
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
                     }
-
-
                 }
-
-
-
             }
             if (gameStep === 3 && iteration !== 0) {
-
-
                 if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
@@ -572,7 +565,6 @@ function evaluateHand(iteration, gameStep) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": checks.";
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
                 }
-
             }/*broke up conditionals to help the javascript process*/
 
             /*START FOLD BASED ON MAX BET*/
@@ -638,7 +630,7 @@ function evaluateHand(iteration, gameStep) {
 }
 
 function match(checked, betMultiplier) {
-    if (betMultiplier === 3) {
+    if (betMultiplier === 3 || betMultiplier === 2) {
         maxBetHit = true;
     }
     if (dblBets === true && checked === false) {
