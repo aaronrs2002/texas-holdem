@@ -634,7 +634,10 @@ function match(checked, betMultiplier) {
     if (betMultiplier === 3 || betMultiplier === 2) {
         maxBetHit = true;
     }
-    if (dblBets === true && checked === false) {
+    /*START BLUFFING ARRAY*/
+    const bluffList = [55, 90, 115, 175, 269, 201];
+
+    if (dblBets === true || bluffList.indexOf(bet1) !== -1 || bluffList.indexOf(bet2) !== -1 || bluffList.indexOf(bet3) !== -1 && checked === false) {
         maxBet = [400, 500, 900];
     } else {
         maxBet = [100, 200, 300];
@@ -642,6 +645,11 @@ function match(checked, betMultiplier) {
     bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
     bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
     bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
+
+
+
+
+
     monetaryVal = [null, null, bet1, bet2, bet3];
     /*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
     document.querySelector("[data-round='match']").disabled = true;
