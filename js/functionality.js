@@ -565,15 +565,16 @@ function evaluateHand(iteration, gameStep) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": checks.";
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
                 }
+
+                /*START FOLD BASED ON MAX BET*/
+                if (maxBetHit === true && iteration !== 0) {
+                    if (connectedThree === false && resultList[iteration] <= 2 && fourSuited === false) {
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": checks.";
+                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
+                    }
+                }
             }/*broke up conditionals to help the javascript process*/
 
-            /*START FOLD BASED ON MAX BET*/
-            if (maxBetHit === true && iteration !== 0) {
-                if (connectedThree === false && resultList[iteration] <= 2 && fourSuited === false) {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": checks.";
-                    document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
-                }
-            }
             if (iteration === lastIteration && iteration !== 0) {
                 if (document.querySelector("[data-status='betting']") !== null) {
                     [].forEach.call(document.querySelectorAll("[data-status='checking']"), function (e) {
@@ -634,7 +635,7 @@ function match(checked, betMultiplier) {
         maxBetHit = true;
     }
     if (dblBets === true && checked === false) {
-        maxBet = [300, 400, 500];
+        maxBet = [400, 500, 900];
     } else {
         maxBet = [100, 200, 300];
     }
