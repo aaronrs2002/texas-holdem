@@ -705,6 +705,7 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
+    maxBet = [100, 200, 300];/*start random bet */
     bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
     bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
     bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
