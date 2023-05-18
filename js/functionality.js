@@ -1,6 +1,7 @@
 let playedTimes = 0;
 let maxBetHit = false;
 let dblBets = false;
+
 localStorage.setItem("completeCards", JSON.stringify(cards));
 const activeCards = JSON.parse(localStorage.getItem("completeCards"));
 const handHeirarchy = ["high-card", "pair", "two-pairs", "three-of-a-kind", "straight", "flush", "full-house", "four-of-a-kind", "straight-flush", "royal-flush"];
@@ -37,17 +38,20 @@ if (localStorage.getItem("balance") && Number(localStorage.getItem("balance"))) 
 document.querySelector("#playerMoney").innerHTML = playerMoney;
 let bet = 0;
 let gameIncrement = 1;
+let updatedBets = false;
+let maxBet = [100, 200, 300];/*start random bet */
+let bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
+let bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
+let bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
 
-let bet1;
-let bet2;
-let bet3;
-let monetaryVal = [];/*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
+let monetaryVal = [null, 10, bet1, bet2, bet3];
 
-function setPlayerMoney(passPlayerMoney) {
-    playerMoney = passPlayerMoney;
-    document.getElementById("playerMoney").innerHTML = passPlayerMoney;
-    document.querySelector("#playerMoney").innerHTML = passPlayerMoney;/*SAFARI BUG NEEDS BOTH*/
-    localStorage.setItem("balance", passPlayerMoney);
+function setPlayerMoney(winLoseBet) {
+    document.getElementById("betTarget").innerHTML = "Bet $" + bet;
+    document.getElementById("playerMoney").innerHTML = playerMoney;
+    document.querySelector("#playerMoney").innerHTML = playerMoney;/*SAFARI BUG NEEDS BOTH*/
+    localStorage.setItem("balance", playerMoney);
+    return false;
 }
 
 function showPlayersCards() {
@@ -123,7 +127,7 @@ function youWin(type) {
     document.querySelector("#status").classList.remove("hide");
     document.getElementById("notification").classList.add("alert-success");
     playerMoney = playerMoney + thePot;
-    setPlayerMoney(playerMoney);
+    setPlayerMoney("win");
     document.getElementById("playerMoney").classList.remove("hide");
     document.querySelector("#playerMoney").innerHTML = playerMoney;
     return false;
@@ -613,24 +617,44 @@ function match(checked, betMultiplier) {
     document.getElementById("communityCardDetails").classList.remove("hide");
 
     if (checked === false) {
-        bet = bet + (monetaryVal[gameStep] * betMultiplier);
-        if (gameStep === 2 || gameStep === 3) {
+        const bluffList = [55, 90, 115, 175, 269, 201];    /*START BLUFFING ARRAY*/
+        if (dblBets === true || bluffList.indexOf(bet1) !== -1 || bluffList.indexOf(bet2) !== -1 || bluffList.indexOf(bet3) !== -1 && updatedBets === false) {
+            maxBet = [400, 500, 900];
+            bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
+            bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
+            bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
+            monetaryVal = [null, 10, bet1, bet2, bet3];
+            updatedBets = true;
+        }
+        if (gameStep === 2) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
-            playerMoney = (playerMoney - bet);
-            setPlayerMoney(playerMoney);
+            bet = bet + (monetaryVal[gameStep] * betMultiplier);
+            playerMoney = playerMoney - monetaryVal[gameStep];
+            setPlayerMoney("betting");
+            document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
+            document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
+        }
+        if (gameStep === 3) {
+            thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
+            bet = bet + (monetaryVal[gameStep] * betMultiplier);
+            playerMoney = playerMoney - monetaryVal[gameStep];
+            setPlayerMoney("betting");
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
             document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
         }
         if (gameStep === 4) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
-            playerMoney = (playerMoney - bet);
-            setPlayerMoney(playerMoney);
+            bet = bet + (monetaryVal[gameStep] * betMultiplier);
+            playerMoney = playerMoney - monetaryVal[gameStep];
+            setPlayerMoney("betting");
             document.getElementById("foldBt").classList.add("hide");
             document.querySelector("[data-round='max']").classList.add("hide");
             document.querySelector("[data-round='match']").classList.add("hide");
             document.querySelector("[data-round='check']").classList.add("hide");
             document.querySelector("[data-round='raise']").classList.add("hide");
         }
+
+
     } else {
         document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
         document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep] * betMultiplier);
@@ -681,17 +705,9 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
+    updatedBets = false;
     maxBetHit = false;
     dblBets = false;
-    let maxBet = [100, 200, 300];/*start random bet */
-    const bluffList = [55, 90, 115, 175, 269, 201];    /*START BLUFFING ARRAY*/
-    if (dblBets === true || bluffList.indexOf(bet1) !== -1 || bluffList.indexOf(bet2) !== -1 || bluffList.indexOf(bet3) !== -1 && checked === false) {
-        maxBet = [400, 500, 900];
-    }
-    bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
-    bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
-    bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
-    monetaryVal = [null, null, bet1, bet2, bet3];/*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
     plyr1Pair = [];
     plyr2Pair = [];
     plyr3Pair = [];
@@ -719,11 +735,11 @@ function deal() {
     document.getElementById("notification").classList.remove("alert-danger");
     document.getElementById("notification").classList.add("alert-info");
     document.getElementById("message").innerHTML = "";
-    bet = 10;
     thePot = 40;
-    playerMoney = (playerMoney - bet);
-    setPlayerMoney(playerMoney);
-    document.getElementById("betTarget").innerHTML = "Bet $" + bet;
+    bet = monetaryVal[1];
+    playerMoney = playerMoney - bet;
+    setPlayerMoney("betting");
+    document.getElementById("betTarget").innerHTML = "Bet $" + monetaryVal[1];
     document.querySelector("#playerMoney").innerHTML = playerMoney;
     document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[2];
     document.querySelector("[data-round='max']").innerHTML = "Max $" + monetaryVal[2] * 3;
