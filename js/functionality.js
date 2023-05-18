@@ -596,7 +596,6 @@ function evaluateHand(iteration, gameStep) {
 }
 
 function match(checked, betMultiplier) {
-    console.log("betMultiplier: " + betMultiplier);
     if (betMultiplier === 3 || betMultiplier === 2) {
         maxBetHit = true;
     }
@@ -615,27 +614,15 @@ function match(checked, betMultiplier) {
 
     if (checked === false) {
         bet = bet + (monetaryVal[gameStep] * betMultiplier);
-        console.log("bet: " + bet + " - monetaryVal: " + monetaryVal + " - gameStep: " + gameStep);
-        if (gameStep === 2) {
-            console.log("monetaryVal[gameStep]: " + monetaryVal[gameStep] + " - bet: " + bet + " - monetaryVal: " + monetaryVal);
+        if (gameStep === 2 || gameStep === 3) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
-            // bet = bet + monetaryVal[gameStep];
-            playerMoney = (playerMoney - monetaryVal[gameStep]);
-            setPlayerMoney(playerMoney);
-            document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
-            document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
-        }
-        if (gameStep === 3) {
-            thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
-            //  bet = bet + monetaryVal[gameStep];
-            playerMoney = (playerMoney - monetaryVal[gameStep]);
+            playerMoney = (playerMoney - bet);
             setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
             document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
         }
         if (gameStep === 4) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
-            //  bet = bet + monetaryVal[gameStep];
             playerMoney = (playerMoney - bet);
             setPlayerMoney(playerMoney);
             document.getElementById("foldBt").classList.add("hide");
@@ -649,7 +636,6 @@ function match(checked, betMultiplier) {
         document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep] * betMultiplier);
     }
     document.getElementById("playerMoney").innerHTML = playerMoney;
-    console.log("bet: " + bet);
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
     if (gameStep === 2) {/*the flop*/
         communityCards = [];
