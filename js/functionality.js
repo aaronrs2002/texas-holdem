@@ -37,11 +37,11 @@ if (localStorage.getItem("balance") && Number(localStorage.getItem("balance"))) 
 document.querySelector("#playerMoney").innerHTML = playerMoney;
 let bet = 0;
 let gameIncrement = 1;
-let maxBet = [100, 200, 300];/*start random bet */
-let bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
-let bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
-let bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
-let monetaryVal = [null, null, bet1, bet2, bet3];/*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
+
+let bet1;
+let bet2;
+let bet3;
+let monetaryVal = [];/*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
 
 function setPlayerMoney(passPlayerMoney) {
     playerMoney = passPlayerMoney;
@@ -596,19 +596,10 @@ function evaluateHand(iteration, gameStep) {
 }
 
 function match(checked, betMultiplier) {
+    console.log("betMultiplier: " + betMultiplier);
     if (betMultiplier === 3 || betMultiplier === 2) {
         maxBetHit = true;
     }
-    const bluffList = [55, 90, 115, 175, 269, 201];    /*START BLUFFING ARRAY*/
-    if (dblBets === true || bluffList.indexOf(bet1) !== -1 || bluffList.indexOf(bet2) !== -1 || bluffList.indexOf(bet3) !== -1 && checked === false) {
-        maxBet = [400, 500, 900];
-    } else {
-        maxBet = [100, 200, 300];
-    }
-    bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
-    bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
-    bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
-    monetaryVal = [null, null, bet1, bet2, bet3];    /*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
     document.querySelector("[data-round='match']").disabled = true;
     document.querySelector("[data-round='check']").disabled = true;
     document.querySelector("[data-round='match']").disabled = false;
@@ -621,11 +612,14 @@ function match(checked, betMultiplier) {
         maxLength = 5;
     }
     document.getElementById("communityCardDetails").classList.remove("hide");
-    monetaryVal[gameStep] = (monetaryVal[gameStep] * betMultiplier);
+
     if (checked === false) {
+        bet = bet + (monetaryVal[gameStep] * betMultiplier);
+        console.log("bet: " + bet + " - monetaryVal: " + monetaryVal + " - gameStep: " + gameStep);
         if (gameStep === 2) {
+            console.log("monetaryVal[gameStep]: " + monetaryVal[gameStep] + " - bet: " + bet + " - monetaryVal: " + monetaryVal);
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
-            bet = bet + monetaryVal[gameStep];
+            // bet = bet + monetaryVal[gameStep];
             playerMoney = (playerMoney - monetaryVal[gameStep]);
             setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
@@ -633,7 +627,7 @@ function match(checked, betMultiplier) {
         }
         if (gameStep === 3) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
-            bet = bet + monetaryVal[gameStep];
+            //  bet = bet + monetaryVal[gameStep];
             playerMoney = (playerMoney - monetaryVal[gameStep]);
             setPlayerMoney(playerMoney);
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
@@ -641,8 +635,8 @@ function match(checked, betMultiplier) {
         }
         if (gameStep === 4) {
             thePot = thePot + (monetaryVal[gameStep] * activePlayers.length);
-            bet = bet + monetaryVal[gameStep];
-            playerMoney = (playerMoney - monetaryVal[gameStep]);
+            //  bet = bet + monetaryVal[gameStep];
+            playerMoney = (playerMoney - bet);
             setPlayerMoney(playerMoney);
             document.getElementById("foldBt").classList.add("hide");
             document.querySelector("[data-round='max']").classList.add("hide");
@@ -655,6 +649,7 @@ function match(checked, betMultiplier) {
         document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep] * betMultiplier);
     }
     document.getElementById("playerMoney").innerHTML = playerMoney;
+    console.log("bet: " + bet);
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
     if (gameStep === 2) {/*the flop*/
         communityCards = [];
@@ -702,7 +697,15 @@ function match(checked, betMultiplier) {
 function deal() {
     maxBetHit = false;
     dblBets = false;
-    maxBet = [100, 200, 300];
+    let maxBet = [100, 200, 300];/*start random bet */
+    const bluffList = [55, 90, 115, 175, 269, 201];    /*START BLUFFING ARRAY*/
+    if (dblBets === true || bluffList.indexOf(bet1) !== -1 || bluffList.indexOf(bet2) !== -1 || bluffList.indexOf(bet3) !== -1 && checked === false) {
+        maxBet = [400, 500, 900];
+    }
+    bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
+    bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
+    bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
+    monetaryVal = [null, null, bet1, bet2, bet3];/*placeholder, because we start at 1. next null is becuase the pre-flop/deal has it's monetized value*/
     plyr1Pair = [];
     plyr2Pair = [];
     plyr3Pair = [];
