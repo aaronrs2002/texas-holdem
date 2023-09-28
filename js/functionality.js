@@ -1,7 +1,6 @@
 let playedTimes = 0;
 let maxBetHit = false;
 let dblBets = false;
-
 localStorage.setItem("completeCards", JSON.stringify(cards));
 const activeCards = JSON.parse(localStorage.getItem("completeCards"));
 const handHeirarchy = ["high-card", "pair", "two-pairs", "three-of-a-kind", "straight", "flush", "full-house", "four-of-a-kind", "straight-flush", "royal-flush"];
@@ -11,6 +10,7 @@ const playersDetails = ["playerHandDetails", "playerTwoHandDetails", "playerThre
 const playerIds = ["playerCards", "playerTwoCards", "playerThreeCards", "playerFourCards"];
 const gameStepHierarchy = ["zeroPlaceholder", "pre flop", "flop", "turn", "river"];
 let usedCardsArr = [];
+let communityCardsHTML = "";
 /*looking for pairs*/
 plyr1Pair = [];
 plyr2Pair = [];
@@ -43,7 +43,6 @@ let maxBet = [100, 200, 300];/*start random bet */
 let bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
 let bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
 let bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
-
 let monetaryVal = [null, 10, bet1, bet2, bet3];
 
 function setPlayerMoney(winLoseBet) {
@@ -68,6 +67,22 @@ function generate(activeCards) {
     return Math.floor(Math.random() * activeCards.length);
 }
 
+function buildCommunityCards(howMany) {
+    while (communityCards.length < howMany) {
+        let genNumber = generate(activeCards);
+        if (usedCardsArr.indexOf(activeCards[genNumber].title) === -1) {
+            communityCardsHTML = communityCardsHTML + `<div class='card ${activeCards[genNumber].title}' ></div>`;
+            communityCards.push({
+                suit: activeCards[genNumber].title.substring(activeCards[genNumber].title.indexOf("-") + 1, activeCards[genNumber].title.length),
+                value: activeCards[genNumber].title.substring(0, activeCards[genNumber].title.indexOf("-"))
+            });
+            usedCardsArr.push(cards[genNumber].title);
+        }
+    }
+    document.getElementById("communityCards").innerHTML = communityCardsHTML;
+    document.getElementById("communityCardDetails").innerHTML = "Community Cards";
+}
+
 function getOccurrence(list, value) {/*start how many times number in array*/
     var count = 0;
     list.forEach((v) => (v === value && count++));
@@ -76,28 +91,24 @@ function getOccurrence(list, value) {/*start how many times number in array*/
 
 function clear(action) {
     if (action === "fold") {
-        document.getElementById("playerHandDetails").classList.add("hide");
-        document.getElementById("playerTwoHandDetails").classList.add("hide");
-        document.getElementById("playerThreeHandDetails").classList.add("hide");
-        document.getElementById("playerFourHandDetails").classList.add("hide");
+        document.getElementById("notification").classList.remove("alert-success");
+        document.getElementById("notification").classList.add("alert-danger");
+        document.getElementById("playerHandDetails").classList.remove("alert-success");
+        document.getElementById("playerHandDetails").classList.add("alert-danger");
     }
     document.getElementById("foldBt").classList.add("hide");
     document.querySelector("[data-round='max']").classList.add("hide");
     document.querySelector("[data-round='match']").classList.add("hide");
     document.querySelector("[data-round='raise']").classList.add("hide");
     document.querySelector("[data-round='check']").classList.add("hide");
-    document.getElementById("playerFourCards").innerHTML = "";
-    document.getElementById("playerThreeCards").innerHTML = "";
-    document.getElementById("playerTwoCards").innerHTML = "";
-    document.getElementById("playerCards").innerHTML = "";
     document.getElementById("status").classList.add("hide");
     document.querySelector("button[title='Deal']").disabled = false;
     document.querySelector("button[title='Deal']").classList.remove("hide");
-    document.getElementById("communityCards").innerHTML = "";
 }
 
 function fold() {
     document.getElementById("betTarget").innerHTML = "Folded. You lost $" + bet + ". Place your bet.";
+    buildCommunityCards(5);
     clear("fold");
     window.location = "#";
 }
@@ -505,7 +516,6 @@ function evaluateHand(iteration, gameStep) {
                     document.getElementById("foldBt").classList.add("hide");
                     document.querySelector("[data-round='raise']").classList.add("hide");
                     document.querySelector("[data-round='check']").classList.remove("hide");
-
                 }
                 document.querySelector("[data-round='max']").disabled = false;
                 document.querySelector("[data-round='match']").disabled = false;
@@ -535,7 +545,6 @@ function evaluateHand(iteration, gameStep) {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": checks.";
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "checking";
                 }
-
                 /*START FOLD BASED ON MAX BET*/
                 if (maxBetHit === true && iteration !== 0) {
                     if (connectedThree === false && resultList[iteration] <= 2 && fourSuited === false) {
@@ -615,7 +624,6 @@ function match(checked, betMultiplier) {
         maxLength = 5;
     }
     document.getElementById("communityCardDetails").classList.remove("hide");
-
     if (checked === false) {
         const bluffList = [55, 90, 115, 175, 269, 201];    /*START BLUFFING ARRAY*/
         if (dblBets === true || bluffList.indexOf(bet1) !== -1 || bluffList.indexOf(bet2) !== -1 || bluffList.indexOf(bet3) !== -1 && updatedBets === false) {
@@ -653,8 +661,6 @@ function match(checked, betMultiplier) {
             document.querySelector("[data-round='check']").classList.add("hide");
             document.querySelector("[data-round='raise']").classList.add("hide");
         }
-
-
     } else {
         document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
         document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep] * betMultiplier);
@@ -664,20 +670,7 @@ function match(checked, betMultiplier) {
     if (gameStep === 2) {/*the flop*/
         communityCards = [];
         document.getElementById("communityCardDetails").classList.remove("hide");
-        let communityCardsHTML = "";
-        while (communityCards.length < 3) {
-            let genNumber = generate(activeCards);
-            if (usedCardsArr.indexOf(activeCards[genNumber].title) === -1) {
-                communityCardsHTML = communityCardsHTML + `<div class='card ${activeCards[genNumber].title}' ></div>`;
-                communityCards.push({
-                    suit: activeCards[genNumber].title.substring(activeCards[genNumber].title.indexOf("-") + 1, activeCards[genNumber].title.length),
-                    value: activeCards[genNumber].title.substring(0, activeCards[genNumber].title.indexOf("-"))
-                });
-                usedCardsArr.push(cards[genNumber].title);
-            }
-        }
-        document.getElementById("communityCards").innerHTML = communityCardsHTML;
-        document.getElementById("communityCardDetails").innerHTML = "Community Cards";
+        buildCommunityCards(3);
     } else {
         while (communityCards.length < maxLength) {
             let genNumber = generate(activeCards);
@@ -705,6 +698,10 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
+    for (let i = 0; i < playerIds.length; i++) {
+        document.getElementById(playerIds[i]).innerHTML = ""
+    }
+    communityCardsHTML = "";
     maxBet = [100, 200, 300];/*start random bet */
     bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
     bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
