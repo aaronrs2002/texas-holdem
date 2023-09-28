@@ -81,7 +81,6 @@ function buildCommunityCards(howMany, step) {
     }
     document.getElementById("communityCards").innerHTML = communityCardsHTML;
     if (step === 2) document.getElementById("communityCardDetails").innerHTML = "Community Cards";
-
 }
 
 function getOccurrence(list, value) {/*start how many times number in array*/
@@ -111,7 +110,7 @@ function clear(action) {
 
 function fold() {
     document.getElementById("betTarget").innerHTML = "Folded. You lost $" + bet + ". Place your bet.";
-    buildCommunityCards(5);
+    buildCommunityCards(5, "default");
     clear("fold");
     window.location = "#";
 }
@@ -676,19 +675,6 @@ function match(checked, betMultiplier) {
         buildCommunityCards(3, gameStep);
     } else {
         buildCommunityCards(maxLength, gameStep);
-        /* while (communityCards.length < maxLength) {
-             let genNumber = generate(activeCards);
-             if (usedCardsArr.indexOf(activeCards[genNumber].title) === -1) {
-                 let communityCardsHTML = document.getElementById("communityCards").innerHTML;
-                 communityCardsHTML = document.getElementById("communityCards").innerHTML + `<div class='card ${activeCards[genNumber].title}' ></div>`;
-                 communityCards.push({
-                     suit: activeCards[genNumber].title.substring(activeCards[genNumber].title.indexOf("-") + 1, activeCards[genNumber].title.length),
-                     value: activeCards[genNumber].title.substring(0, activeCards[genNumber].title.indexOf("-"))
-                 });
-                 usedCardsArr.push(cards[genNumber].title);
-                 document.getElementById("communityCards").innerHTML = communityCardsHTML;
-             }
-         }*/
     }
     let evaled = [];
     for (let i = 0; i < activePlayers.length; i++) {
