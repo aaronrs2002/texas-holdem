@@ -91,7 +91,6 @@ function getOccurrence(list, value) {/*start how many times number in array*/
 
 function clear(action) {
     if (action === "fold") {
-        console.log("document.querySelector('.card').length: " + document.querySelector('.card').length);
         document.getElementById("notification").classList.remove("alert-success");
         document.getElementById("notification").classList.add("alert-danger");
         document.getElementById("playerHandDetails").classList.remove("alert-success");
