@@ -96,6 +96,7 @@ function clear(action) {
         document.getElementById("playerHandDetails").classList.remove("alert-success");
         document.getElementById("playerHandDetails").classList.add("alert-danger");
         document.getElementById("playerHandDetails").innerHTML = "You folded.";
+        showPlayersCards();
     }
     document.getElementById("foldBt").classList.add("hide");
     document.querySelector("[data-round='max']").classList.add("hide");
