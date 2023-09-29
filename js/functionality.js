@@ -80,7 +80,7 @@ function buildCommunityCards(howMany, step) {
         }
     }
     document.getElementById("communityCards").innerHTML = communityCardsHTML;
-    if (step === 2) document.getElementById("communityCardDetails").innerHTML = "Community Cards";
+    //if (step === 2) document.getElementById("communityCardDetails").innerHTML = "Community Cards";
 }
 
 function getOccurrence(list, value) {/*start how many times number in array*/
