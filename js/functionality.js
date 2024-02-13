@@ -355,7 +355,7 @@ function evaluateHand(iteration, gameStep) {
             }
         }
     }
-    for (let i = -1; i < 13; i++) {/*ATTEMPT TO FIX PAIRS OVERRIDDING STRAIGHT*/
+    for (let i = -1; i < 13; i++) {/*ATTEMPT TO FIX PAIRS OVERRIDING STRAIGHT*/
         if (valueArr[i] > 0 && valueArr[i + 1] > 0 && valueArr[i + 2] > 0 && valueArr[i + 3] > 0 && valueArr[i + 4] > 0) {
             resultList[iteration] = 4;
             communityCards[iteration] = valueArr[i + 4];
@@ -636,7 +636,16 @@ function match(checked, betMultiplier) {
     }
     document.getElementById("communityCardDetails").classList.remove("hide");
     if (checked === false) {
-        const bluffList = [55, 90, 115, 175, 269, 201];    /*START BLUFFING ARRAY*/
+        /*START BLUFFING ARRAY*/
+        const bluffList = [
+            Math.floor(Math.random() * (100 - 10) + 10),
+            Math.floor(Math.random() * (100 - 50) + 50),
+            Math.floor(Math.random() * (200 - 101) + 101),
+            Math.floor(Math.random() * (200 - 150) + 150),
+            Math.floor(Math.random() * (300 - 201) + 201),
+            Math.floor(Math.random() * (300 - 250) + 250),
+        ];
+
         if (dblBets === true || bluffList.indexOf(bet1) !== -1 || bluffList.indexOf(bet2) !== -1 || bluffList.indexOf(bet3) !== -1 && updatedBets === false) {
             maxBet = [400, 500, 900];
             bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
