@@ -25,6 +25,7 @@ let resultList = [0, 0, 0, 0];
 let compareCards = [0, 0, 0, 0];
 let activePlayers = [0, 1, 2, 3];
 let playerHighCards = [0, 0, 0, 0];
+let playerStraightHighCard = [0, 0, 0, 0];
 let topHand;
 const plyr = "<i class='fas fa-user'></i> ";
 const yourDetails = document.querySelector("[data-player='0']");
@@ -344,6 +345,10 @@ function evaluateHand(iteration, gameStep) {
         }
         if (cardIndexes[i + 1] === cardIndexes[i] + 1 && cardIndexes[i + 2] === cardIndexes[i] + 2 && cardIndexes[i + 3] === cardIndexes[i] + 3 && cardIndexes[i + 4] === cardIndexes[i] + 4) {
             straight = true;
+            if (cardIndexes[i + 4] > playerStraightHighCard[iteration]) {
+                playerStraightHighCard[iteration] = cardIndexes[i + 4];
+            }
+
             if (resultList[iteration] < 4) {
                 resultList[iteration] = 4;
                 communityCards[iteration] = cardIndexes[i + 4];
@@ -425,6 +430,10 @@ function evaluateHand(iteration, gameStep) {
             winningCard = Math.max(...compareCards);
             topHand = compareCards.indexOf(winningCard);
             if (getOccurrence(compareCards, winningCard) > 1) {
+                if (winningHand === 4) {/*determine who has the highest straight */
+                    topHand = Math.max(...playerStraightHighCard);
+
+                }
                 if (winningHand === 2) {              /* If the 2 winning players have two pair, who has the best 2 pair?*/
                     let allPairs = [...plyr1Pair, ...plyr2Pair, ...plyr3Pair, ...plyr4Pair];
                     let highestPair = Math.max(...allPairs);
@@ -712,6 +721,7 @@ function deal() {
     compareCards = [0, 0, 0, 0];
     activePlayers = [0, 1, 2, 3];
     playerHighCards = [0, 0, 0, 0];
+    playerStraightHighCard = [0, 0, 0, 0];
     topHand = null;
     document.getElementById("communityCards").innerHTML = "";
     document.getElementById("communityCardDetails").classList.add("hide");
