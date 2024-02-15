@@ -433,6 +433,13 @@ function evaluateHand(iteration, gameStep) {
                 if (winningHand === 4) {/*determine who has the highest straight */
                     topHand = Math.max(...playerStraightHighCard);
 
+
+                    if (getOccurrence(playerStraightHighCard, topHand) > 1 && playerStraightHighCard[0] === topHand) {
+                        youWin("split");
+                        showPlayersCards();
+                        return false;
+                    }
+
                 }
                 if (winningHand === 2) {              /* If the 2 winning players have two pair, who has the best 2 pair?*/
                     let allPairs = [...plyr1Pair, ...plyr2Pair, ...plyr3Pair, ...plyr4Pair];
