@@ -435,6 +435,7 @@ function evaluateHand(iteration, gameStep) {
         bestHoleCards.push(tempObj);
 
 
+
     }
 
     //END BEST WHOLE CARDS
@@ -503,7 +504,7 @@ function evaluateHand(iteration, gameStep) {
                         if (playersWithPair[i].indexOf(secondHighestPair) === -1) {
                             compareCards[i] = -1;
                             resultList[i] = -1;
-                            playersWithPair[i] = [];
+                            playersWithPair[i] = [-1];
                         }
                     }
 
@@ -525,9 +526,17 @@ function evaluateHand(iteration, gameStep) {
 
                 if (getOccurrence(winnersList, multiWinMax) > 1) {
 
+
                     let hiHole = 0;
                     let lowHole = 0;
                     for (let i = 0; i < bestHoleCards.length; i++) {
+
+                        if (bestHoleCards[i].indexOf(multiWinMax) === -1) {
+                            bestHoleCards[i][0] = -1;
+                            bestHoleCards[i][1] = -1;
+
+                        }
+
                         if (bestHoleCards[i][1] > hiHole) {
                             hiHole = bestHoleCards[i][1];
                             topHand = i;
