@@ -21,6 +21,7 @@ let player1Obj;
 let player2Obj;
 let player3Obj;
 const playersHands = [player0Obj, player1Obj, player2Obj, player3Obj];
+let bestHoleCards = [];
 let resultList = [0, 0, 0, 0];
 let compareCards = [0, 0, 0, 0];
 let activePlayers = [0, 1, 2, 3];
@@ -409,7 +410,44 @@ function evaluateHand(iteration, gameStep) {
         document.getElementById(playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;
         document.querySelector("#" + playersDetails[iteration]).innerHTML = plyr + "Player " + (iteration + 1) + ": " + handHeirarchy[resultList[iteration]] + "  " + cardsInvolved + HighCardMessage;        /*browser bug fix*/
     }
+
+
+    //START BEST WHOLE CARDS
+    if (gameStep === 1) {
+        //bestHoleCards.push()
+        let tempObj = []
+        for (let i = 0; i < valueArr.length; i++) {
+            if (valueArr[i] !== 0) {
+                tempObj.push(i);
+                if (valueArr[i] > 1) {
+                    tempObj.push(i);
+                }
+            }
+        }
+        let placeHdlr0 = tempObj[0];
+        let placeHdlr1 = tempObj[1];
+        if (tempObj[1] < tempObj[0]) {
+            tempObj[0] = placeHdlr1;
+            tempObj[1] = placeHdlr0;
+        }
+        // tempObj = tempObj.reverse();
+        //  tempObj = tempObj.sort();
+        bestHoleCards.push(tempObj);
+
+
+    }
+
+    //END BEST WHOLE CARDS
+
     if (gameStep === 4 && iteration === lastIteration) {
+
+
+
+
+
+
+
+
         if (getOccurrence(valueArr, 2) > 2) {/*player cannot have 3 pair. Get rid of lowest pair here*/
             for (let i = 0; i < valueArr.length; i++) {
                 if (valueArr[i] === 2 && getOccurrence(valueArr, 2) > 2) {
@@ -425,15 +463,18 @@ function evaluateHand(iteration, gameStep) {
             for (let i = 0; i < resultList.length; i++) {
                 if (resultList[i] !== winningHand) {
                     compareCards[i] = -1;
+                    bestHoleCards[i][0] = -1;
+                    bestHoleCards[i][1] = -1;
+
                 }
+
             }
+
             winningCard = Math.max(...compareCards);
             topHand = compareCards.indexOf(winningCard);
             if (getOccurrence(compareCards, winningCard) > 1) {
                 if (winningHand === 4) {/*determine who has the highest straight */
                     topHand = Math.max(...playerStraightHighCard);
-
-
                     if (getOccurrence(playerStraightHighCard, topHand) > 1 && playerStraightHighCard[0] === topHand) {
                         youWin("split");
                         showPlayersCards();
@@ -465,7 +506,9 @@ function evaluateHand(iteration, gameStep) {
                             playersWithPair[i] = [];
                         }
                     }
+
                 }   /*end*/
+
                 let winnersList = [];
                 for (let i = 0; i < 4; i++) {
                     if (compareCards[i] !== -1) {
@@ -478,11 +521,44 @@ function evaluateHand(iteration, gameStep) {
                 }
                 multiWinMax = Math.max(...winnersList);
                 topHand = winnersList.indexOf(multiWinMax);
-                if (getOccurrence(winnersList, multiWinMax) > 1 && compareCards[0] === multiWinMax) {
-                    youWin("split");
-                    showPlayersCards();
-                    return false;
+
+
+                if (getOccurrence(winnersList, multiWinMax) > 1) {
+
+                    let hiHole = 0;
+                    let lowHole = 0;
+                    for (let i = 0; i < bestHoleCards.length; i++) {
+                        if (bestHoleCards[i][1] > hiHole) {
+                            hiHole = bestHoleCards[i][1];
+                            topHand = i;
+
+                        }
+                        if (bestHoleCards[i][1] === hiHole) {
+
+                            if (bestHoleCards[i][0] > lowHole) {
+                                lowHole = bestHoleCards[i][0];
+                                topHand = i;
+
+                            }
+                            if (bestHoleCards[i][1] === hiHole && bestHoleCards[i][0] === lowHole && bestHoleCards[0][0] !== -1) {
+                                youWin("split");
+                                showPlayersCards();
+                                return false;
+
+                            }
+                        }
+
+
+                    }
+
+
+
                 }
+                /*    if (getOccurrence(winnersList, multiWinMax) > 1 && compareCards[0] === multiWinMax) {
+                        youWin("split");
+                        showPlayersCards();
+                        return false;
+                    }*/
             }
         }
     }
@@ -506,6 +582,10 @@ function evaluateHand(iteration, gameStep) {
             fourSuited = true;
         }
     }
+
+
+    ///let cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
+
     /*END OF HAND EVALUATION */
     if (stepPlayed === false && activePlayers.indexOf(iteration) !== -1) {
         if (gameStep === 1 && iteration !== 0) {
@@ -738,6 +818,7 @@ function deal() {
     activePlayers = [0, 1, 2, 3];
     playerHighCards = [0, 0, 0, 0];
     playerStraightHighCard = [0, 0, 0, 0];
+    bestHoleCards = [];
     topHand = null;
     document.getElementById("communityCards").innerHTML = "";
     document.getElementById("communityCardDetails").classList.add("hide");
