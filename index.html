@@ -154,22 +154,56 @@
 
             <div class="card hide" data-toggle="rules">
                 <div class="card-body">
-                    <div class="text-danger alert alert-info" role="alert"><small>TEXAS HOLDEM STATUS: BETA TESTING
-                            <br />Texas Hold'em has occasional anomalies. Check back for updates.
-                        </small>
-                        <br />
-                        <a href="https://youtu.be/ZHPS2O7Q_8Y" target="_blank" class="btn btn-info">Latest Texas Hold'Em
-                            Status video</a>
+                    <div class="row text-danger alert alert-info" role="alert">
+                        <div class="col-md-6">
+
+                            <h5>TEXAS HOLDEM STATUS: BETA TESTING</h5>
+                            <small>Texas Hold'em has occasional anomalies. Check back for updates.
+                            </small>
+                            <br />
+                            <iframe style="width:95%; height:300px;"
+                                src="https://www.youtube.com/embed/ZHPS2O7Q_8Y?si=FJ0oZq0B28YeQ4F-"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                        </div>
+                        <div class="col-md-6">
+                            <h5>How the score passes from game to game</h5>
+                            <p>The game passes your winnings around via url address bar or using your browser's cache.
+                                You can
+                                always adjust your winnings by deleting or changing these numbers. In the url bar, this
+                                number
+                                is defined by: "balance='NUMBER-GOES-HERE'&", for example. In localStorage, it is
+                                labeled as
+                                key: "balance" and value: "NUMBER-GOES-HERE" as well.
+                            </p>
+                            <h5>Airplane mode</h5>
+                            <label></label> To play this game in airplane mode:
+                            <ul class="list-group">
+                                <li class="list-group-item">Start the game in a browser window. <span
+                                        class="text-danger">Do not use incognito
+                                        mode.</span></li>
+                                <li class="list-group-item">Wait for the cards to appear.</li>
+                                <li class="list-group-item">Once the cards are visible, you can safely switch your
+                                    device to airplane mode.</li>
+                                <li class="list-group-item">The game runs entirely in your browser and will continue to
+                                    function normally after this point.</li>
+                            </ul>
+
+
+
+
+
+
+                        </div>
                     </div>
+
+
+
                     <h5 class="card-title" alt="poker rules">Poker rules:</h5>
 
                     <p>In Texas Hold'em, the best five-card poker hand wins the pot.</p>
-                    <p>The game passes your winnings around via url address bar or using your browser's cache. You can
-                        always adjust your winnings by deleting or changing these numbers. In the url bar, this number
-                        is defined by: "balance='NUMBER-GOES-HERE'&", for example. In localStorage, it is labeled as
-                        key: "balance" and value: "NUMBER-GOES-HERE" as well.
-                    </p>
-
                     <label>Hand Ranking:</label>
                     <ul class="decimal">
                         <li>royal-flush: five consecutive cards of the same suit in order of value from 10 through
