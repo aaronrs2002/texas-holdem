@@ -892,6 +892,7 @@ function deal() {
     }
     for (let i = 0; i < 4; i++) {
         generatePlayer(i);
+                            document.querySelector("[data-player='" + i + "']").innerHTML = "";
     }
     return false;
 }
