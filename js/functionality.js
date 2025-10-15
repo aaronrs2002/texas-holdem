@@ -828,7 +828,7 @@ function deal() {
             for (let i = 0; i < 4; i++) {
                 document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1);
             }
-        }, 300);
+        }, 1000);
 
     }
 
