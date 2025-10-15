@@ -815,13 +815,17 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
-
+    /*start instane mobile bug #2*/
     document.querySelector("[data-player='1']").textContent = plyr + "Player 2";
+
+    [].forEach.call(document.querySelectorAll("[data-player]"), function (e) {
+        e.innerHTML = "";
+    });
 
     for (let i = 0; i < 4; i++) {
         document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1);
     }
-
+    /*end instane mobile bug #2*/
     for (let i = 0; i < playerIds.length; i++) {
         document.getElementById(playerIds[i]).innerHTML = ""
     }
