@@ -856,10 +856,14 @@ function match(checked, betMultiplier) {
 
 function deal() {
 
-    [].forEach.call(document.querySelectorAll("[data-player]"), (e, i) => {
+    [].forEach.call(document.querySelectorAll("[data-player][data-status]"), (e, i) => {
 
         let currentLabel = e.innerHTML;
-        if (currentLabel === "folded") {
+
+        console.log("currentLabel: " + currentLabel);
+        if (currentLabel.indexOf("folded") !== -1) {
+
+
             e.innerHTML = plyr + "Player " + (i + 1);
             console.log("reset " + (i + 1) + "to " + plyr + "Player " + (i + 1));
         }
