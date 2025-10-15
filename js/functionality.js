@@ -816,7 +816,7 @@ function match(checked, betMultiplier) {
 
 function deal() {
 
-    for (let i = 1; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
         document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1);
     }
 
