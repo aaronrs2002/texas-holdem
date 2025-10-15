@@ -600,7 +600,7 @@ function evaluateHand(iteration, gameStep) {
         if (gameStep === 1 && iteration !== 0) {
             if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 0 || firstRoundSuited === true || valueArr[12] > 0) {
 
-                document.querySelector("[data-player='" + iteration + "']").innerHTML = "error";
+
                 document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player - cycle: 1  " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
 
 
@@ -726,6 +726,10 @@ function evaluateHand(iteration, gameStep) {
 }
 
 function match(checked, betMultiplier) {
+
+    for (let i = 0; i < 4; i++) {
+        document.querySelector("[data-player='" + i + "']").innerHTML = "";
+    }
     if (betMultiplier === 3 || betMultiplier === 2) {
         maxBetHit = true;
     }
