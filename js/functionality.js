@@ -601,7 +601,7 @@ function evaluateHand(iteration, gameStep) {
             if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 0 || firstRoundSuited === true || valueArr[12] > 0) {
 
 
-                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player - cycle: 1  " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
 
 
 
@@ -642,7 +642,7 @@ function evaluateHand(iteration, gameStep) {
         if (gameStep === 2 || gameStep === 3) {
             if (gameStep === 2 && iteration !== 0) {
                 if (connectedThree === true || highCardCount > 1 || firstRoundSuited === true || resultList[iteration] >= 1) {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player - cycle: 2 " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                 } else {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": checks.";
@@ -654,7 +654,7 @@ function evaluateHand(iteration, gameStep) {
 
 
 
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player - cycle: 3 " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
 
 
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
@@ -728,7 +728,6 @@ function evaluateHand(iteration, gameStep) {
 function match(checked, betMultiplier) {
 
 
-    document.querySelector("[data-player='1']").innerHTML = plyr + "Player 1";
 
     if (betMultiplier === 3 || betMultiplier === 2) {
         maxBetHit = true;
@@ -816,7 +815,12 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
-    document.querySelector("[data-player='1']").innerHTML = plyr + "Player 1";
+    document.querySelector("[data-player='1']").innerHTML = plyr + "Player 2";
+
+    for (let i = 0; i < 4; i++) {
+        document.querySelector("[data-player=" + i + "']").innerHTML = plyr + "Player " + (i + 1);
+    }
+
     for (let i = 0; i < playerIds.length; i++) {
         document.getElementById(playerIds[i]).innerHTML = ""
     }
