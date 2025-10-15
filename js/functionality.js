@@ -815,10 +815,9 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
-    document.querySelector("[data-player='1']").innerHTML = plyr + "Player 2";
 
-    for (let i = 0; i < 4; i++) {
-        document.querySelector("[data-player=" + i + "']").innerHTML = plyr + "Player " + (i + 1);
+    for (let i = 1; i < 5; i++) {
+        document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1);
     }
 
     for (let i = 0; i < playerIds.length; i++) {
