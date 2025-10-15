@@ -606,16 +606,7 @@ function evaluateHand(iteration, gameStep) {
     if (stepPlayed === false && activePlayers.indexOf(iteration) !== -1) {
         if (gameStep === 1 && iteration !== 0) {
             if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 0 || firstRoundSuited === true || valueArr[12] > 0) {
-
-                if (window.innerWidth > 1200) {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
-                } else {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets";
-                }
-
-
-
-
+                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
                 document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
             } else {
                 document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": checks.";
@@ -654,17 +645,7 @@ function evaluateHand(iteration, gameStep) {
             if (gameStep === 2 && iteration !== 0) {
                 if (connectedThree === true || highCardCount > 1 || firstRoundSuited === true || resultList[iteration] >= 1) {
 
-
-
-                    if (window.innerWidth > 1200) {
-                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
-                    } else {
-                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets";
-                    }
-
-
-
-
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
 
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                 } else {
@@ -675,15 +656,7 @@ function evaluateHand(iteration, gameStep) {
             if (gameStep === 3 && iteration !== 0) {
                 if (connectedThree === true || connectedFour > 1 || threeSuited === true || fourSuited === true || resultList[iteration] >= 1) {
 
-
-
-                    if (window.innerWidth > 1200) {
-                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
-                    } else {
-                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets";
-                    }
-
-
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
 
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                 } else {
@@ -712,11 +685,8 @@ function evaluateHand(iteration, gameStep) {
 
 
 
-                        if (window.innerWidth > 1200) {
-                            e.innerHTML = plyr + "Player " + (Number(whichPlayer) + 1) + ": bets $" + monetaryVal[gameStep + 1];/*- cycle: 4  */
-                        } else {
-                            e.innerHTML = plyr + "Player " + (Number(whichPlayer) + 1) + ": bets";/*- cycle: 4  */
-                        }
+
+                        e.innerHTML = plyr + "Player " + (Number(whichPlayer) + 1) + ": bets $" + monetaryVal[gameStep + 1];/*- cycle: 4  */
 
 
 
