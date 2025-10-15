@@ -600,6 +600,7 @@ function evaluateHand(iteration, gameStep) {
         if (gameStep === 1 && iteration !== 0) {
             if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 0 || firstRoundSuited === true || valueArr[12] > 0) {
                 document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                console.log("iteration" + iteration);
                 document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
             } else {
                 document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": checks.";
@@ -892,9 +893,7 @@ function deal() {
     }
     for (let i = 0; i < 4; i++) {
         generatePlayer(i);
-       if(window.innerWidth<1200){
-           document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1);
-       }
+
     }
     return false;
 }
