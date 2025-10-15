@@ -680,7 +680,7 @@ function evaluateHand(iteration, gameStep) {
                     });
                     [].forEach.call(document.querySelectorAll("[data-status='betting']"), function (e) {
                         let whichPlayer = e.getAttribute("data-player");
-                        e.innerHTML = plyr + "Player - cycle: 4  " + (Number(whichPlayer) + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                        e.innerHTML = plyr + "Player " + (Number(whichPlayer) + 1) + ": bets $" + monetaryVal[gameStep + 1];/*- cycle: 4  */
                     });
                     document.getElementById("foldBt").classList.remove("hide");
                     document.querySelector("[data-round='max']").classList.remove("hide");
@@ -815,6 +815,8 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
+
+    document.querySelector("[data-player='1']").textContent = plyr + "Player " + (i + 1);
 
     for (let i = 0; i < 4; i++) {
         document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1);
