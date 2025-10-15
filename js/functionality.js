@@ -849,6 +849,15 @@ function match(checked, betMultiplier) {
 
 function deal() {
 
+    [].forEach.call(document.querySelectorAll("[data-player]"), (e, i) => {
+        if (i === 0) {
+            e.innerHTML = "You";
+        } else {
+            e.innerHTML = plyr + "Player " + (i + 1);
+        }
+
+    });
+
     for (let i = 0; i < playerIds.length; i++) {
         document.getElementById(playerIds[i]).innerHTML = ""
     }
