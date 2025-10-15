@@ -189,6 +189,7 @@ function removeActivePlyr(plyrID) {
 }
 
 function evaluateHand(iteration, gameStep) {
+    let matchVal = document.querySelector("[data-round='match'][title='match']").innerHTML.replace("Match ", "");
     let stepPlayed = false;
     document.getElementById("communityCardDetails").innerHTML = "<h3>The " + gameStepHierarchy[gameStep] + " - Pot: $" + thePot + "</h3>";
     document.getElementById("raiseAmt").innerHTML = "$" + (monetaryVal[gameIncrement + 1] * 2);
@@ -601,7 +602,7 @@ function evaluateHand(iteration, gameStep) {
             if (resultList[iteration] >= 1 || connectedTwo === true || highCardCount > 0 || firstRoundSuited === true || valueArr[12] > 0) {
 
 
-                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + matchVal;
 
 
 
@@ -642,7 +643,7 @@ function evaluateHand(iteration, gameStep) {
         if (gameStep === 2 || gameStep === 3) {
             if (gameStep === 2 && iteration !== 0) {
                 if (connectedThree === true || highCardCount > 1 || firstRoundSuited === true || resultList[iteration] >= 1) {
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": bets $" + matchVal;
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
                 } else {
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": checks.";
@@ -654,7 +655,7 @@ function evaluateHand(iteration, gameStep) {
 
 
 
-                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
+                    document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + matchVal;
 
 
                     document.querySelector("[data-player='" + iteration + "']").dataset.status = "betting";
@@ -680,7 +681,7 @@ function evaluateHand(iteration, gameStep) {
                     });
                     [].forEach.call(document.querySelectorAll("[data-status='betting']"), function (e) {
                         let whichPlayer = e.getAttribute("data-player");
-                        e.innerHTML = plyr + "Player " + (Number(whichPlayer) + 1) + ": bets $" + monetaryVal[gameStep + 1];/*- cycle: 4  */
+                        e.innerHTML = plyr + "Player " + (Number(whichPlayer) + 1) + ": bets $" + matchVal;/*- cycle: 4  */
                     });
                     document.getElementById("foldBt").classList.remove("hide");
                     document.querySelector("[data-round='max']").classList.remove("hide");
@@ -815,24 +816,7 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
-    /*start instane mobile bug #2*/
-    if (window.innerWidth < 1200) {
 
-        setTimeout(() => {
-            document.querySelector("[data-player='1']").textContent = plyr + "Player 2";
-
-            [].forEach.call(document.querySelectorAll("[data-player]"), function (e) {
-                e.innerHTML = "";
-            });
-
-            for (let i = 0; i < 4; i++) {
-                document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1);
-            }
-        }, 1000);
-
-    }
-
-    /*end instane mobile bug #2*/
     for (let i = 0; i < playerIds.length; i++) {
         document.getElementById(playerIds[i]).innerHTML = ""
     }
