@@ -892,7 +892,7 @@ function deal() {
     }
     for (let i = 0; i < 4; i++) {
         generatePlayer(i);
-       if(window.innerWidth;<1200){
+       if(window.innerWidth<1200){
            document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1);
        }
     }
