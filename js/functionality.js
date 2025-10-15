@@ -61,7 +61,7 @@ function showPlayersCards() {
         for (let j = 0; j < playersHands[i].length; j++) {
             playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[i][j].value + "-" + playersHands[i][j].suit + "' ></div>";
             document.getElementById(playerIds[i]).innerHTML = playerCardsHTML;
-            document.querySelector("[data-player='" + i + "']").innerHTML = playerCardsHTML;/*attempt bug fix for ticket #2*/
+            document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (iteration + 1) + " " + handHeirarchy[resultList[i]];/*attempt bug fix for ticket #2*/
         }
     }
 }
