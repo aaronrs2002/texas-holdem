@@ -727,9 +727,9 @@ function evaluateHand(iteration, gameStep) {
 
 function match(checked, betMultiplier) {
 
-    for (let i = 0; i < 4; i++) {
-        document.querySelector("[data-player='" + i + "']").innerHTML = "";
-    }
+
+    document.querySelector("[data-player='1']").innerHTML = "";
+
     if (betMultiplier === 3 || betMultiplier === 2) {
         maxBetHit = true;
     }
@@ -816,6 +816,7 @@ function match(checked, betMultiplier) {
 }
 
 function deal() {
+    document.querySelector("[data-player='1']").innerHTML = "";
     for (let i = 0; i < playerIds.length; i++) {
         document.getElementById(playerIds[i]).innerHTML = ""
     }
