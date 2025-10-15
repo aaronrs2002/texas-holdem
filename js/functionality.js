@@ -858,15 +858,20 @@ function deal() {
 
     [].forEach.call(document.querySelectorAll("[data-player][data-status]"), (e, i) => {
 
-        let currentLabel = e.innerHTML;
+        e.textContent = newText; // replaces cleanly
+        e.style.display = 'none'; // force reflow (mobile fix)
+        void e.offsetHeight;
+        e.style.display = '';
 
-        console.log("currentLabel: " + currentLabel);
-        if (currentLabel.indexOf("folded") !== -1) {
-
-
-            e.innerHTML = plyr + "Player " + (i + 1);
-            console.log("reset " + (i + 1) + "to " + plyr + "Player " + (i + 1));
-        }
+        /*   let currentLabel = e.innerHTML;
+   
+           console.log("currentLabel: " + currentLabel);
+           if (currentLabel.indexOf("folded") !== -1) {
+   
+   
+               e.innerHTML = plyr + "Player " + (i + 1);
+               console.log("reset " + (i + 1) + "to " + plyr + "Player " + (i + 1));
+           }*/
         if (i === 0) {
             e.innerHTML = "You";
         } else {
