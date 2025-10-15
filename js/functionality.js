@@ -61,9 +61,15 @@ function showPlayersCards() {
         for (let j = 0; j < playersHands[i].length; j++) {
             playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[i][j].value + "-" + playersHands[i][j].suit + "' ></div>";
             document.getElementById(playerIds[i]).innerHTML = playerCardsHTML;
-            document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (iteration + 1) + " " + handHeirarchy[resultList[i]];/*attempt bug fix for ticket #2*/
+            // console.log("handHeirarchy[resultList[i]]; " + handHeirarchy[resultList[i]]);
+            if (handHeirarchy[resultList[i]] !== undefined) {
+                document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1) + " " + handHeirarchy[resultList[i]];/*attempt bug fix for ticket #2*/
+            }
+
         }
     }
+
+
 }
 
 function generate(activeCards) {
@@ -851,6 +857,12 @@ function match(checked, betMultiplier) {
 function deal() {
 
     [].forEach.call(document.querySelectorAll("[data-player]"), (e, i) => {
+
+        let currentLabel = e.innerHTML;
+        if (currentLabel === "folded") {
+            e.innerHTML = plyr + "Player " + (i + 1);
+            console.log("reset " + (i + 1) + "to " + plyr + "Player " + (i + 1));
+        }
         if (i === 0) {
             e.innerHTML = "You";
         } else {
@@ -858,6 +870,8 @@ function deal() {
         }
 
     });
+
+
 
     for (let i = 0; i < playerIds.length; i++) {
         document.getElementById(playerIds[i]).innerHTML = ""
