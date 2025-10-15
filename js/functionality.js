@@ -858,7 +858,7 @@ function deal() {
 
     [].forEach.call(document.querySelectorAll("[data-player][data-status]"), (e, i) => {
 
-        e.textContent = newText; // replaces cleanly
+        e.textContent = "reset"; // replaces cleanly
         e.style.display = 'none'; // force reflow (mobile fix)
         void e.offsetHeight;
         e.style.display = '';
