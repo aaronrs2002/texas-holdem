@@ -62,12 +62,8 @@ function updateDOM_MobileBugFix(start) {
                 e.innerHTML = plyr + "Player " + (i + 1);
             }
         }
-
-
     });
-    console.log("updateDOM_MobileBugFix() fired!");
 }
-
 
 function setPlayerMoney(winLoseBet) {
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
