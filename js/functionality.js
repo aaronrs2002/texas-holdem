@@ -660,6 +660,7 @@ function evaluateHand(iteration, gameStep) {
             dblBets = true;
         }
         if (gameStep === 2 || gameStep === 3) {
+            updateDOM_MobileBugFix();
             if (gameStep === 2 && iteration !== 0) {
                 if (connectedThree === true || highCardCount > 1 || firstRoundSuited === true || resultList[iteration] >= 1) {
 
