@@ -47,18 +47,21 @@ let bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
 let bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
 let monetaryVal = [null, 10, bet1, bet2, bet3];
 
-function updateDOM_MobileBugFix() {
+function updateDOM_MobileBugFix(start) {
     [].forEach.call(document.querySelectorAll("[data-player][data-status]"), (e, i) => {
 
         e.textContent = "reset"; // replaces cleanly
         e.style.display = 'none'; // force reflow (mobile fix)
         void e.offsetHeight;
         e.style.display = '';
-        if (i === 0) {
-            e.innerHTML = "You";
-        } else {
-            e.innerHTML = plyr + "Player " + (i + 1);
+        if (start) {
+            if (i === 0) {
+                e.innerHTML = "You";
+            } else {
+                e.innerHTML = plyr + "Player " + (i + 1);
+            }
         }
+
 
     });
     console.log("updateDOM_MobileBugFix() fired!");
@@ -660,7 +663,7 @@ function evaluateHand(iteration, gameStep) {
             dblBets = true;
         }
         if (gameStep === 2 || gameStep === 3) {
-            updateDOM_MobileBugFix();
+            updateDOM_MobileBugFix(false);
             if (gameStep === 2 && iteration !== 0) {
                 if (connectedThree === true || highCardCount > 1 || firstRoundSuited === true || resultList[iteration] >= 1) {
 
@@ -731,7 +734,7 @@ function evaluateHand(iteration, gameStep) {
             }
         }
         if (gameStep === 4 && iteration === lastIteration) {
-            updateDOM_MobileBugFix();
+            updateDOM_MobileBugFix(false);
             messageElement.classList.remove("hide");
             if (topHand === 0) {
                 youWin("default");
@@ -847,7 +850,7 @@ function match(checked, betMultiplier) {
 
 function deal() {
 
-    updateDOM_MobileBugFix();
+    updateDOM_MobileBugFix(true);
 
     for (let i = 0; i < playerIds.length; i++) {
         document.getElementById(playerIds[i]).innerHTML = ""
