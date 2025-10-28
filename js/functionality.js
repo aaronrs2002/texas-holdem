@@ -50,12 +50,12 @@ let monetaryVal = [null, 10, bet1, bet2, bet3];
 function updateDOM_MobileBugFix(start) {
     [].forEach.call(document.querySelectorAll("[data-player][data-status]"), (e, i) => {
 
-
+        e.style.display = 'none'; // force reflow (mobile fix)
         void e.offsetHeight;
         e.style.display = '';
         if (start) {
             e.textContent = "reset"; // replaces cleanly
-            e.style.display = 'none'; // force reflow (mobile fix)
+
             if (i === 0) {
                 e.innerHTML = "You";
             } else {
