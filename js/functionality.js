@@ -731,6 +731,7 @@ function evaluateHand(iteration, gameStep) {
             }
         }
         if (gameStep === 4 && iteration === lastIteration) {
+            updateDOM_MobileBugFix();
             messageElement.classList.remove("hide");
             if (topHand === 0) {
                 youWin("default");
