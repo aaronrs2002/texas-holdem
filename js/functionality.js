@@ -47,6 +47,24 @@ let bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
 let bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
 let monetaryVal = [null, 10, bet1, bet2, bet3];
 
+function updateDOM_MobileBugFix() {
+    [].forEach.call(document.querySelectorAll("[data-player][data-status]"), (e, i) => {
+
+        e.textContent = "reset"; // replaces cleanly
+        e.style.display = 'none'; // force reflow (mobile fix)
+        void e.offsetHeight;
+        e.style.display = '';
+        if (i === 0) {
+            e.innerHTML = "You";
+        } else {
+            e.innerHTML = plyr + "Player " + (i + 1);
+        }
+
+    });
+    console.log("updateDOM_MobileBugFix() fired!");
+}
+
+
 function setPlayerMoney(winLoseBet) {
     document.getElementById("betTarget").innerHTML = "Bet $" + bet;
     document.getElementById("playerMoney").innerHTML = playerMoney;
@@ -824,33 +842,10 @@ function match(checked, betMultiplier) {
     }
 }
 
+
 function deal() {
 
-    [].forEach.call(document.querySelectorAll("[data-player][data-status]"), (e, i) => {
-
-        e.textContent = "reset"; // replaces cleanly
-        e.style.display = 'none'; // force reflow (mobile fix)
-        void e.offsetHeight;
-        e.style.display = '';
-
-        /*   let currentLabel = e.innerHTML;
-   
-           console.log("currentLabel: " + currentLabel);
-           if (currentLabel.indexOf("folded") !== -1) {
-   
-   
-               e.innerHTML = plyr + "Player " + (i + 1);
-               console.log("reset " + (i + 1) + "to " + plyr + "Player " + (i + 1));
-           }*/
-        if (i === 0) {
-            e.innerHTML = "You";
-        } else {
-            e.innerHTML = plyr + "Player " + (i + 1);
-        }
-
-    });
-
-
+    updateDOM_MobileBugFix();
 
     for (let i = 0; i < playerIds.length; i++) {
         document.getElementById(playerIds[i]).innerHTML = ""
