@@ -1,18 +1,5 @@
 let playedTimes = 0;
-let highScore = 0;
-if (localStorage.getItem("highScore", highScore)) {
-    highScore = Number(localStorage.getItem("highScore", highScore));
-}
 
-function ckHighScore() {
-    let currentBalance = Number(localStorage.getItem("balance"));
-    let highScore = Number(localStorage.getItem("highScore"));
-    if (currentBalance > highScore) {
-        localStorage.setItem("highScore", currentBalance);
-        highScore = currentBalance;
-    }
-    document.getElementById("highScoreTarget").innerHTML = "Your High Score: " + highScore;
-}
 ckHighScore();
 let maxBetHit = false;
 let dblBets = false;
