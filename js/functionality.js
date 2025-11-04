@@ -1,20 +1,22 @@
 let playedTimes = 0;
 let highScore = 0;
-if (localStorage.setItem("highScore", highScore)) {
-    highScore = Number(localStorage.setItem("highScore", highScore));
+if (localStorage.getItem("highScore", highScore)) {
+    highScore = Number(localStorage.getItem("highScore", highScore));
 }
 
 function ckHighScore() {
-    let compare = Number(localStorage.getItem("balance"));
+    let currentBalance = Number(localStorage.getItem("balance"));
+    let highScore = Number(localStorage.getItem("highScore"));
 
-    console.log("(typeof compare: " + (typeof compare) + " compare: " + compare);
-    if (highScore < Number(localStorage.getItem("balance"))) {
-        highScore = localStorage.getItem("balance");
-        localStorage.setItem("highScore", highScore);
-        console.log("high score updated: " + highScore);
-    } else {
-        console.log("high score stays: " + highScore);
+    if (currentBalance > highScore) {
+        console.log("highScore: " + highScore + " - currentBalance: " + currentBalance);
+        localStorage.setItem("highScore", currentBalance);
+        highScore = currentBalance;
     }
+
+
+
+
     document.getElementById("highScoreTarget").innerHTML = "Your High Score: " + highScore;
 }
 ckHighScore();
