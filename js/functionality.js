@@ -1,4 +1,18 @@
 let playedTimes = 0;
+let highScore = 0;
+function ckHighScore() {
+    let compare = Number(localStorage.getItem("balance"));
+
+    console.log("(typeof compare: " + (typeof compare) + " compare: " + compare);
+    if (highScore < Number(localStorage.getItem("balance"))) {
+        highScore = localStorage.getItem("balance");
+        console.log("high score updated: " + highScore);
+    } else {
+        console.log("high score stays: " + highScore);
+    }
+    document.getElementById("highScoreTarget").innerHTML = "Your High Score: " + highScore;
+}
+ckHighScore();
 let maxBetHit = false;
 let dblBets = false;
 localStorage.setItem("completeCards", JSON.stringify(cards));
@@ -170,6 +184,7 @@ function youWin(type) {
     setPlayerMoney("win");
     document.getElementById("playerMoney").classList.remove("hide");
     document.querySelector("#playerMoney").innerHTML = playerMoney;
+    ckHighScore();
     return false;
 }
 
@@ -194,6 +209,7 @@ function youLose(topHand) {
     document.querySelector("[data-round='raise']").classList.add("hide");
     document.querySelector("button[title='Deal']").disabled = false;
     document.querySelector("button[title='Deal']").classList.remove("hide");
+    ckHighScore();
     return false;
 }
 
