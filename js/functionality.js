@@ -41,11 +41,11 @@ document.querySelector("#playerMoney").innerHTML = playerMoney;
 let bet = 0;
 let gameIncrement = 1;
 let updatedBets = false;
-let maxBet = [100, 200, 300];/*start random bet */
+let maxBet = [200, 300, 400];/*start random bet */
 let bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
 let bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
 let bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
-let monetaryVal = [null, 10, bet1, bet2, bet3];
+let monetaryVal = [null, 50, bet1, bet2, bet3];
 
 function updateDOM_MobileBugFix(start) {
     [].forEach.call(document.querySelectorAll("[data-player][data-status]"), (e, i) => {
@@ -786,7 +786,7 @@ function match(checked, betMultiplier) {
         ];
 
         if (dblBets === true || bluffList.indexOf(bet1) !== -1 || bluffList.indexOf(bet2) !== -1 || bluffList.indexOf(bet3) !== -1 && updatedBets === false) {
-            maxBet = [400, 500, 900];
+            maxBet = [500, 600, 900];
             bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
             bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
             bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
@@ -853,11 +853,11 @@ function deal() {
         document.getElementById(playerIds[i]).innerHTML = ""
     }
     communityCardsHTML = "";
-    maxBet = [100, 200, 300];/*start random bet */
+    maxBet = [200, 300, 400];/*start random bet */
     bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
     bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
     bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
-    monetaryVal = [null, 10, bet1, bet2, bet3];
+    monetaryVal = [null, 50, bet1, bet2, bet3];
     updatedBets = false;
     maxBetHit = false;
     dblBets = false;
