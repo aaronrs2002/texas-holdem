@@ -1,6 +1,4 @@
 let playedTimes = 0;
-
-ckHighScore();
 let maxBetHit = false;
 let dblBets = false;
 localStorage.setItem("completeCards", JSON.stringify(cards));
