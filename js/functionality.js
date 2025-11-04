@@ -1,11 +1,16 @@
 let playedTimes = 0;
 let highScore = 0;
+if (localStorage.setItem("highScore", highScore)) {
+    highScore = Number(localStorage.setItem("highScore", highScore));
+}
+
 function ckHighScore() {
     let compare = Number(localStorage.getItem("balance"));
 
     console.log("(typeof compare: " + (typeof compare) + " compare: " + compare);
     if (highScore < Number(localStorage.getItem("balance"))) {
         highScore = localStorage.getItem("balance");
+        localStorage.setItem("highScore", highScore);
         console.log("high score updated: " + highScore);
     } else {
         console.log("high score stays: " + highScore);
