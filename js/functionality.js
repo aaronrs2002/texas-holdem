@@ -7,16 +7,10 @@ if (localStorage.getItem("highScore", highScore)) {
 function ckHighScore() {
     let currentBalance = Number(localStorage.getItem("balance"));
     let highScore = Number(localStorage.getItem("highScore"));
-
     if (currentBalance > highScore) {
-        console.log("highScore: " + highScore + " - currentBalance: " + currentBalance);
         localStorage.setItem("highScore", currentBalance);
         highScore = currentBalance;
     }
-
-
-
-
     document.getElementById("highScoreTarget").innerHTML = "Your High Score: " + highScore;
 }
 ckHighScore();
@@ -216,7 +210,6 @@ function youLose(topHand) {
     document.querySelector("[data-round='raise']").classList.add("hide");
     document.querySelector("button[title='Deal']").disabled = false;
     document.querySelector("button[title='Deal']").classList.remove("hide");
-    ckHighScore();
     return false;
 }
 
