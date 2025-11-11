@@ -3,7 +3,7 @@ let playLevel = "easy";
 if (localStorage.getItem("holdemPlayLevel")) {
     playLevel = localStorage.getItem("holdemPlayLevel");
     document.querySelector("input[name='playLevel'][value='" + playLevel + "']").checked = true;
-    document.querySelector("button[title='Deal']").innerHTML = "Deal $50";
+
 } else {
     document.querySelector("input[name='playLevel'][value='easy']").checked = true;
     localStorage.setItem("holdemPlayLevel", "easy");
@@ -60,6 +60,7 @@ let maxBet = [100, 200, 300];/*start random bet*/
 if (document.querySelector("[name='playLevel'][value='hard']:checked")) {
     maxBet = [200, 300, 400];/*start random bet */
     startBet = 50;
+    document.querySelector("button[title='Deal']").innerHTML = "Deal $50";
 }
 
 
