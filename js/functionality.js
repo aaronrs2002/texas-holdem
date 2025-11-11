@@ -1,3 +1,15 @@
+
+let playLevel = "easy";
+if (localStorage.getItem("holdemPlayLevel")) {
+    playLevel = localStorage.getItem("holdemPlayLevel");
+    document.querySelector("input[name='playLevel'][value='" + playLevel + "']").checked = true;
+} else {
+    document.querySelector("input[name='playLevel'][value='easy']").checked = true;
+    localStorage.setItem("holdemPlayLevel", "easy");
+}
+
+
+
 let playedTimes = 0;
 let maxBetHit = false;
 let dblBets = false;
@@ -41,11 +53,45 @@ document.querySelector("#playerMoney").innerHTML = playerMoney;
 let bet = 0;
 let gameIncrement = 1;
 let updatedBets = false;
-let maxBet = [200, 300, 400];/*start random bet */
+let startBet = 10;
+let maxBet = [100, 200, 300];/*start random bet*/
+if (document.querySelector("[name='playLevel'][value='hard']:checked")) {
+    maxBet = [200, 300, 400];/*start random bet */
+    startBet = 50;
+}
+
+
+function changePlayLevel(level) {
+    localStorage.setItem("holdemPlayLevel", level);
+
+    [].forEach.call(document.querySelectorAll("input[name='playLevel']"), (e) => {
+        if (e.value === level) {
+            e.checked = true;
+        } else {
+            e.checked = false;
+        }
+    });
+
+    if (level === "hard") {
+        maxBet = [200, 300, 400];
+        startBet = 50;
+        document.querySelector("button[title='Deal']").innerHTML = "Deal $50";
+
+    } else {
+        maxBet = [100, 200, 300];
+        startBet = 10;
+        document.querySelector("button[title='Deal']").innerHTML = "Deal $10";
+    }
+
+
+}
+
+
+
 let bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
 let bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
 let bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
-let monetaryVal = [null, 50, bet1, bet2, bet3];
+let monetaryVal = [null, startBet, bet1, bet2, bet3];
 
 function updateDOM_MobileBugFix(start) {
     [].forEach.call(document.querySelectorAll("[data-player][data-status]"), (e, i) => {
@@ -854,11 +900,18 @@ function deal() {
         document.getElementById(playerIds[i]).innerHTML = ""
     }
     communityCardsHTML = "";
-    maxBet = [200, 300, 400];/*start random bet */
+
+
+    if (document.querySelector("[name='playLevel'][value='hard']:checked")) {
+        maxBet = [200, 300, 400];/*start random bet */
+        startBet = 50;
+    } else {
+        maxBet = [100, 200, 300];/*start random bet*/
+    }
     bet1 = Math.floor(Math.random() * (maxBet[0] - 1 + 1) + 10);
     bet2 = Math.floor(Math.random() * (maxBet[1] - maxBet[0] + 1) + maxBet[0]);
     bet3 = Math.floor(Math.random() * (maxBet[2] - maxBet[1] + 1) + maxBet[1]);
-    monetaryVal = [null, 50, bet1, bet2, bet3];
+    monetaryVal = [null, startBet, bet1, bet2, bet3];
     updatedBets = false;
     maxBetHit = false;
     dblBets = false;
