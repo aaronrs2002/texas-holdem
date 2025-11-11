@@ -3,9 +3,11 @@ let playLevel = "easy";
 if (localStorage.getItem("holdemPlayLevel")) {
     playLevel = localStorage.getItem("holdemPlayLevel");
     document.querySelector("input[name='playLevel'][value='" + playLevel + "']").checked = true;
+    document.querySelector("button[title='Deal']").innerHTML = "Deal $50";
 } else {
     document.querySelector("input[name='playLevel'][value='easy']").checked = true;
     localStorage.setItem("holdemPlayLevel", "easy");
+    document.querySelector("button[title='Deal']").innerHTML = "Deal $10";
 }
 
 
