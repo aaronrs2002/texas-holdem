@@ -837,7 +837,6 @@ function match(checked, betMultiplier) {
             Math.floor(Math.random() * (300 - 201) + 201),
             Math.floor(Math.random() * ((document.querySelector("[name='playLevel'][value='hard']:checked") ? 400 : 300) - 250) + 250),
         ];
-        console.log("bluffList: " + bluffList + " - " + (document.querySelector("[name='playLevel'][value='hard']:checked") ? 400 : 300));
 
         if (dblBets === true || bluffList.indexOf(bet1) !== -1 || bluffList.indexOf(bet2) !== -1 || bluffList.indexOf(bet3) !== -1 && updatedBets === false) {
             maxBet = [500, 600, 900];
