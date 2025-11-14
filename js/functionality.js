@@ -119,7 +119,7 @@ function setPlayerMoney(winLoseBet) {
     document.getElementById("playerMoney").innerHTML = playerMoney;
     document.querySelector("#playerMoney").innerHTML = playerMoney;/*SAFARI BUG NEEDS BOTH*/
     localStorage.setItem("balance", playerMoney);
-    return false;
+    //return false;
 }
 
 function showPlayersCards() {
@@ -220,7 +220,7 @@ function youWin(type) {
     document.getElementById("playerMoney").classList.remove("hide");
     document.querySelector("#playerMoney").innerHTML = playerMoney;
     ckHighScore();
-    return false;
+    // return false;
 }
 
 function youLose(topHand) {
@@ -244,7 +244,7 @@ function youLose(topHand) {
     document.querySelector("[data-round='raise']").classList.add("hide");
     document.querySelector("button[title='Deal']").disabled = false;
     document.querySelector("button[title='Deal']").classList.remove("hide");
-    return false;
+    // return false;
 }
 
 function removeActivePlyr(plyrID) {
@@ -554,7 +554,7 @@ function evaluateHand(iteration, gameStep) {
                     if (getOccurrence(playerStraightHighCard, topHand) > 1 && playerStraightHighCard[0] === topHand) {
                         youWin("split");
                         showPlayersCards();
-                        return false;
+                        //  return false;
                     }
 
                 }
@@ -627,7 +627,7 @@ function evaluateHand(iteration, gameStep) {
                             if (bestHoleCards[i][1] === hiHole && bestHoleCards[i][0] === lowHole && bestHoleCards[0][0] !== -1) {
                                 youWin("split");
                                 showPlayersCards();
-                                return false;
+                                //  return false;
 
                             }
                         }
@@ -703,7 +703,7 @@ function evaluateHand(iteration, gameStep) {
                 document.querySelector("[data-round='match']").disabled = false;
                 document.querySelector("[data-round='check']").disabled = false;
                 stepPlayed = true;
-                return false;
+                // return false;
             }
         }
         if (resultList[iteration] >= 3 && iteration !== 0) {
@@ -777,7 +777,7 @@ function evaluateHand(iteration, gameStep) {
                 document.querySelector("[data-round='match']").disabled = false;
                 document.querySelector("[data-round='check']").disabled = false;
                 stepPlayed = true;
-                return false;
+                // return false;
             }
         }
         if (gameStep === 4 && iteration === lastIteration) {
@@ -800,7 +800,7 @@ function evaluateHand(iteration, gameStep) {
             document.querySelector("[data-round='match']").disabled = false;
             document.querySelector("[data-round='check']").disabled = false;
             stepPlayed = true;
-            return false;
+            //return false;
         }
     }
 }
@@ -995,10 +995,10 @@ function deal() {
         document.getElementById(playerIds[iteration]).innerHTML = playerCardsHTML;
         playersHands[iteration] = handObj;
         evaluateHand(iteration, 1);
-        return false;
+        //return false;
     }
     for (let i = 0; i < 4; i++) {
         generatePlayer(i);
     }
-    return false;
+    //return false;
 }
