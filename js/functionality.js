@@ -744,11 +744,11 @@ function evaluateHand(iteration, gameStep) {
 
     ///let cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
 
-    /*END OF HAND EVALUATION */
+    /*END OF HAND EVALUATION
 
     console.log("JSON.stringify(handState): " + JSON.stringify(handState));
 
-    console.log("JSON.stringify(state): " + JSON.stringify(state));
+    console.log("JSON.stringify(state): " + JSON.stringify(state)); */
 
     if (handState.stepPlayed === false && state.activePlayers.indexOf(iteration) !== -1) {
         if (gameStep === 1 && iteration !== 0) {
