@@ -466,7 +466,7 @@ function evaluateHand(iteration, gameStep) {
             }
         }
         if (valueArr[i] === 4) {
-            if (resultList[iteration] < 7) {
+            if (state.resultList[iteration] < 7) {
                 resultList[iteration] = 7;
                 state.compareCards[iteration] = valueArr.lastIndexOf(4);
                 handState.cardsInvolved = handState.cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
@@ -745,6 +745,11 @@ function evaluateHand(iteration, gameStep) {
     ///let cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
 
     /*END OF HAND EVALUATION */
+
+    console.log("JSON.stringify(handState): " + JSON.stringify(handState));
+
+    console.log("JSON.stringify(state): " + JSON.stringify(state));
+
     if (handState.stepPlayed === false && state.activePlayers.indexOf(iteration) !== -1) {
         if (gameStep === 1 && iteration !== 0) {
             if (state.resultList[iteration] >= 1 || handState.connectedTwo === true || handState.highCardCount > 0 || handState.firstRoundSuited === true || valueArr[12] > 0) {
@@ -974,6 +979,18 @@ function match(checked, betMultiplier) {
 
 function deal() {
 
+    /*for testing*/
+    let playCount = 1;
+    if (localStorage.getItem("playCount")) {
+        playCount = Number(localStorage.getItem("playCount"));
+        playCount = playCount + 1;
+        localStorage.setItem("playCount", playCount);
+
+    } else {
+        localStorage.setItem("playCount", playCount);
+    }
+
+    console.log("play count: " + playCount)
     updateDOM_MobileBugFix(true);
 
     for (let i = 0; i < playerIds.length; i++) {
