@@ -467,7 +467,7 @@ function evaluateHand(iteration, gameStep) {
         }
         if (valueArr[i] === 4) {
             if (state.resultList[iteration] < 7) {
-                resultList[iteration] = 7;
+                state.resultList[iteration] = 7;
                 state.compareCards[iteration] = valueArr.lastIndexOf(4);
                 handState.cardsInvolved = handState.cardsInvolved + " - " + cardHeirarchy[valueArr.lastIndexOf(4)] + "s";
             }
