@@ -92,6 +92,7 @@ if (document.querySelector("[name='playLevel'][value='hard']:checked")) {
     state.maxBet = [200, 300, 400];/*start random bet */
     state.startBet = 50;
     document.querySelector("button[title='Deal']").innerHTML = "Deal $50";
+    state.thePot = 200;
 }
 
 
@@ -336,6 +337,7 @@ function evaluateHand(iteration, gameStep) {
 
 
     // let stepPlayed = false;
+    console.log("adding value to the pot: " + state.thePot);
     document.getElementById("communityCardDetails").innerHTML = "<h3>The " + gameStepHierarchy[gameStep] + " - Pot: $" + state.thePot + "</h3>";
     document.getElementById("raiseAmt").innerHTML = "$" + (monetaryVal[state.gameIncrement + 1] * 2);
     document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[state.gameIncrement + 1] * 3);
@@ -926,25 +928,28 @@ function match(checked, betMultiplier) {
             state.updatedBets = true;
         }
         if (gameStep === 2) {
-            state.thePot = state.thePot + (monetaryVal[gameStep] * state.activePlayers.length);
+
             state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
-            state.playerMoney = state.playerMoney - monetaryVal[gameStep];
+            state.playerMoney = state.playerMoney - state.bet;
+            state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
             document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
         }
         if (gameStep === 3) {
-            state.thePot = state.thePot + (monetaryVal[gameStep] * state.activePlayers.length);
+
             state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
-            state.playerMoney = state.playerMoney - monetaryVal[gameStep];
+            state.playerMoney = state.playerMoney - state.bet;
+            state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
             document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
         }
         if (gameStep === 4) {
-            state.thePot = state.thePot + (monetaryVal[gameStep] * state.activePlayers.length);
+
             state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
-            state.playerMoney = state.playerMoney - monetaryVal[gameStep];
+            state.playerMoney = state.playerMoney - state.bet;
+            state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
             document.getElementById("foldBt").classList.add("hide");
             document.querySelector("[data-round='max']").classList.add("hide");
@@ -952,8 +957,13 @@ function match(checked, betMultiplier) {
             document.querySelector("[data-round='check']").classList.add("hide");
             document.querySelector("[data-round='raise']").classList.add("hide");
         }
+        console.log("monetaryVal[gameStep]: " + monetaryVal[gameStep] + " - state.bet: " + state.bet + " - state.thePot: " + state.thePot);
     } else {
+
+        console.log("monetaryVal[gameStep]: " + monetaryVal[gameStep] + " - state.bet: " + state.bet + " - state.thePot: " + state.thePot);
+
         document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
+
         document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep] * betMultiplier);
     }
     document.getElementById("playerMoney").innerHTML = state.playerMoney;
@@ -1002,8 +1012,10 @@ function deal() {
     if (document.querySelector("[name='playLevel'][value='hard']:checked")) {
         state.maxBet = [200, 300, 400];/*start random bet */
         state.startBet = 50;
+        state.thePot = 200;
     } else {
         state.maxBet = [100, 200, 300];/*start random bet*/
+        state.thePot = 40;
     }
     bet1 = Math.floor(Math.random() * (state.maxBet[0] - 1 + 1) + 10);
     bet2 = Math.floor(Math.random() * (state.maxBet[1] - state.maxBet[0] + 1) + state.maxBet[0]);
@@ -1041,7 +1053,7 @@ function deal() {
     document.getElementById("notification").classList.remove("alert-danger");
     document.getElementById("notification").classList.add("alert-info");
     document.getElementById("message").innerHTML = "";
-    state.thePot = 40;
+
     state.bet = monetaryVal[1];
     state.playerMoney = state.playerMoney - state.bet;
     setPlayerMoney("betting");
