@@ -928,28 +928,28 @@ function match(checked, betMultiplier) {
             state.updatedBets = true;
         }
         if (gameStep === 2) {
-
+            state.thePot = state.thePot + (monetaryVal[gameStep] * state.activePlayers.length);
             state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
             state.playerMoney = state.playerMoney - state.bet;
-            state.thePot = state.thePot + (state.bet * state.activePlayers.length);
+            //state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
             document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
         }
         if (gameStep === 3) {
-
+            state.thePot = state.thePot + (monetaryVal[gameStep] * state.activePlayers.length);
             state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
             state.playerMoney = state.playerMoney - state.bet;
-            state.thePot = state.thePot + (state.bet * state.activePlayers.length);
+            // state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
             document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
         }
         if (gameStep === 4) {
-
+            state.thePot = state.thePot + (monetaryVal[gameStep] * state.activePlayers.length);
             state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
             state.playerMoney = state.playerMoney - state.bet;
-            state.thePot = state.thePot + (state.bet * state.activePlayers.length);
+            // state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
             document.getElementById("foldBt").classList.add("hide");
             document.querySelector("[data-round='max']").classList.add("hide");
