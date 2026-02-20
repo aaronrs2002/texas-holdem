@@ -601,7 +601,7 @@ function evaluateHand(iteration, gameStep) {
                         console.log(" - sharing communityCardHand[a]:" + communityCardHand[a] + " - JSON.stringify(communityCardHand): " + JSON.stringify(communityCardHand));
                         console.log("state.resultList: " + state.resultList + " - state.resultList[iteration]: " + state.resultList[iteration]);
                         removeActivePlyr(iteration);
-                        document.querySelector("[data-player='" + iteration + "']").innerHTML = "Player " + (Number(iteration) + 1) + ": folded.";
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": folded.";
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "folded";
 
                     }
