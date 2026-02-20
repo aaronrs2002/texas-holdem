@@ -252,6 +252,7 @@ function youWin(type) {
     document.getElementById("playerMoney").classList.remove("hide");
     document.querySelector("#playerMoney").innerHTML = state.playerMoney;
     ckHighScore();
+    showPlayersCards();
     // return false;
 }
 
@@ -334,10 +335,9 @@ function evaluateHand(iteration, gameStep) {
     }
 
 
-
+    let communityCardHand = [];
 
     // let stepPlayed = false;
-    console.log("adding value to the pot: " + state.thePot);
     document.getElementById("communityCardDetails").innerHTML = "<h3>The " + gameStepHierarchy[gameStep] + " - Pot: $" + state.thePot + "</h3>";
     document.getElementById("raiseAmt").innerHTML = "$" + (monetaryVal[state.gameIncrement + 1] * 2);
     document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[state.gameIncrement + 1] * 3);
@@ -345,7 +345,7 @@ function evaluateHand(iteration, gameStep) {
     //let cardsInvolved = "";
     //let cardIndexes = [];
     //let cardsArr = [playersHands[iteration][0], playersHands[iteration][1]];
-    if (gameStep === 2) {
+    /*if (gameStep === 2) {
         handState.cardsArr = [playersHands[iteration][0], playersHands[iteration][1], state.communityCards[0], state.communityCards[1], state.communityCards[2]];
     }
     if (gameStep === 3) {
@@ -354,7 +354,17 @@ function evaluateHand(iteration, gameStep) {
     if (gameStep === 4) {
         handState.cardsArr = [playersHands[iteration][0], playersHands[iteration][1], state.communityCards[0], state.communityCards[1], state.communityCards[2], state.communityCards[3], state.communityCards[4]];
     }
+*/
 
+    if (gameStep === 2) {
+        handState.cardsArr = [state.communityCards[1], state.communityCards[2], playersHands[iteration][0], playersHands[iteration][1]];
+    }
+    if (gameStep === 3) {
+        handState.cardsArr = [state.communityCards[0], state.communityCards[1], state.communityCards[2], state.communityCards[3], playersHands[iteration][0], playersHands[iteration][1]];
+    }
+    if (gameStep === 4) {
+        handState.cardsArr = [state.communityCards[0], state.communityCards[1], state.communityCards[2], state.communityCards[3], state.communityCards[4], playersHands[iteration][0], playersHands[iteration][1]];
+    }
 
 
     /*let highCard;
@@ -435,6 +445,31 @@ function evaluateHand(iteration, gameStep) {
         if (handState.cardsArr[i].suit === "clubs") {
             handState.clubs = handState.clubs + 1;
         }
+
+
+        /*CHECK FOR COMMUNITY CARD HAND*/
+        if (i === 3 && gameStep === 3) {
+
+            for (let i = 0; i < handState.cardIndexes.length; i++) {
+                if (i > 7 && handState.cardIndexes[i] > 0) {
+                    handState.highCardCount = handState.highCardCount + 1;
+                }
+            }
+
+            let tempCards = []
+            for (let b = 0; b < 4; b++) {
+                tempCards.push(handState.cardIndexes[b])
+            }
+            communityCardHand = tempCards;
+
+        }
+        /*END CHECK FOR COMMUNITY CARD HAND*/
+
+
+
+
+
+
     }
     let valueArr = [handState.two, handState.three, handState.four, handState.five, handState.six, handState.seven, handState.eight, handState.nine, handState.ten, handState.jack, handState.queen, handState.king, handState.ace]; /*Determine matching values*/
     let lastIteration = state.activePlayers[state.activePlayers.length - 1];
@@ -547,6 +582,46 @@ function evaluateHand(iteration, gameStep) {
             state.compareCards[i] = -1;
         }
     }
+
+
+    /*Community cards eval */
+
+
+
+    if (gameStep === 3 && iteration !== 0) {
+
+
+
+        for (let a = 0; a < 4; a++) {
+
+            if (getOccurrence(communityCardHand, communityCardHand[a]) === 2 || getOccurrence(communityCardHand, communityCardHand[a]) === 3) {
+                if (a > 0) {
+                    if (1 === state.resultList[iteration]) {
+                        console.log("PLAYER: " + (iteration + 1) + " only had community cards: " + handHeirarchy[Number(state.resultList[iteration])]);
+                        console.log(" - sharing communityCardHand[a]:" + communityCardHand[a] + " - JSON.stringify(communityCardHand): " + JSON.stringify(communityCardHand));
+                        console.log("state.resultList: " + state.resultList + " - state.resultList[iteration]: " + state.resultList[iteration]);
+                        removeActivePlyr(iteration);
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = "Player " + (Number(iteration) + 1) + ": folded.";
+                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "folded";
+
+                    }
+
+                }
+
+            }
+
+
+        }
+
+    }
+
+
+
+    /*end community cards eval*/
+
+
+
+
     document.getElementById(playersDetails[iteration]).classList.remove("hide");
     let HighCardMessage = "";
     if (state.resultList[iteration] === 0) {
@@ -793,6 +868,8 @@ function evaluateHand(iteration, gameStep) {
         if (gameStep === 2 || gameStep === 3) {
             updateDOM_MobileBugFix(false);
             if (gameStep === 2 && iteration !== 0) {
+
+
                 if (handState.connectedThree === true || handState.highCardCount > 1 || handState.firstRoundSuited === true || state.resultList[iteration] >= 1) {
 
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + " Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
@@ -804,6 +881,7 @@ function evaluateHand(iteration, gameStep) {
                 }
             }
             if (gameStep === 3 && iteration !== 0) {
+
                 if (handState.connectedThree === true || handState.connectedFour > 1 || handState.threeSuited === true || handState.fourSuited === true || state.resultList[iteration] >= 1) {
 
                     document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (iteration + 1) + ": bets $" + monetaryVal[gameStep + 1];
@@ -928,28 +1006,28 @@ function match(checked, betMultiplier) {
             state.updatedBets = true;
         }
         if (gameStep === 2) {
-            state.thePot = state.thePot + (monetaryVal[gameStep] * state.activePlayers.length);
+
             state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
             state.playerMoney = state.playerMoney - state.bet;
-            //state.thePot = state.thePot + (state.bet * state.activePlayers.length);
+            state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
             document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
         }
         if (gameStep === 3) {
-            state.thePot = state.thePot + (monetaryVal[gameStep] * state.activePlayers.length);
+
             state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
             state.playerMoney = state.playerMoney - state.bet;
-            // state.thePot = state.thePot + (state.bet * state.activePlayers.length);
+            state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
             document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
         }
         if (gameStep === 4) {
-            state.thePot = state.thePot + (monetaryVal[gameStep] * state.activePlayers.length);
+
             state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
             state.playerMoney = state.playerMoney - state.bet;
-            // state.thePot = state.thePot + (state.bet * state.activePlayers.length);
+            state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
             document.getElementById("foldBt").classList.add("hide");
             document.querySelector("[data-round='max']").classList.add("hide");
@@ -957,10 +1035,9 @@ function match(checked, betMultiplier) {
             document.querySelector("[data-round='check']").classList.add("hide");
             document.querySelector("[data-round='raise']").classList.add("hide");
         }
-        console.log("monetaryVal[gameStep]: " + monetaryVal[gameStep] + " - state.bet: " + state.bet + " - state.thePot: " + state.thePot);
+
     } else {
 
-        console.log("monetaryVal[gameStep]: " + monetaryVal[gameStep] + " - state.bet: " + state.bet + " - state.thePot: " + state.thePot);
 
         document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
 
@@ -1000,7 +1077,6 @@ function deal() {
         localStorage.setItem("playCount", playCount);
     }
 
-    console.log("play count: " + playCount)
     updateDOM_MobileBugFix(true);
 
     for (let i = 0; i < playerIds.length; i++) {
