@@ -594,12 +594,12 @@ function evaluateHand(iteration, gameStep) {
 
         for (let a = 0; a < 4; a++) {
 
-            if (getOccurrence(communityCardHand, communityCardHand[a]) === 2 || getOccurrence(communityCardHand, communityCardHand[a]) === 3) {
+            if (getOccurrence(communityCardHand, communityCardHand[a]) === 2) {
                 if (a > 0) {
                     if (1 === state.resultList[iteration]) {
 
-                        console.log("Folded player " + (iteration + 1) + " they had: " + handHeirarchy[getOccurrence(communityCardHand, communityCardHand[a])]);
-
+                        /*console.log("Folded player " + (iteration + 1) + " they only had: " + handHeirarchy[state.resultList[iteration]] + " in the community cards.");
+                        console.log("resultList: " + state.resultList + " - communityCardHand: " + communityCardHand)*/
                         removeActivePlyr(iteration);
                         document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": folded.";
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "folded";
