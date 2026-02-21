@@ -597,9 +597,7 @@ function evaluateHand(iteration, gameStep) {
             if (getOccurrence(communityCardHand, communityCardHand[a]) === 2 || getOccurrence(communityCardHand, communityCardHand[a]) === 3) {
                 if (a > 0) {
                     if (1 === state.resultList[iteration]) {
-                        console.log("PLAYER: " + (iteration + 1) + " only had community cards: " + handHeirarchy[Number(state.resultList[iteration])]);
-                        console.log(" - sharing communityCardHand[a]:" + communityCardHand[a] + " - JSON.stringify(communityCardHand): " + JSON.stringify(communityCardHand));
-                        console.log("state.resultList: " + state.resultList + " - state.resultList[iteration]: " + state.resultList[iteration]);
+
                         removeActivePlyr(iteration);
                         document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": folded.";
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "folded";
