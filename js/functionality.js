@@ -598,8 +598,24 @@ function evaluateHand(iteration, gameStep) {
                 if (a > 0) {
                     if (1 === state.resultList[iteration]) {
 
-                        /*console.log("Folded player " + (iteration + 1) + " they only had: " + handHeirarchy[state.resultList[iteration]] + " in the community cards.");
-                        console.log("resultList: " + state.resultList + " - communityCardHand: " + communityCardHand)*/
+                        console.log("Folded player " + (iteration + 1) + " they only had: " + handHeirarchy[state.resultList[iteration]] + " in the community cards.");
+                        /* console.log("resultList: " + state.resultList + " - communityCardHand: " + communityCardHand);*/
+                        removeActivePlyr(iteration);
+                        document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": folded.";
+                        document.querySelector("[data-player='" + iteration + "']").dataset.status = "folded";
+
+                    }
+
+                }
+
+            }
+
+            if (getOccurrence(communityCardHand, communityCardHand[a]) === 3) {
+                if (a > 0) {
+                    if (3 === state.resultList[iteration]) {
+
+                        console.log("Folded player " + (iteration + 1) + " they only had: " + handHeirarchy[state.resultList[iteration]] + " in the community cards.");
+                        /*console.log("resultList: " + state.resultList + " - communityCardHand: " + communityCardHand);*/
                         removeActivePlyr(iteration);
                         document.querySelector("[data-player='" + iteration + "']").innerHTML = plyr + "Player " + (Number(iteration) + 1) + ": folded.";
                         document.querySelector("[data-player='" + iteration + "']").dataset.status = "folded";
