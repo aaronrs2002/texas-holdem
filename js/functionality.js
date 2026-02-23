@@ -585,9 +585,6 @@ function evaluateHand(iteration, gameStep) {
 
 
     /*Community cards eval */
-
-
-
     if (gameStep === 3 && iteration !== 0) {
 
 
@@ -630,9 +627,6 @@ function evaluateHand(iteration, gameStep) {
         }
 
     }
-
-
-
     /*end community cards eval*/
 
 
@@ -1023,27 +1017,44 @@ function match(checked, betMultiplier) {
         }
         if (gameStep === 2) {
 
-            state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
+            console.log("state.bet: " + state.bet + " - monetaryVal[gameStep]: " + monetaryVal[gameStep] + " - betMultiplier: " + betMultiplier + " - thePot: " + state.thePot + " -  state.activePlayers.length: " + state.activePlayers.length);
+
+            state.bet = (monetaryVal[gameStep] * betMultiplier);
             state.playerMoney = state.playerMoney - state.bet;
             state.thePot = state.thePot + (state.bet * state.activePlayers.length);
+
+            console.log("gameStep: " + gameStep);
+            console.log("state.bet: " + state.bet + " - monetaryVal[gameStep]: " + monetaryVal[gameStep] + " - betMultiplier: " + betMultiplier + " - thePot: " + state.thePot + " -  state.activePlayers.length: " + state.activePlayers.length);
+
+
             setPlayerMoney("betting");
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
             document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
         }
         if (gameStep === 3) {
 
-            state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
+            state.bet = (monetaryVal[gameStep] * betMultiplier);
             state.playerMoney = state.playerMoney - state.bet;
             state.thePot = state.thePot + (state.bet * state.activePlayers.length);
+            console.log("gameStep: " + gameStep);
+
+            console.log("state.bet: " + state.bet + " - monetaryVal[gameStep]: " + monetaryVal[gameStep] + " - betMultiplier: " + betMultiplier + " - thePot: " + state.thePot + " -  state.activePlayers.length: " + state.activePlayers.length);
+
+
             setPlayerMoney("betting");
             document.querySelector("[data-round='match']").innerHTML = "Match $" + monetaryVal[gameStep + 1];
             document.querySelector("[data-round='max']").innerHTML = "Max $" + (monetaryVal[gameStep + 1] * 3);
         }
         if (gameStep === 4) {
 
-            state.bet = state.bet + (monetaryVal[gameStep] * betMultiplier);
+            state.bet = (monetaryVal[gameStep] * betMultiplier);
             state.playerMoney = state.playerMoney - state.bet;
             state.thePot = state.thePot + (state.bet * state.activePlayers.length);
+
+            console.log("gameStep: " + gameStep);
+            console.log("state.bet: " + state.bet + " - monetaryVal[gameStep]: " + monetaryVal[gameStep] + " - betMultiplier: " + betMultiplier + " - thePot: " + state.thePot + " -  state.activePlayers.length: " + state.activePlayers.length);
+
+
             setPlayerMoney("betting");
             document.getElementById("foldBt").classList.add("hide");
             document.querySelector("[data-round='max']").classList.add("hide");
