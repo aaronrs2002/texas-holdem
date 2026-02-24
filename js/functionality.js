@@ -156,16 +156,13 @@ function setPlayerMoney(winLoseBet) {
 
 function showPlayersCards() {
     for (let i = 0; i < 4; i++) {
-        if (handHeirarchy[state.resultList[i]] !== undefined) {
-            document.getElementById(playersDetails[i]).innerHTML = plyr + " Player: " + (i + 1) + " " + handHeirarchy[state.resultList[i]];
-        }
         let playerCardsHTML = "";
         for (let j = 0; j < playersHands[i].length; j++) {
             playerCardsHTML = playerCardsHTML + "<div class='card " + playersHands[i][j].value + "-" + playersHands[i][j].suit + "' ></div>";
             document.getElementById(playerIds[i]).innerHTML = playerCardsHTML;
-            if (handHeirarchy[state.resultList[i]] !== undefined) {
-                document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1) + " " + handHeirarchy[state.resultList[i]];/*attempt bug fix for ticket #2*/
-            }
+            /* if (handHeirarchy[state.resultList[i]] !== undefined) {
+                 document.querySelector("[data-player='" + i + "']").innerHTML = plyr + "Player " + (i + 1) + " " + handHeirarchy[state.resultList[i]];//attempt bug fix for ticket #2
+             }*/
 
         }
     }
