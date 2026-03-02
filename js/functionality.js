@@ -1098,6 +1098,7 @@ function deal() {
         document.getElementById(playerIds[i]).innerHTML = ""
     }
     state.communityCardsHTML = "";
+    state.totalLoss = 0;
 
 
     if (document.querySelector("[name='playLevel'][value='hard']:checked")) {
