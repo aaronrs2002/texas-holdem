@@ -1113,7 +1113,7 @@ function deal() {
         state.thePot = 40;
         state.totalLoss = 10;
     }
-    state.playerMoney = state.playerMoney - state.startBet;
+
     bet1 = Math.floor(Math.random() * (state.maxBet[0] - 1 + 1) + 10);
     bet2 = Math.floor(Math.random() * (state.maxBet[1] - state.maxBet[0] + 1) + state.maxBet[0]);
     bet3 = Math.floor(Math.random() * (state.maxBet[2] - state.maxBet[1] + 1) + state.maxBet[1]);
