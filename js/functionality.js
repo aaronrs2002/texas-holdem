@@ -1016,6 +1016,7 @@ function match(checked, betMultiplier) {
             bet3 = Math.floor(Math.random() * (state.maxBet[2] - state.maxBet[1] + 1) + state.maxBet[1]);
             monetaryVal = [null, state.startBet, bet1, bet2, bet3];
             state.updatedBets = true;
+            state.totalLoss = state.startBet;
         }
         if (gameStep === 2) {
 
