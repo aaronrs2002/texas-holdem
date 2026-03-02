@@ -1016,8 +1016,9 @@ function match(checked, betMultiplier) {
             bet3 = Math.floor(Math.random() * (state.maxBet[2] - state.maxBet[1] + 1) + state.maxBet[1]);
             monetaryVal = [null, state.startBet, bet1, bet2, bet3];
             state.updatedBets = true;
-            state.totalLoss = state.startBet;
+
         }
+
         if (gameStep === 2) {
 
             state.bet = (monetaryVal[gameStep] * betMultiplier);
@@ -1105,10 +1106,12 @@ function deal() {
     if (document.querySelector("[name='playLevel'][value='hard']:checked")) {
         state.maxBet = [200, 300, 400];/*start random bet */
         state.startBet = 50;
+        state.totalLoss = 50;
         state.thePot = 200;
     } else {
         state.maxBet = [100, 200, 300];/*start random bet*/
         state.thePot = 40;
+        state.totalLoss = 10;
     }
     bet1 = Math.floor(Math.random() * (state.maxBet[0] - 1 + 1) + 10);
     bet2 = Math.floor(Math.random() * (state.maxBet[1] - state.maxBet[0] + 1) + state.maxBet[0]);
