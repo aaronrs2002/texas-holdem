@@ -27,7 +27,8 @@ let state = {
     gameIncrement: 1,
     updatedBets: false,
     startBet: 10,
-    maxBet: [100, 200, 300]
+    maxBet: [100, 200, 300],
+    totalLoss: 0
 
 }
 
@@ -216,7 +217,9 @@ function clear(action) {
 }
 
 function fold() {
-    document.getElementById("betTarget").innerHTML = "Folded. You lost $" + state.bet + ". Place your bet.";
+
+    console.log("monetaryVal: " + monetaryVal);
+    document.getElementById("betTarget").innerHTML = "Folded. You lost $" + state.totalLoss + ". Place your bet.";
     buildCommunityCards(5, "default");
     clear("fold");
     window.location = "#";
@@ -260,7 +263,7 @@ function youLose(num) {
     document.querySelector("[data-player='" + num + "']").classList.add("alert-success");
     document.getElementById("status").classList.remove("hide");
     messageElement.classList.remove("hide");
-    messageElement.innerHTML = "You lost $" + state.bet;
+    messageElement.innerHTML = "You lost $" + state.totalLoss;
     document.querySelector("[data-player='0']").classList.remove("alert-success");
     document.querySelector("[data-player='0']").classList.remove("alert-info");
     document.querySelector("[data-player='0']").classList.add("alert-danger");
@@ -1017,6 +1020,7 @@ function match(checked, betMultiplier) {
         if (gameStep === 2) {
 
             state.bet = (monetaryVal[gameStep] * betMultiplier);
+            state.totalLoss = (state.startBet + state.bet);
             state.playerMoney = state.playerMoney - state.bet;
             state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
@@ -1026,6 +1030,7 @@ function match(checked, betMultiplier) {
         if (gameStep === 3) {
 
             state.bet = (monetaryVal[gameStep] * betMultiplier);
+            state.totalLoss = (state.totalLoss + state.bet);
             state.playerMoney = state.playerMoney - state.bet;
             state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
@@ -1035,6 +1040,7 @@ function match(checked, betMultiplier) {
         if (gameStep === 4) {
 
             state.bet = (monetaryVal[gameStep] * betMultiplier);
+            state.totalLoss = (state.totalLoss + state.bet);
             state.playerMoney = state.playerMoney - state.bet;
             state.thePot = state.thePot + (state.bet * state.activePlayers.length);
             setPlayerMoney("betting");
