@@ -717,7 +717,7 @@ function evaluateHand(iteration, gameStep) {
                     if (getOccurrence(state.playerStraightHighCard, state.topHand) > 1 && state.playerStraightHighCard[0] === state.topHand) {
                         youWin("split");
                         showPlayersCards();
-                        //  return false;
+                        return;
                     }
 
                 }
@@ -790,7 +790,7 @@ function evaluateHand(iteration, gameStep) {
                             if (state.bestHoleCards[i][1] === hiHole && state.bestHoleCards[i][0] === lowHole && state.bestHoleCards[0][0] !== -1) {
                                 youWin("split");
                                 showPlayersCards();
-                                //  return false;
+                                return;
 
                             }
                         }
@@ -801,11 +801,12 @@ function evaluateHand(iteration, gameStep) {
 
 
                 }
-                /*    if (getOccurrence(winnersList, multiWinMax) > 1 && compareCards[0] === multiWinMax) {
-                        youWin("split");
-                        showPlayersCards();
-                        return false;
-                    }*/
+                /* evaluting hole cards - Edited in 2024
+                if (getOccurrence(winnersList, multiWinMax) > 1 && compareCards[0] === multiWinMax) {
+                    youWin("split");
+                    showPlayersCards();
+                    console.log("Firing split pot NOW!")
+                }*/
             }
         }
     }
